@@ -41,8 +41,7 @@
                     </svg>
                 </button>
 
-                <a href="/shows?sort=rating" class="nav-link px-3 py-2 rounded-md">Top Rated</a>
-                <a href="/shows?sort=newest" class="nav-link px-3 py-2 rounded-md">New</a>
+                <a href="/calendar" class="nav-link px-3 py-2 rounded-md">Calendar</a>
 
             </div>
 
@@ -134,9 +133,10 @@
                             @foreach([
                                 ['label' => 'Upcoming Birthdays', 'href' => '#'],
                                 ['label' => 'About DiziBul',      'href' => '#'],
-                                ['label' => 'Contact Us',         'href' => '#'],
-                                ['label' => 'Terms of Use',       'href' => '#'],
-                                ['label' => 'Privacy Policy',     'href' => '#'],
+                                ['label' => 'FAQ',                'href' => '/faq'],
+                                ['label' => 'Contact Us',         'href' => '/contact'],
+                                ['label' => 'Terms of Use',       'href' => '/terms'],
+                                ['label' => 'Privacy Policy',     'href' => '/privacy'],
                             ] as $link)
                             <li>
                                 <a href="{{ $link['href'] }}"
@@ -182,6 +182,7 @@
             <a href="/shows" class="block px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 text-sm transition-all">Browse Shows</a>
             <a href="/shows?sort=rating" class="block px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 text-sm transition-all">Top Rated</a>
             <a href="/shows?sort=newest" class="block px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 text-sm transition-all">New</a>
+            <a href="/faq" class="block px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 text-sm transition-all">FAQ</a>
             <div class="pt-2 border-t border-white/5 mt-2">
                 @foreach($navGenres->take(10) as $genre)
                 <a href="/shows?genre={{ $genre->slug }}" class="block px-3 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 text-sm transition-all">{{ $genre->name }}</a>
@@ -288,10 +289,10 @@
                 <ul class="space-y-3">
                     @foreach([
                         ['About Us',       '#'],
-                        ['FAQ',            '#'],
-                        ['Contact Us',     '#'],
-                        ['Terms of Use',   '#'],
-                        ['Privacy Policy', '#'],
+                        ['FAQ',            '/faq'],
+                        ['Contact Us',     '/contact'],
+                        ['Terms of Use',   '/terms'],
+                        ['Privacy Policy', '/privacy'],
                         ['Thanks',         '#'],
                     ] as [$label, $href])
                     <li>

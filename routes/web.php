@@ -23,6 +23,11 @@ Route::get('/', function () {
     return view('home', compact('sliderShows', 'top10Shows', 'recentlyAdded', 'classicDramas', 'diziNewcomers', 'periodDramas', 'netflixShows', 'loveShows', 'turkishRemakes', 'impossibleLove', 'dailyDramas', 'enemiesToLovers', 'familyTree', 'bingeWorthy', 'oneWeekend', 'goneTooSoon'));
 });
 
+Route::get('/faq', fn() => view('faq'));
+Route::get('/terms', fn() => view('terms'));
+Route::get('/privacy', fn() => view('privacy'));
+Route::get('/contact', fn() => view('contact'));
+
 Route::get('/shows/{slug}', function (string $slug) {
     $show = Show::with(['genres', 'images', 'episodes' => fn($q) => $q->orderBy('season_number')->orderBy('episode_number')])
                 ->where('slug', $slug)
@@ -36,7 +41,7 @@ Route::get('/shows/{slug}', function (string $slug) {
         ->whereHas('genres', fn($q) => $q->whereIn('genres.id', $genreIds))
         ->where('id', '!=', $show->id)
         ->orderBy('subscribers', 'desc')
-        ->take(12)
+        ->take(18)
         ->get();
 
     return view('shows.show', compact('show', 'seasons', 'latestEpisodes', 'relatedShows'));

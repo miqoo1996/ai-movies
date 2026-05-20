@@ -211,13 +211,3 @@ if (document.querySelector('.gone-too-soon-swiper')) {
     });
 }
 
-// ── Related Shows Swiper ──────────────────────────────────────────
-if (document.querySelector('.related-swiper')) {
-    new Swiper('.related-swiper', {
-        modules: [FreeMode],
-        slidesPerView: 'auto',
-        spaceBetween: 12,
-        freeMode: { enabled: true, momentum: true },
-        grabCursor: true,
-    });
-}

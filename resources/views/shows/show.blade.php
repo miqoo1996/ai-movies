@@ -108,7 +108,8 @@
     <div class="border-b border-white/8 bg-[#080810] sticky top-[60px] z-40">
         <div class="max-w-[1400px] mx-auto px-6">
             <nav class="flex items-center overflow-x-auto scrollbar-hide" id="show-tabs">
-                @foreach(['Overview', 'Episodes', 'Cast & Crew', 'Reviews', 'Lists', 'News', 'Related'] as $tab)
+{{--                ['Overview', 'Episodes', 'Cast & Crew', 'Reviews', 'Lists', 'News', 'Related']--}}
+                @foreach(['Overview', 'Episodes', 'Related'] as $tab)
                 <button data-tab="{{ Str::slug($tab) }}"
                         class="show-tab shrink-0 px-5 py-[14px] text-[13px] font-bold uppercase tracking-wider transition-all duration-200 border-b-2
                                {{ $loop->first
@@ -170,8 +171,12 @@
                                 <img src="{{ $ep->thumb }}" alt="{{ $ep->shortcode }}"
                                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             @else
-                                <div class="w-full h-full bg-gradient-to-br from-[#1a1a2e] to-[#0d0d18] flex items-center justify-center">
-                                    <span class="text-slate-600 text-sm font-bold">{{ $ep->shortcode }}</span>
+                                <img src="{{ $show->poster }}" alt=""
+                                     class="absolute inset-0 w-full h-full object-cover scale-110 blur-md brightness-50 saturate-150">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                                <div class="absolute inset-0 flex flex-col items-center justify-center gap-1">
+                                    <span class="text-white/90 text-sm font-black tracking-widest drop-shadow">{{ $ep->shortcode }}</span>
+                                    <span class="text-white/40 text-[10px] font-medium uppercase tracking-wider">No Preview</span>
                                 </div>
                             @endif
                             {{-- Overlay + play --}}
@@ -231,42 +236,138 @@
         </div>
         @endif
 
-        {{-- More Like This --}}
-        @if($relatedShows->isNotEmpty())
-        <div>
-            <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5 mb-5">
-                More Like This
-            </h2>
-            <div class="swiper related-swiper pb-2">
-                <div class="swiper-wrapper">
-                    @foreach($relatedShows as $rel)
-                    <div class="swiper-slide !w-[130px] sm:!w-[150px]">
-                        <a href="/shows/{{ $rel->slug }}" class="block group">
-                            <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18] mb-2">
-                                <img src="{{ $rel->poster }}" alt="{{ $rel->title }}"
+        </div>
+
+        {{-- ── EPISODES ────────────────────────────────────────────── --}}
+        <div id="panel-episodes" class="show-panel hidden">
+            @if($seasons->isNotEmpty())
+
+            {{-- Season Selector --}}
+            <div class="flex items-center gap-2 flex-wrap mb-8">
+                @foreach($seasons as $seasonNum => $episodes)
+                <button data-season="{{ $seasonNum }}"
+                        class="season-btn px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border transition-all duration-200
+                               {{ $loop->first
+                                   ? 'bg-[#e63946] border-[#e63946] text-white'
+                                   : 'bg-transparent border-white/20 text-slate-400 hover:border-white/40 hover:text-slate-200' }}">
+                    Season {{ $seasonNum }}
+                    <span class="ml-1 opacity-60">{{ $episodes->count() }}</span>
+                </button>
+                @endforeach
+            </div>
+
+            {{-- Season Panels --}}
+            @foreach($seasons as $seasonNum => $episodes)
+            <div id="season-{{ $seasonNum }}" class="season-panel {{ $loop->first ? '' : 'hidden' }}">
+
+                {{-- Episode count header --}}
+                <p class="text-slate-500 text-xs uppercase tracking-widest font-semibold mb-5">
+                    {{ $episodes->count() }} {{ Str::plural('Episode', $episodes->count()) }}
+                    @php
+                        $first = $episodes->first();
+                        $last  = $episodes->last();
+                    @endphp
+                    @if($first?->airs_on && $last?->airs_on)
+                        &nbsp;·&nbsp; {{ $first->airs_on->format('M Y') }} – {{ $last->airs_on->format('M Y') }}
+                    @endif
+                </p>
+
+                <div class="flex flex-wrap gap-4">
+                    @foreach($episodes->sortBy('episode_number') as $ep)
+                    <div class="shrink-0 w-[230px] bg-[#0d0d18] border border-white/5 hover:border-white/15 rounded-2xl overflow-hidden transition-all duration-200 group cursor-pointer">
+                        {{-- Thumbnail --}}
+                        <div class="relative aspect-video overflow-hidden">
+                            @if($ep->thumb)
+                                <img src="{{ $ep->thumb }}" alt="{{ $ep->shortcode }}"
                                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                                @if($rel->network)
-                                <span class="absolute bottom-2 left-2 text-[10px] font-bold bg-black/70 backdrop-blur-sm text-white px-1.5 py-0.5 rounded">
-                                    {{ $rel->network }}
-                                </span>
-                                @endif
-                                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors rounded-xl"></div>
+                            @else
+                                <img src="{{ $show->poster }}" alt=""
+                                     class="absolute inset-0 w-full h-full object-cover scale-110 blur-md brightness-50 saturate-150">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                                <div class="absolute inset-0 flex flex-col items-center justify-center gap-1">
+                                    <span class="text-white/90 text-sm font-black tracking-widest drop-shadow">{{ $ep->shortcode }}</span>
+                                    <span class="text-white/40 text-[10px] font-medium uppercase tracking-wider">No Preview</span>
+                                </div>
+                            @endif
+                            {{-- Overlay + play --}}
+                            <div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                                    <svg class="w-4 h-4 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                </div>
                             </div>
-                            <p class="text-slate-200 text-xs font-semibold leading-snug line-clamp-2 group-hover:text-white transition-colors">
-                                {{ $rel->title }}
-                            </p>
-                        </a>
+                            {{-- Episode badge --}}
+                            <div class="absolute top-2 left-2 bg-black/70 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
+                                {{ $ep->shortcode }}
+                            </div>
+                        </div>
+                        <div class="px-4 py-3">
+                            @if($ep->airs_on)
+                                <p class="text-slate-400 text-xs">{{ $ep->airs_on->format('M d, Y') }}</p>
+                            @endif
+                            @if($ep->season_finale)
+                                <span class="inline-block mt-1 text-[10px] font-bold uppercase tracking-wider text-amber-400">Season Finale</span>
+                            @endif
+                            @if(! $ep->has_aired)
+                                <span class="inline-block mt-1 text-[10px] font-bold uppercase tracking-wider text-slate-500">Upcoming</span>
+                            @endif
+                        </div>
                     </div>
                     @endforeach
                 </div>
             </div>
-        </div>
-        @endif
+            @endforeach
 
+            @else
+            <div class="flex flex-col items-center justify-center py-20 text-center">
+                <svg class="w-12 h-12 text-slate-700 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10l4.553-2.069A1 1 0 0121 8.882v6.236a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/>
+                </svg>
+                <p class="text-slate-500 text-sm">No episodes available yet.</p>
+            </div>
+            @endif
+        </div>
+
+        {{-- ── RELATED ─────────────────────────────────────────────── --}}
+        <div id="panel-related" class="show-panel hidden">
+            @if($relatedShows->isNotEmpty())
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">
+                    Related Shows
+                </h2>
+                <span class="text-slate-500 text-xs">{{ $relatedShows->count() }} shows</span>
+            </div>
+            <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3">
+                @foreach($relatedShows as $rel)
+                <a href="/shows/{{ $rel->slug }}" class="block group">
+                    <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18] mb-1.5">
+                        <img src="{{ $rel->poster }}" alt="{{ $rel->title }}"
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        @if($rel->network)
+                        <span class="absolute bottom-2 left-2 text-[9px] font-bold bg-black/75 backdrop-blur-sm text-white px-1.5 py-0.5 rounded">
+                            {{ $rel->network }}
+                        </span>
+                        @endif
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors"></div>
+                    </div>
+                    <p class="text-slate-300 text-[11px] font-semibold leading-snug line-clamp-2 group-hover:text-white transition-colors">
+                        {{ $rel->title }}
+                    </p>
+                    @if($rel->year)
+                    <p class="text-slate-600 text-[10px] mt-0.5">{{ $rel->year }}</p>
+                    @endif
+                </a>
+                @endforeach
+            </div>
+            @else
+            <div class="flex flex-col items-center justify-center py-20 text-center">
+                <p class="text-slate-500 text-sm">No related shows found.</p>
+            </div>
+            @endif
         </div>
 
         {{-- Other panels --}}
-        @foreach(['episodes', 'cast-crew', 'reviews', 'lists', 'news', 'related'] as $panel)
+        @foreach(['cast-crew', 'reviews', 'lists', 'news'] as $panel)
         <div id="panel-{{ $panel }}" class="show-panel hidden"></div>
         @endforeach
 
@@ -293,6 +394,23 @@
 
             const target = 'panel-' + tab.dataset.tab;
             panels.forEach(p => p.classList.toggle('hidden', p.id !== target));
+        });
+    });
+
+    // Season switcher inside the Episodes panel
+    document.querySelectorAll('.season-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.season-btn').forEach(b => {
+                b.classList.remove('bg-[#e63946]', 'border-[#e63946]', 'text-white');
+                b.classList.add('bg-transparent', 'border-white/20', 'text-slate-400');
+            });
+            btn.classList.add('bg-[#e63946]', 'border-[#e63946]', 'text-white');
+            btn.classList.remove('bg-transparent', 'border-white/20', 'text-slate-400');
+
+            const season = btn.dataset.season;
+            document.querySelectorAll('.season-panel').forEach(p => {
+                p.classList.toggle('hidden', p.id !== 'season-' + season);
+            });
         });
     });
 })();
