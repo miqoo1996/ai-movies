@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('genre_show', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('shows', function (Blueprint $table) {
+            $table->string('ai_title')->nullable()->after('turkish_title');
         });
     }
 
@@ -22,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('genre_show');
+        Schema::table('shows', function (Blueprint $table) {
+            $table->dropColumn('ai_title');
+        });
     }
 };

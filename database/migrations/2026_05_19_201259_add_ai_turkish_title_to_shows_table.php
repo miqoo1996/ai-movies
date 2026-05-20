@@ -11,13 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('genres', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('external_id')->unique();
-            $table->string('hashid')->unique();
-            $table->string('name');
-            $table->string('slug')->unique();
-            $table->timestamps();
+        Schema::table('shows', function (Blueprint $table) {
+            $table->string('ai_turkish_title')->nullable()->after('ai_title');
         });
     }
 
@@ -26,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('genres');
+        Schema::table('shows', function (Blueprint $table) {
+            $table->dropColumn('ai_turkish_title');
+        });
     }
 };

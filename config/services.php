@@ -35,4 +35,13 @@ return [
         ],
     ],
 
+    'dizilah' => [
+        'cf_clearance' => env('DIZILAH_CF_CLEARANCE'),
+    ],
+
+    'openai' => [
+        'key'   => env('OPENAI_KEY'),
+        'model' => env('OPENAI_MODEL', 'gpt-4o-mini'),
+    ],
+
 ];

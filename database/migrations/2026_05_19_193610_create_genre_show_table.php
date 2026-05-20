@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('genres', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('external_id')->unique();
-            $table->string('hashid')->unique();
-            $table->string('name');
-            $table->string('slug')->unique();
-            $table->timestamps();
+        Schema::create('genre_show', function (Blueprint $table) {
+            $table->foreignId('show_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('genre_id')->constrained()->cascadeOnDelete();
+            $table->primary(['show_id', 'genre_id']);
         });
     }
 
@@ -26,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('genres');
+        Schema::dropIfExists('genre_show');
     }
 };
