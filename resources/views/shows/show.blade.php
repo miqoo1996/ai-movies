@@ -214,7 +214,7 @@
                 @foreach($photos as $i => $img)
                 <div class="relative overflow-hidden rounded-lg aspect-video bg-[#0d0d18] group cursor-pointer
                             {{ $i === 0 ? 'col-span-2 row-span-2' : '' }}">
-                    <img src="{{ $img->url }}" alt="Photo {{ $loop->iteration }}"
+                    <img src="{{ $img->local_path ? asset($img->local_path) : $img->url }}" alt="Photo {{ $loop->iteration }}"
                          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                     <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors"></div>
                 </div>

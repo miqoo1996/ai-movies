@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ShowImage extends Model
 {
-    protected $fillable = ['show_id', 'external_id', 'hashid', 'url', 'thumb', 'width', 'height', 'mime_type', 'collection'];
+    protected $fillable = ['show_id', 'external_id', 'hashid', 'url', 'local_path', 'thumb', 'local_thumb', 'width', 'height', 'mime_type', 'collection'];
 
     public function show()
     {
