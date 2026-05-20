@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Show;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -20,4 +21,23 @@ Route::get('/', function () {
     $oneWeekend      = \App\Models\Show::where('runtime', '<', 60)->where('status', 'Ended')->orderBy('subscribers', 'desc')->take(8)->get();
     $goneTooSoon     = \App\Models\Show::where('status', 'Cancelled')->orderBy('subscribers', 'desc')->take(8)->get();
     return view('home', compact('sliderShows', 'top10Shows', 'recentlyAdded', 'classicDramas', 'diziNewcomers', 'periodDramas', 'netflixShows', 'loveShows', 'turkishRemakes', 'impossibleLove', 'dailyDramas', 'enemiesToLovers', 'familyTree', 'bingeWorthy', 'oneWeekend', 'goneTooSoon'));
+});
+
+Route::get('/shows/{slug}', function (string $slug) {
+    $show = Show::with(['genres', 'images', 'episodes' => fn($q) => $q->orderBy('season_number')->orderBy('episode_number')])
+                ->where('slug', $slug)
+                ->firstOrFail();
+
+    $seasons        = $show->episodes->groupBy('season_number')->sortKeys();
+    $latestEpisodes = $show->episodes->sortByDesc('airs_on')->take(3)->values();
+
+    $genreIds    = $show->genres->pluck('id');
+    $relatedShows = Show::with('genres')
+        ->whereHas('genres', fn($q) => $q->whereIn('genres.id', $genreIds))
+        ->where('id', '!=', $show->id)
+        ->orderBy('subscribers', 'desc')
+        ->take(12)
+        ->get();
+
+    return view('shows.show', compact('show', 'seasons', 'latestEpisodes', 'relatedShows'));
 });

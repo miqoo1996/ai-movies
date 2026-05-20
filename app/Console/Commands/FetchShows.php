@@ -2,8 +2,12 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Episode;
 use App\Models\Genre;
 use App\Models\Show;
+use App\Models\ShowImage;
+use App\Models\ShowStreamingSource;
+use App\Models\ShowVideo;
 use Illuminate\Console\Command;
 use Symfony\Component\Process\Process;
 
@@ -15,7 +19,16 @@ class FetchShows extends Command
 
     protected $description = 'Fetch and save shows from dizilah.com API';
 
-    private const BASE_URL = 'https://dizilah.com/api/filter/shows';
+    private const BASE_URL    = 'https://dizilah.com/api/filter/shows';
+    private const IMAGES_URL  = 'https://dizilah.com/api/v1/images';
+    private const VIDEOS_URL  = 'https://dizilah.com/api/v1/videos';
+    private const WTW_URL     = 'https://dizilah.com/api/wheretowatch';
+    private const EPISODE_URL = 'https://dizilah.com/api/show';
+
+    private const AUTH_HEADERS = [
+        'X-Dizilah-Key'   => '9cahda6EeP',
+        'X-Dizilah-Token' => 'Yei6OhRu3uu7aza',
+    ];
 
     private string $script;
 
@@ -37,7 +50,9 @@ class FetchShows extends Command
         do {
             $this->line("  Fetching page {$page}" . ($lastPage ? "/{$lastPage}" : '') . '...');
 
-            $response = $this->fetchPage($page);
+            $response = $this->fetchUrl(
+                self::BASE_URL . '?' . http_build_query(['page' => $page, 'include' => 'genres'])
+            );
 
             if ($response === null) {
                 $this->error("Failed to fetch page {$page}. Stopping.");
@@ -65,23 +80,28 @@ class FetchShows extends Command
         return self::SUCCESS;
     }
 
-    private function fetchPage(int $page): ?array
+    private function fetchUrl(string $url, bool $withAuth = false): ?array
     {
-        $url = self::BASE_URL . '?' . http_build_query(['page' => $page, 'include' => 'genres']);
+        $headers = $withAuth ? self::AUTH_HEADERS : [];
 
-        $process = new Process(['python3', $this->script, $url]);
+        $args = ['python3', $this->script, $url];
+        if ($headers) {
+            $args[] = json_encode($headers);
+        }
+
+        $process = new Process($args);
         $process->setTimeout(60);
         $process->run();
 
         if (! $process->isSuccessful()) {
-            $this->error(trim($process->getErrorOutput()) ?: "Process failed on page {$page}");
+            $this->warn(trim($process->getErrorOutput()) ?: "Process failed for: {$url}");
             return null;
         }
 
         $data = json_decode($process->getOutput(), true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
-            $this->error("Invalid JSON on page {$page}: " . json_last_error_msg());
+            $this->warn("Invalid JSON for {$url}: " . json_last_error_msg());
             return null;
         }
 
@@ -116,10 +136,130 @@ class FetchShows extends Command
             );
 
             $show->genres()->sync($genreIds);
+
+            $this->fetchImages($show);
+            $this->fetchVideos($show);
+            $this->fetchWhereToWatch($show);
+            $this->fetchEpisodes($show);
+
             $count++;
         }
 
         return $count;
+    }
+
+    private function fetchImages(Show $show): void
+    {
+        $url  = self::IMAGES_URL . '?' . http_build_query([
+            'model'    => 'show',
+            'model_id' => $show->external_id,
+            'gallery'  => 'show_images',
+        ]);
+
+        $items = $this->fetchUrl($url, withAuth: true);
+
+        if (! is_array($items)) {
+            return;
+        }
+
+        foreach ($items as $img) {
+            ShowImage::updateOrCreate(
+                ['external_id' => $img['id']],
+                [
+                    'show_id'    => $show->id,
+                    'hashid'     => $img['hashid'],
+                    'url'        => $img['url'],
+                    'thumb'      => $img['thumb'] ?? null,
+                    'width'      => $img['width'] ?? null,
+                    'height'     => $img['height'] ?? null,
+                    'mime_type'  => $img['mimeType'] ?? null,
+                    'collection' => $img['collection'] ?? null,
+                ]
+            );
+        }
+    }
+
+    private function fetchVideos(Show $show): void
+    {
+        $url   = self::VIDEOS_URL . '?' . http_build_query([
+            'model'    => 'show',
+            'model_id' => $show->external_id,
+        ]);
+
+        $items = $this->fetchUrl($url, withAuth: true);
+
+        if (! is_array($items)) {
+            return;
+        }
+
+        foreach ($items as $vid) {
+            ShowVideo::updateOrCreate(
+                ['external_id' => $vid['id']],
+                [
+                    'show_id'     => $show->id,
+                    'hashid'      => $vid['hashid'],
+                    'url'         => $vid['url'],
+                    'poster'      => $vid['poster'] ?? null,
+                    'title'       => $vid['title'] ?? null,
+                    'description' => $vid['description'] ?? null,
+                    'playable'    => $vid['playable'] ?? true,
+                ]
+            );
+        }
+    }
+
+    private function fetchWhereToWatch(Show $show): void
+    {
+        $url   = self::WTW_URL . '/' . $show->hashid . '?include=source';
+        $items = $this->fetchUrl($url, withAuth: false);
+
+        if (! is_array($items)) {
+            return;
+        }
+
+        foreach ($items as $entry) {
+            $source = $entry['source'] ?? [];
+
+            ShowStreamingSource::updateOrCreate(
+                ['external_id' => $entry['id']],
+                [
+                    'show_id'        => $show->id,
+                    'hashid'         => $entry['hashid'],
+                    'type'           => $entry['type'] ?? null,
+                    'lang'           => $entry['lang'] ?? [],
+                    'url'            => $entry['url'],
+                    'source_name'    => $source['name'] ?? null,
+                    'source_image'   => $source['image'] ?? null,
+                    'source_slug'    => $source['slug'] ?? null,
+                    'source_premium' => $source['premium'] ?? false,
+                ]
+            );
+        }
+    }
+
+    private function fetchEpisodes(Show $show): void
+    {
+        $url  = self::EPISODE_URL . '/' . $show->external_id . '/episodes/latest?sortBy=desc';
+        $resp = $this->fetchUrl($url, withAuth: true);
+
+        $items = $resp['data'] ?? (is_array($resp) ? $resp : []);
+
+        foreach ($items as $ep) {
+            Episode::updateOrCreate(
+                ['external_id' => $ep['id']],
+                [
+                    'show_id'        => $show->id,
+                    'hashid'         => $ep['hashid'],
+                    'season_number'  => $ep['season_number'] ?? null,
+                    'episode_number' => $ep['episode_number'] ?? null,
+                    'shortcode'      => $ep['shortcode'] ?? null,
+                    'airs_on'        => $ep['airs_on'] ?? null,
+                    'has_aired'      => $ep['has_aired'] ?? false,
+                    'season_finale'  => $ep['season_finale'] ?? false,
+                    'thumb'          => ($ep['thumb'] ?? null) === '/img/default-episode.webp' ? null : ($ep['thumb'] ?? null),
+                ]
+            );
+        }
     }
 
     private function upsertGenres(array $genres): array

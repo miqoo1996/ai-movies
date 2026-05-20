@@ -40,4 +40,24 @@ class Show extends Model
     {
         return $this->belongsToMany(Genre::class);
     }
+
+    public function images(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ShowImage::class);
+    }
+
+    public function videos(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ShowVideo::class);
+    }
+
+    public function streamingSources(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ShowStreamingSource::class);
+    }
+
+    public function episodes(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Episode::class);
+    }
 }
