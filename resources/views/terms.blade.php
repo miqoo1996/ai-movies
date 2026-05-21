@@ -58,7 +58,7 @@
                             We always aim to produce a High-Quality Translation Service.
                         </p>
 
-                        <br>
+
                     </section>
 
                     {{-- Security --}}
@@ -73,7 +73,7 @@
                             </p>
                         </div>
 
-                        <br>
+
                     </section>
 
                     {{-- Links --}}
@@ -88,7 +88,7 @@
                             </p>
                         </div>
 
-                        <br>
+
                     </section>
 
                     {{-- Subscriptions --}}
@@ -118,7 +118,7 @@
                             @endforeach
                         </ul>
 
-                        <br>
+
                     </section>
 
                     {{-- Disclaimer --}}
@@ -128,7 +128,7 @@
                             Although every reasonable effort has been made to ensure that the information on this website is accurate at the time of publication, visitors who use this website and rely on any information do so at their own risk. TurkFlix does not warrant its accuracy and disclaims any liability to any third party anywhere in the world for any injury, damage, loss or inconvenience arising as a consequence of any use of or the inability to use any information on this website to the fullest extent permitted at law.
                         </p>
 
-                        <br>
+
                     </section>
 
                     {{-- Copyright --}}

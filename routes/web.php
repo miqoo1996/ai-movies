@@ -23,6 +23,39 @@ Route::get('/', function () {
     return view('home', compact('sliderShows', 'top10Shows', 'recentlyAdded', 'classicDramas', 'diziNewcomers', 'periodDramas', 'netflixShows', 'loveShows', 'turkishRemakes', 'impossibleLove', 'dailyDramas', 'enemiesToLovers', 'familyTree', 'bingeWorthy', 'oneWeekend', 'goneTooSoon'));
 });
 
+Route::get('/shows', function () {
+    $q       = request('q', '');
+    $status  = request('status', '');
+    $genre   = request('genre', '');
+    $network = request('network', '');
+    $sort    = request('sort', 'subscribers');
+    $year    = request('year', '');
+
+    $query = \App\Models\Show::with('genres')->withCount('episodes');
+
+    if ($q)       $query->where(fn($b) => $b->where('title', 'like', "%$q%")->orWhere('original_title', 'like', "%$q%"));
+    if ($status)  $query->where('status', $status);
+    if ($network) $query->where('network', $network);
+    if ($genre)   $query->whereHas('genres', fn($b) => $b->where('slug', $genre));
+    if ($year)    $query->where('year', $year);
+
+    $query->orderBy(match($sort) {
+        'rating'      => 'rating',
+        'year_desc'   => 'year',
+        'year_asc'    => 'year',
+        'newest'      => 'created_at',
+        'title'       => 'title',
+        default       => 'subscribers',
+    }, in_array($sort, ['year_asc', 'title']) ? 'asc' : 'desc');
+
+    $shows    = $query->paginate(40)->withQueryString();
+    $genres   = \App\Models\Genre::withCount('shows')->orderByDesc('shows_count')->get();
+    $networks = \App\Models\Show::distinct()->orderBy('network')->pluck('network')->filter()->values();
+    $statuses = ['Running' => 'Airing Now', 'Returning Series' => 'Returning', 'Ended' => 'Ended', 'Cancelled' => 'Cancelled', 'Hiatus' => 'Hiatus'];
+
+    return view('shows.index', compact('shows', 'genres', 'networks', 'statuses', 'q', 'status', 'genre', 'network', 'sort', 'year'));
+});
+
 Route::get('/faq', fn() => view('faq'));
 Route::get('/terms', fn() => view('terms'));
 Route::get('/privacy', fn() => view('privacy'));

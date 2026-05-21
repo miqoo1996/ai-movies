@@ -55,7 +55,7 @@
                 </a>
 
                 {{-- Sign In --}}
-                <a href="#" class="hidden md:inline-flex items-center gap-2 px-4 py-1.5 rounded-md border border-violet-500/60 text-violet-300 text-sm font-semibold hover:bg-violet-500/10 hover:border-violet-400 transition-all duration-200">
+                <a href="https://turk-flix.com/" target="_blank" class="hidden md:inline-flex items-center gap-2 px-4 py-1.5 rounded-md border border-violet-500/60 text-violet-300 text-sm font-semibold hover:bg-violet-500/10 hover:border-violet-400 transition-all duration-200">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
                     </svg>
@@ -76,7 +76,7 @@
     {{-- ═══════════════════════════ MEGA MENU ════════════════════ --}}
     <div id="mega-menu"
          class="mega-menu-panel absolute top-full inset-x-0 border-t border-white/5 hidden">
-        <div class="bg-[#0d0d18]/98 backdrop-blur-xl shadow-2xl shadow-black/50">
+        <div class="bg-[#0d0d18] shadow-2xl shadow-black/60" style="border-top:1px solid rgba(255,255,255,0.05);">
             <div class="max-w-[1400px] mx-auto px-4 sm:px-6 py-8">
                 <div class="grid grid-cols-12 gap-8">
 
@@ -288,12 +288,11 @@
                 <h4 class="text-[11px] font-bold tracking-[0.14em] text-white uppercase mb-5">About</h4>
                 <ul class="space-y-3">
                     @foreach([
-                        ['About Us',       '#'],
+//                        ['About Us',       '#'],
                         ['FAQ',            '/faq'],
                         ['Contact Us',     '/contact'],
                         ['Terms of Use',   '/terms'],
                         ['Privacy Policy', '/privacy'],
-                        ['Thanks',         '#'],
                     ] as [$label, $href])
                     <li>
                         <a href="{{ $href }}" class="text-sm text-slate-500 hover:text-white transition-colors duration-150">

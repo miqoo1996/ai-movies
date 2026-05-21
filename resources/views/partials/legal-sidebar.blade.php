@@ -1,12 +1,11 @@
 <p class="text-[10px] font-black uppercase tracking-[0.15em] text-slate-600 px-3 mb-3">Pages</p>
 <nav class="flex flex-col">
     @foreach([
-        ['label' => 'About Us',      'href' => '#',        'key' => 'about'],
+//        ['label' => 'About Us',      'href' => '#',        'key' => 'about'],
         ['label' => 'FAQ',            'href' => '/faq',     'key' => 'faq'],
         ['label' => 'Contact Us',     'href' => '/contact', 'key' => 'contact'],
         ['label' => 'Terms of Use',   'href' => '/terms',   'key' => 'terms'],
         ['label' => 'Privacy Policy', 'href' => '/privacy', 'key' => 'privacy'],
-        ['label' => 'Thanks',         'href' => '#',        'key' => 'thanks'],
     ] as $link)
     @php $isActive = ($link['key'] === $activePage); @endphp
     <a href="{{ $link['href'] }}"

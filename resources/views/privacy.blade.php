@@ -57,7 +57,7 @@
                         <p class="mt-4">
                             Our relationship with our customers and the public at large is of great importance to the organisation. This policy sets out the basis by which any personal data we collect from you, or that you provide to us, will be processed by us.
                         </p>
-                        <br>
+
                     </section>
 
                     {{-- Data Protection Statement --}}
@@ -70,7 +70,7 @@
                             <p>Most information that we hold will have been obtained directly from you.</p>
                             <p>Staff who handle personal data have received relevant data protection training.</p>
                         </div>
-                        <br>
+
                     </section>
 
                     {{-- How We Use Your Data --}}
@@ -95,7 +95,7 @@
                             </li>
                             @endforeach
                         </ul>
-                        <br>
+
                     </section>
 
                     {{-- What Data We Collect --}}
@@ -117,7 +117,7 @@
                                 <p>Our web servers use cookies and collect anonymous logs during user visits to our website that provide valuable information for improving them in the future. For more information see our Cookie Policy below.</p>
                             </div>
                         </div>
-                        <br>
+
                     </section>
 
                     {{-- Third Parties --}}
@@ -147,7 +147,7 @@
                             </div>
                             <p>We may also share your personal information with your permission or if we are legally required to disclose it in circumstances where this cannot be reasonably resisted.</p>
                         </div>
-                        <br>
+
                     </section>
 
                     {{-- How We Contact You --}}
@@ -163,7 +163,7 @@
                                 <p>If you have provided us with your postal address or telephone number, we may send you direct mail or telephone you about our work and fundraising campaigns, unless you have told us that you would prefer not to receive such information. We will carry out a legitimate interest assessment to ensure that you would reasonably expect such communications and would not consider them intrusive.</p>
                             </div>
                         </div>
-                        <br>
+
                     </section>
 
                     {{-- Retention --}}
@@ -177,7 +177,7 @@
                                 If you have told us that you do not want to hear from us at all or by a particular channel, we will hold the minimum amount of your personal data on a suppression list to ensure we comply with your request.
                             </p>
                         </div>
-                        <br>
+
                     </section>
 
                     {{-- Your Rights --}}
@@ -204,7 +204,7 @@
                                 Please feel free to contact us with any questions related to this policy. If a link on this website takes you to a third-party website, you should refer to their privacy policy. We cannot accept any responsibility for the privacy practices of such third-party websites.
                             </p>
                         </div>
-                        <br>
+
                     </section>
 
                     {{-- Cookie Policy --}}
@@ -265,7 +265,7 @@
                                 We may update the terms of this Policy at any time. We will notify you about significant changes by sending a notice to the primary email address you have provided or by placing a prominent notice on our website. By continuing to engage with us through our services and website you will be deemed to have accepted such changes.
                             </p>
                         </div>
-                        <br>
+
                     </section>
 
                 </div>

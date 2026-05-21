@@ -18,10 +18,9 @@
 @layer components {
     /* ── Navbar ── */
     #navbar.scrolled {
-        background: rgba(8, 8, 16, 0.92);
-        backdrop-filter: blur(16px);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+        background: #0a0a16;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
     }
 
     .nav-link {
