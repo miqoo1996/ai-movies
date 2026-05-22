@@ -41,7 +41,7 @@
                     </svg>
                 </button>
 
-                <a href="/calendar" class="nav-link px-3 py-2 rounded-md">Calendar</a>
+{{--                <a href="/calendar" class="nav-link px-3 py-2 rounded-md">Calendar</a>--}}
 
             </div>
 
@@ -128,25 +128,25 @@
 
                     {{-- Column 3 · Quick Links + Social --}}
                     <div class="col-span-12 md:col-span-3">
-                        <p class="text-[10px] font-bold tracking-[0.15em] text-violet-400 uppercase mb-4">Quick Links</p>
-                        <ul class="space-y-1 mb-8">
-                            @foreach([
-                                ['label' => 'Upcoming Birthdays', 'href' => '#'],
-                                ['label' => 'About DiziBul',      'href' => '#'],
-                                ['label' => 'FAQ',                'href' => '/faq'],
-                                ['label' => 'Contact Us',         'href' => '/contact'],
-                                ['label' => 'Terms of Use',       'href' => '/terms'],
-                                ['label' => 'Privacy Policy',     'href' => '/privacy'],
-                            ] as $link)
-                            <li>
-                                <a href="{{ $link['href'] }}"
-                                   class="flex items-center gap-2 py-1.5 text-sm text-slate-400 hover:text-white transition-colors group">
-                                    <span class="w-1 h-1 rounded-full bg-violet-500/0 group-hover:bg-violet-500 transition-all"></span>
-                                    {{ $link['label'] }}
-                                </a>
-                            </li>
-                            @endforeach
-                        </ul>
+{{--                        <p class="text-[10px] font-bold tracking-[0.15em] text-violet-400 uppercase mb-4">Quick Links</p>--}}
+{{--                        <ul class="space-y-1 mb-8">--}}
+{{--                            @foreach([--}}
+{{--                                ['label' => 'Upcoming Birthdays', 'href' => '#'],--}}
+{{--                                ['label' => 'About DiziBul',      'href' => '#'],--}}
+{{--                                ['label' => 'FAQ',                'href' => '/faq'],--}}
+{{--                                ['label' => 'Contact Us',         'href' => '/contact'],--}}
+{{--                                ['label' => 'Terms of Use',       'href' => '/terms'],--}}
+{{--                                ['label' => 'Privacy Policy',     'href' => '/privacy'],--}}
+{{--                            ] as $link)--}}
+{{--                            <li>--}}
+{{--                                <a href="{{ $link['href'] }}"--}}
+{{--                                   class="flex items-center gap-2 py-1.5 text-sm text-slate-400 hover:text-white transition-colors group">--}}
+{{--                                    <span class="w-1 h-1 rounded-full bg-violet-500/0 group-hover:bg-violet-500 transition-all"></span>--}}
+{{--                                    {{ $link['label'] }}--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
+{{--                            @endforeach--}}
+{{--                        </ul>--}}
 
                         {{-- Social icons --}}
                         <p class="text-[10px] font-bold tracking-[0.15em] text-violet-400 uppercase mb-3">Follow Us</p>
@@ -324,21 +324,21 @@
 
             {{-- Col 4 · Quick Links + Work With Us --}}
             <div>
-                <h4 class="text-[11px] font-bold tracking-[0.14em] text-white uppercase mb-5">Quick Links</h4>
-                <ul class="space-y-3 mb-8">
-                    @foreach([
-                        ['Dizi Calendar',       '#'],
-                        ['Daily TV Ratings',    '#'],
-                        ['Cancellation Buzz',   '#'],
-                        ['Upcoming Birthdays',  '#'],
-                    ] as [$label, $href])
-                    <li>
-                        <a href="{{ $href }}" class="text-sm text-slate-500 hover:text-white transition-colors duration-150">
-                            {{ $label }}
-                        </a>
-                    </li>
-                    @endforeach
-                </ul>
+{{--                <h4 class="text-[11px] font-bold tracking-[0.14em] text-white uppercase mb-5">Quick Links</h4>--}}
+{{--                <ul class="space-y-3 mb-8">--}}
+{{--                    @foreach([--}}
+{{--                        ['Dizi Calendar',       '#'],--}}
+{{--                        ['Daily TV Ratings',    '#'],--}}
+{{--                        ['Cancellation Buzz',   '#'],--}}
+{{--                        ['Upcoming Birthdays',  '#'],--}}
+{{--                    ] as [$label, $href])--}}
+{{--                    <li>--}}
+{{--                        <a href="{{ $href }}" class="text-sm text-slate-500 hover:text-white transition-colors duration-150">--}}
+{{--                            {{ $label }}--}}
+{{--                        </a>--}}
+{{--                    </li>--}}
+{{--                    @endforeach--}}
+{{--                </ul>--}}
 
                 <h4 class="text-[11px] font-bold tracking-[0.14em] text-white uppercase mb-5">Work With Us</h4>
                 <ul class="space-y-3">

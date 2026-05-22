@@ -56,6 +56,43 @@ Route::get('/shows', function () {
     return view('shows.index', compact('shows', 'genres', 'networks', 'statuses', 'q', 'status', 'genre', 'network', 'sort', 'year'));
 });
 
+Route::get('/calendar', function () {
+    $today      = \Carbon\Carbon::today();
+    $dailyOnly  = request()->boolean('daily');
+
+    // If no week param, default to most recent week that has episode data
+    if (request()->has('week')) {
+        $weekStart = \Carbon\Carbon::parse(request('week'))->startOfWeek(\Carbon\Carbon::MONDAY);
+    } else {
+        $latestEpDate = \App\Models\Episode::whereNotNull('airs_on')->max('airs_on');
+        $weekStart = $latestEpDate
+            ? \Carbon\Carbon::parse($latestEpDate)->startOfWeek(\Carbon\Carbon::MONDAY)
+            : $today->copy()->startOfWeek(\Carbon\Carbon::MONDAY);
+    }
+
+    $weekEnd = $weekStart->copy()->endOfWeek(\Carbon\Carbon::SUNDAY);
+
+    $episodesQuery = \App\Models\Episode::with(['show' => fn($q) => $q->select('id','title','slug','poster','poster_local','network','runtime')])
+        ->whereNotNull('airs_on')
+        ->whereBetween('airs_on', [$weekStart->toDateString(), $weekEnd->toDateString()])
+        ->orderBy('airs_on')
+        ->orderBy('episode_number');
+
+    if ($dailyOnly) {
+        $episodesQuery->whereHas('show', fn($q) => $q->where('runtime', '<=', 45));
+    }
+
+    $episodes = $episodesQuery->get()->groupBy(fn($e) => \Carbon\Carbon::parse($e->airs_on)->format('Y-m-d'));
+
+    $prevWeek = $weekStart->copy()->subWeek()->toDateString();
+    $nextWeek = $weekStart->copy()->addWeek()->toDateString();
+
+    // Build the 7-day array
+    $days = collect(range(0, 6))->map(fn($i) => $weekStart->copy()->addDays($i));
+
+    return view('calendar', compact('days', 'episodes', 'today', 'weekStart', 'prevWeek', 'nextWeek', 'dailyOnly'));
+});
+
 Route::get('/faq', fn() => view('faq'));
 Route::get('/terms', fn() => view('terms'));
 Route::get('/privacy', fn() => view('privacy'));
