@@ -33,20 +33,107 @@
 
 <div class="card card-outline card-primary">
     <div class="card-body">
-        <form method="POST" action="{{ route('admin.pages.update', $page) }}">
+        <form method="POST" action="{{ route('admin.pages.update', $page) }}" id="page-form">
             @csrf @method('PUT')
             <div class="form-group">
-                <textarea name="content" class="ck-editor" rows="20">{{ old('content', $page->content) }}</textarea>
+                @if($page->slug === 'contact')
+                    {{-- CKEditor for contact page --}}
+                    <textarea name="content" id="page-content">{{ old('content', $page->content) }}</textarea>
+                @else
+                    {{-- CodeMirror (raw HTML) for all other pages --}}
+                    <textarea name="content" id="page-content" style="display:none;">{{ old('content', $page->content) }}</textarea>
+                    <div id="codemirror-editor" style="border:1px solid #ced4da;border-radius:4px;font-size:13px;"></div>
+                @endif
             </div>
             <button type="submit" class="btn btn-primary">
                 <i class="fas fa-save mr-1"></i> Save
             </button>
+            <button type="button" class="btn btn-secondary ml-2" onclick="openPreview()">
+                <i class="fas fa-eye mr-1"></i> Preview
+            </button>
+        </form>
+
+        {{-- Hidden form that POSTs current content to preview route in new tab --}}
+        <form id="preview-form" method="POST" action="{{ route('admin.pages.preview', $page) }}" target="_blank" style="display:none;">
+            @csrf
+            <textarea name="content" id="preview-content"></textarea>
         </form>
     </div>
 </div>
 
 @stop
 
+@section('css')
+@if($page->slug !== 'contact')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/codemirror.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/theme/dracula.min.css">
+<style>
+.CodeMirror { height: 600px; font-size: 13px; line-height: 1.6; }
+</style>
+@endif
+@stop
+
 @section('js')
-@include('admin.partials.ckeditor')
+@if($page->slug === 'contact')
+{{-- CKEditor 5 --}}
+<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+<script>
+var ckEditor;
+
+ClassicEditor.create(document.getElementById('page-content'), {
+    toolbar: [
+        'heading', '|',
+        'bold', 'italic', 'underline', 'strikethrough', '|',
+        'link', 'bulletedList', 'numberedList', 'blockQuote', '|',
+        'insertTable', 'horizontalLine', '|',
+        'undo', 'redo'
+    ],
+}).then(function (editor) {
+    ckEditor = editor;
+}).catch(function (err) {
+    console.error(err);
+});
+
+document.getElementById('page-form').addEventListener('submit', function () {
+    if (ckEditor) {
+        document.getElementById('page-content').value = ckEditor.getData();
+    }
+});
+
+function openPreview() {
+    document.getElementById('preview-content').value = ckEditor ? ckEditor.getData() : '';
+    document.getElementById('preview-form').submit();
+}
+</script>
+
+@else
+{{-- CodeMirror for HTML pages --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/mode/xml/xml.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/mode/htmlmixed/htmlmixed.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/addon/edit/closetag.min.js"></script>
+<script>
+var editor = CodeMirror(document.getElementById('codemirror-editor'), {
+    value:         document.getElementById('page-content').value,
+    mode:          'htmlmixed',
+    theme:         'dracula',
+    lineNumbers:   true,
+    lineWrapping:  true,
+    matchBrackets: true,
+    autoCloseTags: true,
+    indentUnit:    2,
+    tabSize:       2,
+});
+
+document.getElementById('page-form').addEventListener('submit', function () {
+    document.getElementById('page-content').value = editor.getValue();
+});
+
+function openPreview() {
+    document.getElementById('preview-content').value = editor.getValue();
+    document.getElementById('preview-form').submit();
+}
+</script>
+@endif
 @stop

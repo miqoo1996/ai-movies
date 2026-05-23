@@ -28,10 +28,9 @@
             {{-- Main content --}}
             <main class="flex-1 min-w-0">
 
-                <p class="text-slate-400 text-[15px] leading-[1.85] mb-10 max-w-2xl">
-                    We'd love to hear from you. Whether you have a question about subscriptions, need help
-                    with the website, or just want to say hello — our team is here.
-                </p>
+                <div class="text-slate-400 text-[15px] leading-[1.85] mb-10 max-w-2xl prose prose-invert prose-sm max-w-none">
+                    {!! $page->content !!}
+                </div>
 
                 {{-- Two-column: form (wide) + info cards (narrow) --}}
                 <div style="display:flex; gap:2rem; align-items:flex-start;">

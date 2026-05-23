@@ -18,9 +18,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('logout', [AdminController::class, 'logout'])->name('logout');
 
         Route::resource('shows', AdminShowController::class)->names('shows');
-        Route::get('pages',           [AdminPageController::class, 'index'])->name('pages.index');
-        Route::get('pages/{page}',    [AdminPageController::class, 'edit'])->name('pages.edit');
-        Route::put('pages/{page}',    [AdminPageController::class, 'update'])->name('pages.update');
+        Route::get('pages',              [AdminPageController::class, 'index'])->name('pages.index');
+        Route::get('pages/{page}',       [AdminPageController::class, 'edit'])->name('pages.edit');
+        Route::put('pages/{page}',       [AdminPageController::class, 'update'])->name('pages.update');
+        Route::post('pages/{page}/preview', [AdminPageController::class, 'preview'])->name('pages.preview');
         Route::delete('shows/{show}/images/{image}', [AdminShowController::class, 'destroyImage'])->name('shows.images.destroy');
 
         Route::prefix('shows/{show}/episodes')->name('shows.episodes.')->group(function () {

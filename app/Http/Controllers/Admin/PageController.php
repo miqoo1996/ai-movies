@@ -26,4 +26,11 @@ class PageController extends Controller
 
         return back()->with('success', "\"{$page->title}\" saved.");
     }
+
+    public function preview(Request $request, Page $page)
+    {
+        $page->content = $request->input('content', '');
+        $view = view()->exists($page->slug) ? $page->slug : 'page';
+        return view($view, compact('page'));
+    }
 }
