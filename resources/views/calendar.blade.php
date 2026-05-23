@@ -67,11 +67,8 @@
 
                             {{-- Poster --}}
                             <div style="flex-shrink:0; width:38px; height:52px; border-radius:3px; overflow:hidden; background:#e5e7eb;">
-                                @if($show->poster_local && file_exists(storage_path('app/public/' . $show->poster_local)))
-                                <img src="{{ asset('storage/' . $show->poster_local) }}" alt="{{ $show->title }}"
-                                     style="width:100%; height:100%; object-fit:cover;">
-                                @elseif($show->poster)
-                                <img src="{{ $show->poster }}" alt="{{ $show->title }}"
+                                @if($show->poster_url)
+                                <img src="{{ $show->poster_url }}" alt="{{ $show->title }}"
                                      style="width:100%; height:100%; object-fit:cover;">
                                 @else
                                 <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:#e5e7eb;">

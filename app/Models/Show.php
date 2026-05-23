@@ -56,6 +56,17 @@ class Show extends Model
         return Attribute::get(fn () => $this->getRawOriginal('ai_synopsis') ?: $this->getRawOriginal('synopsis'));
     }
 
+    protected function posterUrl(): Attribute
+    {
+        return Attribute::get(function () {
+            $local = $this->getRawOriginal('poster_local');
+            if ($local && file_exists(storage_path('app/public/' . $local))) {
+                return asset('storage/' . $local);
+            }
+            return $this->getRawOriginal('poster');
+        });
+    }
+
     public function genres(): BelongsToMany
     {
         return $this->belongsToMany(Genre::class);

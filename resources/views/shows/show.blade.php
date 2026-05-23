@@ -12,7 +12,7 @@
 
         {{-- Backdrop: full-bleed blurred poster --}}
         <div class="absolute inset-0">
-            <img src="{{ $show->poster }}" alt="" aria-hidden="true"
+            <img src="{{ $show->poster_url }}" alt="" aria-hidden="true"
                  class="w-full h-full object-cover scale-110 blur-3xl brightness-[0.45] saturate-150">
             {{-- left-to-right dark veil so left content stays readable --}}
             <div class="absolute inset-0 bg-gradient-to-r from-[#080810]/90 via-[#080810]/60 to-transparent"></div>
@@ -25,7 +25,7 @@
 
                 {{-- Poster --}}
                 <div class="shrink-0 w-[160px] sm:w-[200px] rounded-2xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.8)] ring-1 ring-white/10">
-                    <img src="{{ $show->poster }}" alt="{{ $show->title }}" class="w-full h-auto object-cover">
+                    <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-auto object-cover">
                 </div>
 
                 {{-- Details --}}
@@ -138,7 +138,7 @@
                     @foreach($seasons as $seasonNum => $episodes)
                     <div class="flex items-center gap-4 bg-[#0d0d18] hover:bg-[#111122] border border-white/5 hover:border-white/15 rounded-2xl overflow-hidden transition-all duration-200 sm:w-72 cursor-pointer group">
                         <div class="w-20 h-20 shrink-0 overflow-hidden">
-                            @php $sThumb = $episodes->whereNotNull('thumb')->first()?->thumb ?? $show->poster; @endphp
+                            @php $sThumb = $episodes->whereNotNull('thumb')->first()?->thumb ?? $show->poster_url; @endphp
                             <img src="{{ $sThumb }}" alt="Season {{ $seasonNum }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                         </div>
                         <div class="py-3 pr-4">
@@ -171,7 +171,7 @@
                                 <img src="{{ $ep->thumb }}" alt="{{ $ep->shortcode }}"
                                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             @else
-                                <img src="{{ $show->poster }}" alt=""
+                                <img src="{{ $show->poster_url }}" alt=""
                                      class="absolute inset-0 w-full h-full object-cover scale-110 blur-md brightness-50 saturate-150">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
                                 <div class="absolute inset-0 flex flex-col items-center justify-center gap-1">
@@ -281,7 +281,7 @@
                                 <img src="{{ $ep->thumb }}" alt="{{ $ep->shortcode }}"
                                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             @else
-                                <img src="{{ $show->poster }}" alt=""
+                                <img src="{{ $show->poster_url }}" alt=""
                                      class="absolute inset-0 w-full h-full object-cover scale-110 blur-md brightness-50 saturate-150">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
                                 <div class="absolute inset-0 flex flex-col items-center justify-center gap-1">
@@ -341,7 +341,7 @@
                 @foreach($relatedShows as $rel)
                 <a href="/shows/{{ $rel->slug }}" class="block group">
                     <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18] mb-1.5">
-                        <img src="{{ $rel->poster }}" alt="{{ $rel->title }}"
+                        <img src="{{ $rel->poster_url }}" alt="{{ $rel->title }}"
                              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                         @if($rel->network)
                         <span class="absolute bottom-2 left-2 text-[9px] font-bold bg-black/75 backdrop-blur-sm text-white px-1.5 py-0.5 rounded">

@@ -21,13 +21,13 @@
                     {{-- Clickable link covers the entire slide (below nav buttons) --}}
                     <a href="/shows/{{ $show->slug }}" class="absolute inset-0 z-10 block overflow-hidden">
                         {{-- Blurred background fills the frame --}}
-                        <img src="{{ $show->poster }}"
+                        <img src="{{ $show->poster_url }}"
                              alt=""
                              aria-hidden="true"
                              class="absolute inset-0 w-full h-full object-cover scale-110 blur-2xl brightness-[0.35]">
                         {{-- Full portrait poster, fully visible, centered --}}
                         <div class="absolute inset-0 flex items-center justify-center">
-                            <img src="{{ $show->poster }}"
+                            <img src="{{ $show->poster_url }}"
                                  alt="{{ $show->title }}"
                                  class="h-full w-auto max-w-none object-contain drop-shadow-2xl">
                         </div>
@@ -73,7 +73,7 @@
                 <div class="sidebar-card flex gap-3 bg-[#0d0d18] rounded-lg overflow-hidden hover:bg-[#13131f] transition-all cursor-pointer flex-1 min-h-0 ring-0 ring-violet-500/0"
                      data-slide-index="{{ $loop->index + 1 }}">
                     <div class="w-[88px] shrink-0 overflow-hidden">
-                        <img src="{{ $show->poster }}"
+                        <img src="{{ $show->poster_url }}"
                              alt="{{ $show->title }}"
                              class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                     </div>
@@ -115,7 +115,7 @@
 
                         {{-- Poster --}}
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster }}"
+                            <img src="{{ $show->poster_url }}"
                                  alt="{{ $show->title }}"
                                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
@@ -154,7 +154,7 @@
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
 
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster }}"
+                            <img src="{{ $show->poster_url }}"
                                  alt="{{ $show->title }}"
                                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
@@ -191,7 +191,7 @@
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
 
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster }}"
+                            <img src="{{ $show->poster_url }}"
                                  alt="{{ $show->title }}"
                                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
@@ -228,7 +228,7 @@
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
 
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster }}"
+                            <img src="{{ $show->poster_url }}"
                                  alt="{{ $show->title }}"
                                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
@@ -265,7 +265,7 @@
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
 
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster }}"
+                            <img src="{{ $show->poster_url }}"
                                  alt="{{ $show->title }}"
                                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
@@ -302,7 +302,7 @@
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
 
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster }}"
+                            <img src="{{ $show->poster_url }}"
                                  alt="{{ $show->title }}"
                                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
@@ -339,7 +339,7 @@
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
 
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster }}"
+                            <img src="{{ $show->poster_url }}"
                                  alt="{{ $show->title }}"
                                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
@@ -376,7 +376,7 @@
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
 
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster }}"
+                            <img src="{{ $show->poster_url }}"
                                  alt="{{ $show->title }}"
                                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
@@ -413,7 +413,7 @@
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
 
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster }}"
+                            <img src="{{ $show->poster_url }}"
                                  alt="{{ $show->title }}"
                                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
@@ -445,7 +445,7 @@
                 <div class="swiper-slide !w-[130px] sm:!w-[150px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
                         </div>
                         <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">{{ $show->title }}</p>
@@ -470,7 +470,7 @@
                 <div class="swiper-slide !w-[130px] sm:!w-[150px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
                         </div>
                         <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">{{ $show->title }}</p>
@@ -495,7 +495,7 @@
                 <div class="swiper-slide !w-[130px] sm:!w-[150px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
                         </div>
                         <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">{{ $show->title }}</p>
@@ -520,7 +520,7 @@
                 <div class="swiper-slide !w-[130px] sm:!w-[150px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
                         </div>
                         <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">{{ $show->title }}</p>
@@ -545,7 +545,7 @@
                 <div class="swiper-slide !w-[130px] sm:!w-[150px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
                         </div>
                         <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">{{ $show->title }}</p>
@@ -570,7 +570,7 @@
                 <div class="swiper-slide !w-[130px] sm:!w-[150px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
                         </div>
                         <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">{{ $show->title }}</p>

@@ -51,10 +51,8 @@
             @forelse($shows as $show)
                 <tr>
                     <td class="align-middle">
-                        @if($show->poster_local && file_exists(storage_path('app/public/' . $show->poster_local)))
-                            <img src="{{ asset('storage/' . $show->poster_local) }}" style="width:36px;height:50px;object-fit:cover;border-radius:3px;">
-                        @elseif($show->poster)
-                            <img src="{{ $show->poster }}" style="width:36px;height:50px;object-fit:cover;border-radius:3px;">
+                        @if($show->poster_url)
+                            <img src="{{ $show->poster_url }}" style="width:36px;height:50px;object-fit:cover;border-radius:3px;">
                         @else
                             <div style="width:36px;height:50px;background:#e9ecef;border-radius:3px;display:flex;align-items:center;justify-content:center;">
                                 <i class="fas fa-film text-muted" style="font-size:14px;"></i>

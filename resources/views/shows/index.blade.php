@@ -173,11 +173,8 @@
             <a href="/shows/{{ $show->slug }}" class="show-card" style="position:relative; display:block; border-radius:0.75rem; overflow:hidden; background:#111122; aspect-ratio:2/3; text-decoration:none;">
 
                 {{-- Poster --}}
-                @if($show->poster_local && file_exists(storage_path('app/public/' . $show->poster_local)))
-                <img src="{{ asset('storage/' . $show->poster_local) }}" alt="{{ $show->title }}" loading="lazy"
-                     style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform 0.5s;">
-                @elseif($show->poster)
-                <img src="{{ $show->poster }}" alt="{{ $show->title }}" loading="lazy"
+                @if($show->poster_url)
+                <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" loading="lazy"
                      style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform 0.5s;">
                 @else
                 <div style="position:absolute; inset:0; background:linear-gradient(135deg,#1a1a2e,#0d0d18); display:flex; align-items:center; justify-content:center;">
