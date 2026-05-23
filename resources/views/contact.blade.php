@@ -10,13 +10,13 @@
 
     {{-- Hero strip --}}
     <div class="border-b border-white/5 bg-[#0a0a14]">
-        <div class="max-w-[1600px] mx-auto px-6 py-10">
+        <div class="max-w-[1600px] mx-auto px-4 sm:px-6 py-10">
             <p class="text-[#e63946] text-[11px] font-black uppercase tracking-[0.2em] mb-2">Support</p>
             <h1 class="text-white text-3xl sm:text-4xl font-black tracking-tight">Contact Us</h1>
         </div>
     </div>
 
-    <div class="max-w-[1600px] mx-auto px-6 py-12">
+    <div class="max-w-[1600px] mx-auto px-4 sm:px-6 py-12">
         <div class="flex gap-10 lg:gap-16 items-start">
 
             {{-- Sidebar --}}
@@ -34,7 +34,7 @@
                 </div>
 
                 {{-- Two-column: form (wide) + info cards (narrow) --}}
-                <div style="display:flex; gap:2rem; align-items:flex-start;">
+                <div class="contact-cols">
 
                     {{-- ── Form card ── --}}
                     <div id="contact-card" style="flex:2; min-width:0; background:#0d0d1a; border:1px solid rgba(255,255,255,0.09); border-radius:1rem; padding:2rem;">
@@ -55,7 +55,7 @@
                         <form id="contact-form" novalidate>
 
                             {{-- Name + Email --}}
-                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-bottom:1.25rem;">
+                            <div class="name-email-grid">
                                 <div>
                                     <label class="block text-[11px] font-bold uppercase tracking-[0.12em] text-slate-500 mb-2">Name <span class="text-[#e63946]">*</span></label>
                                     <input id="cf-name" type="text" placeholder="John Smith" required class="cf-input w-full rounded-lg px-4 py-3 text-[14px] text-white placeholder-slate-600 outline-none">
@@ -109,7 +109,7 @@
                     </div>
 
                     {{-- ── Info sidebar ── --}}
-                    <div style="flex:0 0 260px; display:flex; flex-direction:column; gap:1rem;">
+                    <div class="contact-info-col">
 
                         {{-- General email --}}
                         <div style="background:#0d0d1a; border:1px solid rgba(255,255,255,0.09); border-radius:0.875rem; padding:1.25rem 1.5rem;">
@@ -175,6 +175,49 @@
 .cf-input option {
     background: #111122;
     color: #cbd5e1;
+}
+
+/* ── Responsive layout ── */
+.contact-cols {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+}
+.contact-info-col {
+    flex: 0 0 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.name-email-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+@media (max-width: 767px) {
+    .contact-cols {
+        flex-direction: column;
+    }
+    .contact-info-col {
+        flex: none;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+    .name-email-grid {
+        grid-template-columns: 1fr;
+    }
+    #contact-card {
+        padding: 1.25rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-info-col {
+        grid-template-columns: 1fr;
+    }
 }
 </style>
 
