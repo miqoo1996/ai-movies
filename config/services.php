@@ -39,6 +39,10 @@ return [
         'cf_clearance' => env('DIZILAH_CF_CLEARANCE'),
     ],
 
+    'flaresolverr' => [
+        'url' => env('FLARESOLVERR_URL'), // e.g. http://localhost:8191
+    ],
+
     'openai' => [
         'key'   => env('OPENAI_KEY'),
         'model' => env('OPENAI_MODEL', 'gpt-4o-mini'),
