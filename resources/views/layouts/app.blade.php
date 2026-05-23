@@ -239,7 +239,7 @@
     </div>
 
     {{-- Mobile menu --}}
-    <div id="mobile-menu" class="hidden md:hidden bg-[#0d0d18] border-t border-white/5">
+    <div id="mobile-menu" class="hidden bg-[#0d0d18] border-t border-white/5 overflow-y-auto" style="max-height: calc(100dvh - 60px)">
         <div class="px-4 py-4 space-y-1">
             <a href="/" class="block px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 text-sm transition-all">Home</a>
             <a href="/shows" class="block px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 text-sm transition-all">Browse Shows</a>
@@ -426,9 +426,15 @@
 
 <script>
     // ── Mobile menu ─────────────────────────────────────────────────
-    document.getElementById('mobile-menu-btn')?.addEventListener('click', () => {
-        document.getElementById('mobile-menu')?.classList.toggle('hidden');
-    });
+    (function () {
+        const btn  = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        if (!btn || !menu) return;
+        btn.addEventListener('click', () => {
+            const isOpen = menu.style.display === 'block';
+            menu.style.display = isOpen ? 'none' : 'block';
+        });
+    })();
 
     // ── Mega menu (desktop hover) ───────────────────────────────────
     const trigger  = document.getElementById('browse-trigger');

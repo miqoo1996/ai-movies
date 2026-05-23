@@ -118,10 +118,10 @@
 
 {{-- ══════════════════════ TWO-COLUMN WRAPPER STARTS ══════════════════════ --}}
 <div class="bg-[#080810]">
-<div class="max-w-[1400px] mx-auto px-4 sm:px-6 flex gap-6 items-start">
+<div class="max-w-[1400px] mx-auto px-4 sm:px-6 grid grid-cols-12 gap-x-6 items-start">
 
 {{-- ─────────────────────── MAIN CONTENT (left) ─────────────────────── --}}
-<div class="flex-1 min-w-0">
+<div class="col-span-12 xl:col-span-9 min-w-0">
 
 {{-- ═══════════════════════════════════ TOP 10 TODAY ═══════════ --}}
 <section class="py-6">
@@ -476,8 +476,7 @@
 </div>{{-- END main content --}}
 
 {{-- ─────────────────────── STICKY SIDEBAR (right) ─────────────────────── --}}
-<aside class="hidden xl:block w-[268px] shrink-0 py-6">
-    <div class="sticky top-[76px]">
+<aside class="hidden xl:block xl:col-span-3 py-6 sticky top-[76px] max-h-[calc(100vh-80px)] overflow-y-auto">
 
         {{-- Most Popular --}}
         <div class="bg-[#0d0d18] rounded-xl overflow-hidden border border-white/5">
@@ -559,10 +558,9 @@
             </div>
         </div>
 
-    </div>
 </aside>
 
-</div>{{-- END flex row --}}
+</div>{{-- END grid row --}}
 </div>{{-- END bg wrapper --}}
 
 @endsection
