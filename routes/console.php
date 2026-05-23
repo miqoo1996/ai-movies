@@ -11,8 +11,12 @@ Artisan::command('inspire', function () {
 Schedule::command('shows:fetch --all')
     ->daily()
     ->withoutOverlapping()
-    ->appendOutputTo(storage_path('logs/shows-fetch.log'))
-    ->then(fn () => Artisan::call('shows:enrich', [], fopen(storage_path('logs/shows-enrich.log'), 'a')));
+    ->appendOutputTo(storage_path('logs/shows-fetch.log'));
+
+Schedule::command('shows:enrich --provider=gemini')
+    ->dailyAt('03:00')
+    ->withoutOverlapping()
+    ->appendOutputTo(storage_path('logs/shows-enrich.log'));
 
 Schedule::command('shows:download-posters')
     ->daily()

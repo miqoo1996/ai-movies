@@ -5,7 +5,7 @@ namespace App\Services;
 use OpenAI;
 use OpenAI\Client;
 
-class OpenAIService
+class OpenAIService implements AiServiceInterface
 {
     private Client $client;
     private string $model;
@@ -16,9 +16,6 @@ class OpenAIService
         $this->model  = config('services.openai.model', 'gpt-4o-mini');
     }
 
-    /**
-     * Send a simple prompt and get a text response.
-     */
     public function prompt(string $prompt, ?string $system = null, ?string $model = null): string
     {
         $messages = [];
@@ -37,9 +34,6 @@ class OpenAIService
         return $response->choices[0]->message->content ?? '';
     }
 
-    /**
-     * Send a conversation (array of ['role' => ..., 'content' => ...] messages).
-     */
     public function chat(array $messages, ?string $model = null): string
     {
         $response = $this->client->chat()->create([
@@ -50,9 +44,6 @@ class OpenAIService
         return $response->choices[0]->message->content ?? '';
     }
 
-    /**
-     * Return a structured JSON response decoded as an array.
-     */
     public function json(string $prompt, ?string $system = null, ?string $model = null): array
     {
         $messages = [];

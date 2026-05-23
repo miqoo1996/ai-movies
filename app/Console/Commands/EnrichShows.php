@@ -3,28 +3,40 @@
 namespace App\Console\Commands;
 
 use App\Models\Show;
+use App\Services\AiServiceInterface;
+use App\Services\GeminiService;
 use App\Services\OpenAIService;
 use Illuminate\Console\Command;
 
 class EnrichShows extends Command
 {
     protected $signature = 'shows:enrich
-                            {--limit=0 : Max shows to process (0 = all pending)}
-                            {--delay=0 : Seconds to wait between OpenAI calls (use 20 for free-tier keys)}';
+                            {--provider=openai : AI provider to use (openai or gemini)}
+                            {--limit=0        : Max shows to process (0 = all pending)}
+                            {--delay=0        : Seconds to wait between API calls (use 20 for free-tier OpenAI keys)}';
 
-    protected $description = 'Generate AI title + synopsis for shows';
+    protected $description = 'Generate AI title + synopsis for shows missing them';
 
-    public function handle(OpenAIService $ai): int
+    public function handle(): int
     {
-        $limit = (int) $this->option('limit');
-        $delay = (int) $this->option('delay');
+        $providerName = strtolower($this->option('provider'));
+        $limit        = (int) $this->option('limit');
+        $delay        = (int) $this->option('delay');
+
+        $ai = match ($providerName) {
+            'gemini' => app(GeminiService::class),
+            'openai' => app(OpenAIService::class),
+            default  => $this->fail("Unknown provider \"{$providerName}\". Use openai or gemini."),
+        };
+
+        $this->info("[enrich] Provider: {$providerName}");
 
         $this->generateAiContent($ai, $limit, $delay);
 
         return self::SUCCESS;
     }
 
-    private function generateAiContent(OpenAIService $ai, int $limit, int $delay = 0): void
+    private function generateAiContent(AiServiceInterface $ai, int $limit, int $delay): void
     {
         $query = Show::where(fn ($q) => $q
             ->whereNull('ai_title')
@@ -39,11 +51,11 @@ class EnrichShows extends Command
         $shows = $query->with('genres')->get();
 
         if ($shows->isEmpty()) {
-            $this->line('[ai] Nothing to generate.');
+            $this->line('[enrich] Nothing to generate.');
             return;
         }
 
-        $this->info("[ai] Generating AI content for {$shows->count()} shows...");
+        $this->info("[enrich] Generating content for {$shows->count()} shows…");
 
         foreach ($shows as $show) {
             $genres  = $show->genres->pluck('name')->join(', ');
@@ -74,7 +86,7 @@ PROMPT;
             );
 
             if (empty($result)) {
-                $this->warn("[ai] Skipped after retries: {$show->slug}");
+                $this->warn("[enrich] Skipped after retries: {$show->slug}");
                 continue;
             }
 
@@ -84,14 +96,14 @@ PROMPT;
                 'ai_synopsis'      => $result['ai_synopsis']      ?? null,
             ]);
 
-            $this->line("[ai] Generated: {$show->slug}");
+            $this->line("[enrich] ✓ {$show->slug}");
 
             if ($delay > 0) {
                 sleep($delay);
             }
         }
 
-        $this->info('[ai] Done.');
+        $this->info('[enrich] Done.');
     }
 
     private function callWithBackoff(callable $fn, int $maxRetries = 4): mixed
@@ -110,7 +122,7 @@ PROMPT;
                     return null;
                 }
 
-                $this->line("  Rate limited, waiting {$delay}s (attempt {$attempt}/{$maxRetries})...");
+                $this->line("  Rate limited, waiting {$delay}s (attempt {$attempt}/{$maxRetries})…");
                 sleep($delay);
                 $delay *= 2;
             }
