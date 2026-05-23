@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Show extends Model
 {
@@ -36,27 +39,44 @@ class Show extends Model
         'subscribers' => 'integer',
     ];
 
-    public function genres(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    // Accessors: prefer AI-generated fields when present, fall back to originals
+
+    protected function title(): Attribute
+    {
+        return Attribute::get(fn () => $this->getRawOriginal('ai_title') ?: $this->getRawOriginal('title'));
+    }
+
+    protected function turkishTitle(): Attribute
+    {
+        return Attribute::get(fn () => $this->getRawOriginal('ai_turkish_title') ?: $this->getRawOriginal('turkish_title'));
+    }
+
+    protected function synopsis(): Attribute
+    {
+        return Attribute::get(fn () => $this->getRawOriginal('ai_synopsis') ?: $this->getRawOriginal('synopsis'));
+    }
+
+    public function genres(): BelongsToMany
     {
         return $this->belongsToMany(Genre::class);
     }
 
-    public function images(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function images(): HasMany
     {
         return $this->hasMany(ShowImage::class);
     }
 
-    public function videos(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function videos(): HasMany
     {
         return $this->hasMany(ShowVideo::class);
     }
 
-    public function streamingSources(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function streamingSources(): HasMany
     {
         return $this->hasMany(ShowStreamingSource::class);
     }
 
-    public function episodes(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function episodes(): HasMany
     {
         return $this->hasMany(Episode::class);
     }
