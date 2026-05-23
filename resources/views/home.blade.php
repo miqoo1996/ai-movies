@@ -128,7 +128,7 @@
 
         {{-- Section heading --}}
         <div class="mb-4">
-            <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">
+            <h2 class="section-title">
                 Top 10 Today
             </h2>
         </div>
@@ -141,10 +141,10 @@
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
 
                         {{-- Poster --}}
-                        <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
+                        <div class="poster-wrap aspect-[2/3]">
                             <img src="{{ $show->poster_url }}"
                                  alt="{{ $show->title }}"
-                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                 class="w-full h-full object-cover">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
                         </div>
 
@@ -166,7 +166,7 @@
 {{-- ═══════════════════════════════════ RECENTLY ADDED ═══════════ --}}
 <section class="py-6">
         <div class="mb-4">
-            <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">
+            <h2 class="section-title">
                 Recently Added
             </h2>
         </div>
@@ -175,8 +175,8 @@
                 @foreach($recentlyAdded as $show)
                 <div class="swiper-slide !w-[155px] sm:!w-[185px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
-                        <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        <div class="poster-wrap aspect-[2/3]">
+                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
                         </div>
                         <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">{{ $show->title }}</p>
@@ -190,15 +190,15 @@
 {{-- ══════════════════════════ CLASSIC TURKISH DRAMAS ════════════ --}}
 <section class="py-6">
         <div class="mb-4">
-            <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">Classic Turkish Dramas</h2>
+            <h2 class="section-title">Classic Turkish Dramas</h2>
         </div>
         <div class="swiper classic-dramas-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($classicDramas as $show)
                 <div class="swiper-slide !w-[155px] sm:!w-[185px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
-                        <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        <div class="poster-wrap aspect-[2/3]">
+                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
                         </div>
                         <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">{{ $show->title }}</p>
@@ -212,15 +212,15 @@
 {{-- ══════════════════════════ FOR DIZI NEWCOMERS ════════════════ --}}
 <section class="py-6">
         <div class="mb-4">
-            <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">For Dizi Newcomers</h2>
+            <h2 class="section-title">For Dizi Newcomers</h2>
         </div>
         <div class="swiper dizi-newcomers-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($diziNewcomers as $show)
                 <div class="swiper-slide !w-[155px] sm:!w-[185px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
-                        <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        <div class="poster-wrap aspect-[2/3]">
+                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
                         </div>
                         <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">{{ $show->title }}</p>
@@ -234,15 +234,15 @@
 {{-- ══════════════════════════ PERIOD DRAMAS ═════════════════════ --}}
 <section class="py-6">
         <div class="mb-4">
-            <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">Period Dramas</h2>
+            <h2 class="section-title">Period Dramas</h2>
         </div>
         <div class="swiper period-dramas-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($periodDramas as $show)
                 <div class="swiper-slide !w-[155px] sm:!w-[185px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
-                        <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        <div class="poster-wrap aspect-[2/3]">
+                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
                         </div>
                         <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">{{ $show->title }}</p>
@@ -256,15 +256,15 @@
 {{-- ══════════════════════════ STREAMING ON NETFLIX ══════════════ --}}
 <section class="py-6">
         <div class="mb-4">
-            <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">Streaming on Netflix</h2>
+            <h2 class="section-title">Streaming on Netflix</h2>
         </div>
         <div class="swiper netflix-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($netflixShows as $show)
                 <div class="swiper-slide !w-[155px] sm:!w-[185px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
-                        <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        <div class="poster-wrap aspect-[2/3]">
+                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
                         </div>
                         <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">{{ $show->title }}</p>
@@ -278,15 +278,15 @@
 {{-- ══════════════════════════ LOVE IS IN THE AIR ════════════════ --}}
 <section class="py-6">
         <div class="mb-4">
-            <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">Love Is In The Air</h2>
+            <h2 class="section-title">Love Is In The Air</h2>
         </div>
         <div class="swiper love-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($loveShows as $show)
                 <div class="swiper-slide !w-[155px] sm:!w-[185px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
-                        <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        <div class="poster-wrap aspect-[2/3]">
+                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
                         </div>
                         <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">{{ $show->title }}</p>
@@ -300,15 +300,15 @@
 {{-- ══════════════════════════ TURKISH REMAKES ═══════════════════ --}}
 <section class="py-6">
         <div class="mb-4">
-            <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">Turkish Remakes</h2>
+            <h2 class="section-title">Turkish Remakes</h2>
         </div>
         <div class="swiper turkish-remakes-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($turkishRemakes as $show)
                 <div class="swiper-slide !w-[155px] sm:!w-[185px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
-                        <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        <div class="poster-wrap aspect-[2/3]">
+                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
                         </div>
                         <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">{{ $show->title }}</p>
@@ -322,15 +322,15 @@
 {{-- ══════════════════════════ IMPOSSIBLE LOVE STORIES ═══════════ --}}
 <section class="py-6">
         <div class="mb-4">
-            <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">Impossible Love Stories</h2>
+            <h2 class="section-title">Impossible Love Stories</h2>
         </div>
         <div class="swiper impossible-love-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($impossibleLove as $show)
                 <div class="swiper-slide !w-[155px] sm:!w-[185px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
-                        <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        <div class="poster-wrap aspect-[2/3]">
+                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
                         </div>
                         <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">{{ $show->title }}</p>
@@ -344,15 +344,15 @@
 {{-- ══════════════════════════ TURKISH DAILY DRAMAS ══════════════ --}}
 <section class="py-6">
         <div class="mb-4">
-            <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">Turkish Daily Dramas</h2>
+            <h2 class="section-title">Turkish Daily Dramas</h2>
         </div>
         <div class="swiper daily-dramas-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($dailyDramas as $show)
                 <div class="swiper-slide !w-[155px] sm:!w-[185px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
-                        <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        <div class="poster-wrap aspect-[2/3]">
+                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
                         </div>
                         <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">{{ $show->title }}</p>
@@ -366,15 +366,15 @@
 {{-- ══════════════════════════ ENEMIES TO LOVERS ═════════════════ --}}
 <section class="py-6">
         <div class="mb-4">
-            <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">Enemies To Lovers</h2>
+            <h2 class="section-title">Enemies To Lovers</h2>
         </div>
         <div class="swiper enemies-lovers-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($enemiesToLovers as $show)
                 <div class="swiper-slide !w-[155px] sm:!w-[185px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
-                        <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        <div class="poster-wrap aspect-[2/3]">
+                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
                         </div>
                         <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">{{ $show->title }}</p>
@@ -388,15 +388,15 @@
 {{-- ══════════════════════════ FAMILY TREE ═══════════════════════ --}}
 <section class="py-6">
         <div class="mb-4">
-            <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">Family Tree</h2>
+            <h2 class="section-title">Family Tree</h2>
         </div>
         <div class="swiper family-tree-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($familyTree as $show)
                 <div class="swiper-slide !w-[155px] sm:!w-[185px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
-                        <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        <div class="poster-wrap aspect-[2/3]">
+                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
                         </div>
                         <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">{{ $show->title }}</p>
@@ -410,15 +410,15 @@
 {{-- ══════════════════════════ BINGE-WORTHY ══════════════════════ --}}
 <section class="py-6">
         <div class="mb-4">
-            <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">Binge-Worthy</h2>
+            <h2 class="section-title">Binge-Worthy</h2>
         </div>
         <div class="swiper binge-worthy-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($bingeWorthy as $show)
                 <div class="swiper-slide !w-[155px] sm:!w-[185px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
-                        <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        <div class="poster-wrap aspect-[2/3]">
+                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
                         </div>
                         <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">{{ $show->title }}</p>
@@ -432,15 +432,15 @@
 {{-- ══════════════════════════ WATCH IN ONE WEEKEND ══════════════ --}}
 <section class="py-6">
         <div class="mb-4">
-            <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">Watch In One Weekend</h2>
+            <h2 class="section-title">Watch In One Weekend</h2>
         </div>
         <div class="swiper one-weekend-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($oneWeekend as $show)
                 <div class="swiper-slide !w-[155px] sm:!w-[185px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
-                        <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        <div class="poster-wrap aspect-[2/3]">
+                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
                         </div>
                         <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">{{ $show->title }}</p>
@@ -454,15 +454,15 @@
 {{-- ══════════════════════════ GONE TOO SOON ═════════════════════ --}}
 <section class="py-6 pb-10">
         <div class="mb-4">
-            <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">Gone Too Soon</h2>
+            <h2 class="section-title">Gone Too Soon</h2>
         </div>
         <div class="swiper gone-too-soon-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($goneTooSoon as $show)
                 <div class="swiper-slide !w-[155px] sm:!w-[185px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
-                        <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        <div class="poster-wrap aspect-[2/3]">
+                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
                         </div>
                         <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">{{ $show->title }}</p>
@@ -494,7 +494,7 @@
                     <div class="w-10 h-14 shrink-0 rounded overflow-hidden bg-[#13131f]">
                         <img src="{{ $show->poster_url }}"
                              alt="{{ $show->title }}"
-                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                             class="w-full h-full object-cover">
                     </div>
                     <div class="min-w-0 flex-1">
                         <p class="text-white text-xs font-semibold line-clamp-2 leading-snug group-hover:text-violet-300 transition-colors">
@@ -533,7 +533,7 @@
                     <div class="w-10 h-14 shrink-0 rounded overflow-hidden bg-[#13131f]">
                         <img src="{{ $show->poster_url }}"
                              alt="{{ $show->title }}"
-                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                             class="w-full h-full object-cover">
                     </div>
                     <div class="min-w-0 flex-1">
                         <p class="text-white text-xs font-semibold line-clamp-2 leading-snug group-hover:text-emerald-300 transition-colors">
