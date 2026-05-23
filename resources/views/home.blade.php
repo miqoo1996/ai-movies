@@ -27,7 +27,7 @@
 
 {{-- ═══════════════════════════════════ FEATURED SLIDER ═══ --}}
 <section class="pt-[60px] bg-[#080810]">
-    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 py-4">
+    <div class="max-w-[1600px] mx-auto px-4 sm:px-6 py-4">
         <div class="flex gap-3" style="height:420px">
 
             {{-- ── Left: auto-sliding carousel ───────────────────── --}}
@@ -118,7 +118,7 @@
 
 {{-- ══════════════════════ TWO-COLUMN WRAPPER STARTS ══════════════════════ --}}
 <div class="bg-[#080810]">
-<div class="max-w-[1400px] mx-auto px-4 sm:px-6 grid grid-cols-12 gap-x-6 items-start">
+<div class="max-w-[1600px] mx-auto px-4 sm:px-6 grid grid-cols-12 gap-x-6 items-start">
 
 {{-- ─────────────────────── MAIN CONTENT (left) ─────────────────────── --}}
 <div class="col-span-12 xl:col-span-9 min-w-0">
@@ -137,7 +137,7 @@
         <div class="swiper top10-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($top10Shows as $rank => $show)
-                <div class="swiper-slide !w-[130px] sm:!w-[150px]">
+                <div class="swiper-slide !w-[155px] sm:!w-[185px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
 
                         {{-- Poster --}}
@@ -173,7 +173,7 @@
         <div class="swiper recently-added-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($recentlyAdded as $show)
-                <div class="swiper-slide !w-[130px] sm:!w-[150px]">
+                <div class="swiper-slide !w-[155px] sm:!w-[185px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
                             <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
@@ -195,7 +195,7 @@
         <div class="swiper classic-dramas-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($classicDramas as $show)
-                <div class="swiper-slide !w-[130px] sm:!w-[150px]">
+                <div class="swiper-slide !w-[155px] sm:!w-[185px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
                             <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
@@ -217,7 +217,7 @@
         <div class="swiper dizi-newcomers-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($diziNewcomers as $show)
-                <div class="swiper-slide !w-[130px] sm:!w-[150px]">
+                <div class="swiper-slide !w-[155px] sm:!w-[185px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
                             <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
@@ -239,7 +239,7 @@
         <div class="swiper period-dramas-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($periodDramas as $show)
-                <div class="swiper-slide !w-[130px] sm:!w-[150px]">
+                <div class="swiper-slide !w-[155px] sm:!w-[185px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
                             <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
@@ -261,7 +261,7 @@
         <div class="swiper netflix-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($netflixShows as $show)
-                <div class="swiper-slide !w-[130px] sm:!w-[150px]">
+                <div class="swiper-slide !w-[155px] sm:!w-[185px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
                             <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
@@ -283,7 +283,7 @@
         <div class="swiper love-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($loveShows as $show)
-                <div class="swiper-slide !w-[130px] sm:!w-[150px]">
+                <div class="swiper-slide !w-[155px] sm:!w-[185px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
                             <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
@@ -305,7 +305,7 @@
         <div class="swiper turkish-remakes-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($turkishRemakes as $show)
-                <div class="swiper-slide !w-[130px] sm:!w-[150px]">
+                <div class="swiper-slide !w-[155px] sm:!w-[185px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
                             <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
@@ -327,7 +327,7 @@
         <div class="swiper impossible-love-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($impossibleLove as $show)
-                <div class="swiper-slide !w-[130px] sm:!w-[150px]">
+                <div class="swiper-slide !w-[155px] sm:!w-[185px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
                             <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
@@ -349,7 +349,7 @@
         <div class="swiper daily-dramas-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($dailyDramas as $show)
-                <div class="swiper-slide !w-[130px] sm:!w-[150px]">
+                <div class="swiper-slide !w-[155px] sm:!w-[185px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
                             <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
@@ -371,7 +371,7 @@
         <div class="swiper enemies-lovers-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($enemiesToLovers as $show)
-                <div class="swiper-slide !w-[130px] sm:!w-[150px]">
+                <div class="swiper-slide !w-[155px] sm:!w-[185px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
                             <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
@@ -393,7 +393,7 @@
         <div class="swiper family-tree-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($familyTree as $show)
-                <div class="swiper-slide !w-[130px] sm:!w-[150px]">
+                <div class="swiper-slide !w-[155px] sm:!w-[185px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
                             <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
@@ -415,7 +415,7 @@
         <div class="swiper binge-worthy-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($bingeWorthy as $show)
-                <div class="swiper-slide !w-[130px] sm:!w-[150px]">
+                <div class="swiper-slide !w-[155px] sm:!w-[185px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
                             <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
@@ -437,7 +437,7 @@
         <div class="swiper one-weekend-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($oneWeekend as $show)
-                <div class="swiper-slide !w-[130px] sm:!w-[150px]">
+                <div class="swiper-slide !w-[155px] sm:!w-[185px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
                             <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
@@ -459,7 +459,7 @@
         <div class="swiper gone-too-soon-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($goneTooSoon as $show)
-                <div class="swiper-slide !w-[130px] sm:!w-[150px]">
+                <div class="swiper-slide !w-[155px] sm:!w-[185px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
                             <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">

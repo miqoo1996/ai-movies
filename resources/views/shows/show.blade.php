@@ -56,7 +56,7 @@
             <div class="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#080810] to-transparent"></div>
         </div>
 
-        <div class="relative z-10 max-w-[1400px] mx-auto px-6 py-14">
+        <div class="relative z-10 max-w-[1600px] mx-auto px-6 py-14">
             <div class="flex gap-9 items-end">
 
                 {{-- Poster --}}
@@ -142,7 +142,7 @@
 
     {{-- ══════════════════════════════ TAB BAR ═══════════════════════ --}}
     <div class="border-b border-white/8 bg-[#080810] sticky top-[60px] z-40">
-        <div class="max-w-[1400px] mx-auto px-6">
+        <div class="max-w-[1600px] mx-auto px-6">
             <nav class="flex items-center overflow-x-auto scrollbar-hide" id="show-tabs">
 {{--                ['Overview', 'Episodes', 'Cast & Crew', 'Reviews', 'Lists', 'News', 'Related']--}}
                 @foreach(['Overview', 'Episodes', 'Related'] as $tab)
@@ -159,7 +159,7 @@
     </div>
 
     {{-- ══════════════════════════════ TAB PANELS ════════════════════ --}}
-    <div class="max-w-[1400px] mx-auto px-6 py-10">
+    <div class="max-w-[1600px] mx-auto px-6 py-10">
 
         {{-- ── OVERVIEW ───────────────────────────────────────────── --}}
         <div id="panel-overview" class="show-panel space-y-12">

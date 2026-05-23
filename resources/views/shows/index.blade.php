@@ -27,7 +27,7 @@
 @section('content')
 
 <div class="pt-[60px] bg-[#080810]">
-<div class="max-w-[1400px] mx-auto px-4 sm:px-6" style="display:flex; align-items:flex-start; gap:2rem;">
+<div class="max-w-[1600px] mx-auto px-4 sm:px-6" style="display:flex; align-items:flex-start; gap:2rem;">
 
     {{-- ════════════════════ LEFT SIDEBAR ════════════════════ --}}
     <aside style="width:220px; flex-shrink:0; border-right:1px solid rgba(255,255,255,0.07); padding:2rem 1.5rem 2rem 0; position:sticky; top:60px; overflow-y:auto; max-height:calc(100vh - 60px); align-self:flex-start; z-index:1;">

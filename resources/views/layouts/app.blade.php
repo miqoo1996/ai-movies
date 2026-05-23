@@ -78,7 +78,7 @@
 <nav id="navbar" class="fixed top-0 inset-x-0 z-50 bg-[#0d0d18] border-b border-white/5">
 
     {{-- Main bar --}}
-    <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+    <div class="max-w-[1600px] mx-auto px-4 sm:px-6">
         <div class="flex items-center h-[60px] gap-8">
 
             {{-- Logo --}}
@@ -149,7 +149,7 @@
     <div id="mega-menu"
          class="mega-menu-panel absolute top-full inset-x-0 border-t border-white/5 hidden">
         <div class="bg-[#0d0d18] shadow-2xl shadow-black/60" style="border-top:1px solid rgba(255,255,255,0.05);">
-            <div class="max-w-[1400px] mx-auto px-4 sm:px-6 py-8">
+            <div class="max-w-[1600px] mx-auto px-4 sm:px-6 py-8">
                 <div class="grid grid-cols-12 gap-8">
 
                     {{-- Column 1 · TV Shows --}}
@@ -268,7 +268,7 @@
 <footer class="border-t border-white/5 mt-24 bg-[#0a0a15]">
 
     {{-- Main grid --}}
-    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 py-14">
+    <div class="max-w-[1600px] mx-auto px-4 sm:px-6 py-14">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
 
             {{-- Col 1 · Brand --}}
@@ -409,7 +409,7 @@
 
     {{-- Bottom bar --}}
     <div class="border-t border-white/5">
-        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div class="max-w-[1600px] mx-auto px-4 sm:px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
             <p class="text-slate-600 text-sm">
                 © {{ date('Y') }} <span class="font-semibold text-slate-500">{{ setting('site_name', 'DiziBul') }}</span>. {{ setting('footer_copyright', 'All Rights Reserved.') }}
             </p>

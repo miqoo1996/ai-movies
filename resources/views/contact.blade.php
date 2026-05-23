@@ -10,13 +10,13 @@
 
     {{-- Hero strip --}}
     <div class="border-b border-white/5 bg-[#0a0a14]">
-        <div class="max-w-[1400px] mx-auto px-6 py-10">
+        <div class="max-w-[1600px] mx-auto px-6 py-10">
             <p class="text-[#e63946] text-[11px] font-black uppercase tracking-[0.2em] mb-2">Support</p>
             <h1 class="text-white text-3xl sm:text-4xl font-black tracking-tight">Contact Us</h1>
         </div>
     </div>
 
-    <div class="max-w-[1400px] mx-auto px-6 py-12">
+    <div class="max-w-[1600px] mx-auto px-6 py-12">
         <div class="flex gap-10 lg:gap-16 items-start">
 
             {{-- Sidebar --}}
