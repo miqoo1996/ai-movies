@@ -310,6 +310,11 @@ return [
             'url'  => 'admin/shows',
             'icon' => 'fas fa-fw fa-film',
         ],
+        [
+            'text' => 'Pages',
+            'url'  => 'admin/pages',
+            'icon' => 'fas fa-fw fa-file-alt',
+        ],
     ],
 
     /*

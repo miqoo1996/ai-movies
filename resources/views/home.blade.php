@@ -37,7 +37,7 @@
                                 {{ $show->title }}
                             </h2>
                             <p class="text-slate-300 text-sm line-clamp-2 leading-relaxed drop-shadow max-w-2xl">
-                                {{ $show->synopsis }}
+                                {{ Str::limit(strip_tags($show->synopsis ?? ''), 160) }}
                             </p>
                         </div>
                     </a>
@@ -83,7 +83,7 @@
                             {{ $show->title }}
                         </h3>
                         <p class="text-slate-500 text-xs mt-1.5 line-clamp-2 leading-relaxed">
-                            {{ Str::limit($show->synopsis, 80) }}
+                            {{ Str::limit(strip_tags($show->synopsis ?? ''), 80) }}
                         </p>
                     </div>
                 </div>

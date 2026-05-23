@@ -14,16 +14,51 @@ class ShowController extends Controller
 {
     public function index(Request $request)
     {
-        $q = $request->get('q', '');
+        $q          = $request->get('q', '');
+        $status     = $request->get('status', '');
+        $network    = $request->get('network', '');
+        $genre      = $request->get('genre', '');
+        $year       = $request->get('year', '');
+        $sort       = $request->get('sort', 'id_desc');
+        $hasPoster   = $request->get('has_poster', '');
+        $hasGallery  = $request->get('has_gallery', '');
+        $hasEpisodes = $request->get('has_episodes', '');
 
         $shows = Show::withCount('episodes')
-            ->when($q, fn($query) => $query->where('title', 'like', "%{$q}%")
-                ->orWhere('original_title', 'like', "%{$q}%"))
-            ->orderBy('id', 'desc')
-            ->paginate(25)
-            ->withQueryString();
+            ->when($q,       fn($qr) => $qr->where(fn($b) => $b->where('title', 'like', "%{$q}%")->orWhere('original_title', 'like', "%{$q}%")))
+            ->when($status,  fn($qr) => $qr->where('status', $status))
+            ->when($network, fn($qr) => $qr->where('network', $network))
+            ->when($year,    fn($qr) => $qr->where('year', $year))
+            ->when($genre,   fn($qr) => $qr->whereHas('genres', fn($b) => $b->where('genres.id', $genre)))
+            ->when($hasPoster === '1',  fn($qr) => $qr->where(fn($b) => $b->whereNotNull('poster_local')->orWhere(fn($c) => $c->whereNotNull('poster')->where('poster', '!=', ''))))
+            ->when($hasPoster === '0',  fn($qr) => $qr->where(fn($b) => $b->whereNull('poster_local')->where(fn($c) => $c->whereNull('poster')->orWhere('poster', ''))))
+            ->when($hasGallery === '1',  fn($qr) => $qr->has('images'))
+            ->when($hasGallery === '0',  fn($qr) => $qr->doesntHave('images'))
+            ->when($hasEpisodes === '1', fn($qr) => $qr->has('episodes'))
+            ->when($hasEpisodes === '0', fn($qr) => $qr->doesntHave('episodes'));
 
-        return view('admin.shows.index', compact('shows', 'q'));
+        [$col, $dir] = match($sort) {
+            'title_asc'   => ['title', 'asc'],
+            'year_desc'   => ['year', 'desc'],
+            'year_asc'    => ['year', 'asc'],
+            'rating_desc' => ['rating', 'desc'],
+            'subs_desc'   => ['subscribers', 'desc'],
+            default       => ['id', 'desc'],
+        };
+        $shows = $shows->orderBy($col, $dir)->paginate(25)->withQueryString();
+
+        $networks = Show::distinct()->orderBy('network')->pluck('network')->filter()->values();
+        $statuses = ['Running', 'Returning Series', 'Ended', 'Cancelled', 'Hiatus'];
+        $genres   = Genre::orderBy('name')->get(['id', 'name']);
+        $years    = Show::distinct()->orderByDesc('year')->pluck('year')->filter()->values();
+
+        $hasFilters = $q || $status || $network || $genre || $year || $sort !== 'id_desc' || $hasPoster !== '' || $hasGallery !== '' || $hasEpisodes !== '';
+
+        return view('admin.shows.index', compact(
+            'shows', 'q', 'status', 'network', 'genre', 'year', 'sort',
+            'networks', 'statuses', 'genres', 'years', 'hasFilters',
+            'hasPoster', 'hasGallery', 'hasEpisodes'
+        ));
     }
 
     public function create()

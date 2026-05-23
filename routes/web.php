@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\EpisodeController as AdminEpisodeController;
+use App\Http\Controllers\Admin\PageController as AdminPageController;
 use App\Http\Controllers\Admin\ShowController as AdminShowController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\MainController;
@@ -16,7 +18,19 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('logout', [AdminController::class, 'logout'])->name('logout');
 
         Route::resource('shows', AdminShowController::class)->names('shows');
+        Route::get('pages',           [AdminPageController::class, 'index'])->name('pages.index');
+        Route::get('pages/{page}',    [AdminPageController::class, 'edit'])->name('pages.edit');
+        Route::put('pages/{page}',    [AdminPageController::class, 'update'])->name('pages.update');
         Route::delete('shows/{show}/images/{image}', [AdminShowController::class, 'destroyImage'])->name('shows.images.destroy');
+
+        Route::prefix('shows/{show}/episodes')->name('shows.episodes.')->group(function () {
+            Route::get('/',              [AdminEpisodeController::class, 'index'])->name('index');
+            Route::get('/create',        [AdminEpisodeController::class, 'create'])->name('create');
+            Route::post('/',             [AdminEpisodeController::class, 'store'])->name('store');
+            Route::get('/{episode}/edit',[AdminEpisodeController::class, 'edit'])->name('edit');
+            Route::put('/{episode}',     [AdminEpisodeController::class, 'update'])->name('update');
+            Route::delete('/{episode}',  [AdminEpisodeController::class, 'destroy'])->name('destroy');
+        });
     });
 });
 // ─────────────────────────────────────────────────────────────────

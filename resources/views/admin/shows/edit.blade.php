@@ -6,6 +6,9 @@
     <div class="d-flex justify-content-between align-items-center">
         <h1 class="m-0">Edit: {{ $show->getRawOriginal('title') }}</h1>
         <div class="d-flex" style="gap:.5rem;">
+            <a href="{{ route('admin.shows.episodes.index', $show) }}" class="btn btn-success btn-sm">
+                <i class="fas fa-list-ol mr-1"></i> Episodes
+            </a>
             <a href="/shows/{{ $show->slug }}" target="_blank" class="btn btn-info btn-sm">
                 <i class="fas fa-eye mr-1"></i> View
             </a>
@@ -111,6 +114,7 @@
 @stop
 
 @section('js')
+@include('admin.partials.ckeditor')
 <script>
 function previewPoster(input) {
     if (input.files && input.files[0]) {

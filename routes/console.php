@@ -18,3 +18,13 @@ Schedule::command('shows:download-posters')
     ->daily()
     ->withoutOverlapping()
     ->appendOutputTo(storage_path('logs/shows-download-posters.log'));
+
+Schedule::command('shows:fetch-images')
+    ->daily()
+    ->withoutOverlapping()
+    ->appendOutputTo(storage_path('logs/shows:fetch-images.log'));
+
+Schedule::command('episodes:download-thumbs')
+    ->daily()
+    ->withoutOverlapping()
+    ->appendOutputTo(storage_path('logs/episodes-download-thumbs.log'));

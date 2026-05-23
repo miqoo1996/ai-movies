@@ -17,3 +17,7 @@
     @include('admin.shows._form')
 </form>
 @stop
+
+@section('js')
+    @include('admin.partials.ckeditor')
+@stop

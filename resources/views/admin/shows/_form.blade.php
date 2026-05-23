@@ -56,11 +56,11 @@
             <div class="card-body">
                 <div class="form-group">
                     <label>Original Synopsis</label>
-                    <textarea name="synopsis" rows="5" class="form-control">{{ old('synopsis', $isEdit ? $show->getRawOriginal('synopsis') : '') }}</textarea>
+                    <textarea name="synopsis" id="synopsis" class="form-control ck-editor">{{ old('synopsis', $isEdit ? $show->getRawOriginal('synopsis') : '') }}</textarea>
                 </div>
                 <div class="form-group mb-0">
                     <label>AI Synopsis</label>
-                    <textarea name="ai_synopsis" rows="5" class="form-control">{{ old('ai_synopsis', $isEdit ? $show->getRawOriginal('ai_synopsis') : '') }}</textarea>
+                    <textarea name="ai_synopsis" id="ai_synopsis" class="form-control ck-editor">{{ old('ai_synopsis', $isEdit ? $show->getRawOriginal('ai_synopsis') : '') }}</textarea>
                 </div>
             </div>
         </div>

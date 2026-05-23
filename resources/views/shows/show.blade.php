@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', $show->title . ' — DiziBul')
-@section('description', Str::limit($show->synopsis ?? '', 160))
+@section('description', Str::limit(strip_tags($show->synopsis ?? ''), 160))
 
 @section('content')
 
@@ -94,9 +94,9 @@
 
                     {{-- Synopsis --}}
                     @if($show->synopsis)
-                        <p class="text-slate-200 text-[15px] leading-7 max-w-2xl line-clamp-3">
-                            {{ $show->synopsis }}
-                        </p>
+                        <div class="text-slate-200 text-[15px] leading-7 max-w-2xl line-clamp-3 prose prose-invert prose-sm max-w-none">
+                            {!! $show->synopsis !!}
+                        </div>
                     @endif
 
                 </div>
@@ -138,7 +138,7 @@
                     @foreach($seasons as $seasonNum => $episodes)
                     <div class="flex items-center gap-4 bg-[#0d0d18] hover:bg-[#111122] border border-white/5 hover:border-white/15 rounded-2xl overflow-hidden transition-all duration-200 sm:w-72 cursor-pointer group">
                         <div class="w-20 h-20 shrink-0 overflow-hidden">
-                            @php $sThumb = $episodes->whereNotNull('thumb')->first()?->thumb ?? $show->poster_url; @endphp
+                            @php $sThumb = $episodes->whereNotNull('thumb')->first()?->thumb_url ?? $show->poster_url; @endphp
                             <img src="{{ $sThumb }}" alt="Season {{ $seasonNum }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                         </div>
                         <div class="py-3 pr-4">
@@ -167,8 +167,8 @@
                     <div class="shrink-0 w-[230px] bg-[#0d0d18] border border-white/5 hover:border-white/15 rounded-2xl overflow-hidden transition-all duration-200 group cursor-pointer">
                         {{-- Thumbnail --}}
                         <div class="relative aspect-video overflow-hidden">
-                            @if($ep->thumb)
-                                <img src="{{ $ep->thumb }}" alt="{{ $ep->shortcode }}"
+                            @if($ep->thumb_url)
+                                <img src="{{ $ep->thumb_url }}" alt="{{ $ep->shortcode }}"
                                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             @else
                                 <img src="{{ $show->poster_url }}" alt=""
@@ -277,8 +277,8 @@
                     <div class="shrink-0 w-[230px] bg-[#0d0d18] border border-white/5 hover:border-white/15 rounded-2xl overflow-hidden transition-all duration-200 group cursor-pointer">
                         {{-- Thumbnail --}}
                         <div class="relative aspect-video overflow-hidden">
-                            @if($ep->thumb)
-                                <img src="{{ $ep->thumb }}" alt="{{ $ep->shortcode }}"
+                            @if($ep->thumb_url)
+                                <img src="{{ $ep->thumb_url }}" alt="{{ $ep->shortcode }}"
                                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             @else
                                 <img src="{{ $show->poster_url }}" alt=""
