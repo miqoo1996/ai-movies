@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\EpisodeController as AdminEpisodeController;
+use App\Http\Controllers\Admin\FaqController as AdminFaqController;
 use App\Http\Controllers\Admin\PageController as AdminPageController;
 use App\Http\Controllers\Admin\ShowController as AdminShowController;
 use App\Http\Controllers\AdminController;
@@ -18,6 +19,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('logout', [AdminController::class, 'logout'])->name('logout');
 
         Route::resource('shows', AdminShowController::class)->names('shows');
+        Route::post('faqs/reorder', [AdminFaqController::class, 'reorder'])->name('faqs.reorder');
+        Route::resource('faqs', AdminFaqController::class)->names('faqs')->except(['show']);
         Route::get('pages',              [AdminPageController::class, 'index'])->name('pages.index');
         Route::get('pages/{page}',       [AdminPageController::class, 'edit'])->name('pages.edit');
         Route::put('pages/{page}',       [AdminPageController::class, 'update'])->name('pages.update');

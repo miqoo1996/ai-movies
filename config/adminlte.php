@@ -315,6 +315,11 @@ return [
             'url'  => 'admin/pages',
             'icon' => 'fas fa-fw fa-file-alt',
         ],
+        [
+            'text' => 'FAQs',
+            'url'  => 'admin/faqs',
+            'icon' => 'fas fa-fw fa-question-circle',
+        ],
     ],
 
     /*

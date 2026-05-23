@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Faq;
 use App\Models\Page;
 
 class MainController extends Controller
 {
-    public function faq()     { return view('faq'); }
+    public function faq()
+    {
+        $faqs = Faq::ordered()->get();
+        return view('faq', compact('faqs'));
+    }
     public function contact()
     {
         $page = Page::where('slug', 'contact')->firstOrFail();

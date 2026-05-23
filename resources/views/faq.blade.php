@@ -28,66 +28,13 @@
             {{-- ── Accordion ────────────────────────────────────────── --}}
             <main class="flex-1 min-w-0">
 
-                @php
-                $faqs = [
-                    [
-                        'q' => 'How do I access the website?',
-                        'a' => 'When you join one of our 3 subscription plans you will be sent all the details you need to login to our website.',
-                    ],
-                    [
-                        'q' => 'When does a certain series or movie come out?',
-                        'a' => 'We are constantly aware of any new releases and most often than not we will always take any new Series or Movies with any popular Cast and Crew.',
-                    ],
-                    [
-                        'q' => 'How do we submit ideas or request certain series?',
-                        'a' => 'All members can email us with any requests, we usually do a Poll and the popular series are usually considered.',
-                    ],
-                    [
-                        'q' => 'How do we cancel our subscription?',
-                        'a' => 'You can send an email to us asking us to terminate your subscription, alternatively you can do this via PayPal.',
-                    ],
-                    [
-                        'q' => 'Are the Movies available to Download?',
-                        'a' => 'All our video content is not for downloading, we provide a streaming service directly on our website.',
-                    ],
-                    [
-                        'q' => 'Are all the Movies in HD?',
-                        'a' => 'Most of our content is in HD. We also have series which aired on TV before 2010 — these are only available in the quality they were originally released.',
-                    ],
-                    [
-                        'q' => 'Do we have any adverts on our Videos?',
-                        'a' => 'We don\'t have any adverts interrupting your viewership. However some series/episodes may contain adverts, simply due to them being embedded directly in the video.',
-                    ],
-                    [
-                        'q' => 'What if there are issues with Translation?',
-                        'a' => 'We pride ourselves on quality. Send us an email with the series name and the affected episode and we will do our best to resolve it immediately.',
-                    ],
-                    [
-                        'q' => 'We cannot log in — what do we do?',
-                        'a' => 'It could be due to your subscription having expired. Contact our customer services team at wecare@turkflix.co.uk.',
-                    ],
-                    [
-                        'q' => 'How quickly are Episodes translated each week?',
-                        'a' => 'New episodes are usually translated and uploaded within a few days of the original air date. We always aim to deliver as quickly as possible.',
-                    ],
-                    [
-                        'q' => 'Are the Subtitles embedded in the Video or added via a File?',
-                        'a' => 'All our subtitles are directly burned into the videos.',
-                    ],
-                    [
-                        'q' => 'Do you sell your Subtitle Files?',
-                        'a' => 'We do not usually sell our subtitle files. If you are interested you can email md@turkflix.co.uk.',
-                    ],
-                ];
-                @endphp
-
                 <div id="faq-accordion" class="divide-y divide-white/[0.06]">
-                    @foreach($faqs as $i => $faq)
+                    @forelse($faqs as $i => $faq)
                     <div class="faq-item group/item" data-index="{{ $i }}">
 
                         <button class="faq-trigger w-full flex items-center justify-between gap-8 py-5 text-left">
                             <span class="faq-question text-slate-300 font-semibold text-[15px] leading-snug transition-colors duration-200 group-hover/item:text-white">
-                                {{ $faq['q'] }}
+                                {{ $faq->question }}
                             </span>
                             <span class="faq-icon shrink-0 w-6 h-6 rounded-full border border-white/10 flex items-center justify-center text-slate-500 text-sm leading-none transition-all duration-200 group-hover/item:border-white/20 group-hover/item:text-slate-300">
                                 +
@@ -95,11 +42,15 @@
                         </button>
 
                         <div class="faq-body overflow-hidden max-h-0 transition-all duration-300 ease-in-out">
-                            <p class="text-slate-500 text-[14px] leading-[1.8] pb-6 max-w-2xl">{{ $faq['a'] }}</p>
+                            <div class="text-slate-500 text-[14px] leading-[1.8] pb-6 max-w-2xl prose prose-sm prose-invert max-w-none">
+                                {!! $faq->answer !!}
+                            </div>
                         </div>
 
                     </div>
-                    @endforeach
+                    @empty
+                    <p class="text-slate-500 py-8">No FAQs yet.</p>
+                    @endforelse
                 </div>
 
                 {{-- Bottom contact note --}}
