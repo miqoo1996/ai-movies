@@ -1,7 +1,10 @@
 @extends('layouts.app')
 
-@section('title', $show->title . ' — DiziBul')
-@section('description', Str::limit(strip_tags($show->synopsis ?? ''), 160))
+@section('seo_title', $show->seo_title ?: $show->title)
+@section('meta_description', $show->seo_description ?: Str::limit(strip_tags($show->synopsis ?? ''), 160))
+@section('og_image', $show->poster_url)
+@section('canonical', route('shows.show', $show->slug))
+@if($show->noindex)@section('noindex', '1')@endif
 
 @section('content')
 

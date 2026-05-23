@@ -21,8 +21,17 @@ class PageController extends Controller
 
     public function update(Request $request, Page $page)
     {
-        $request->validate(['content' => 'nullable|string']);
-        $page->update(['content' => $request->input('content', '')]);
+        $data = $request->validate([
+            'content'         => 'nullable|string',
+            'seo_title'       => 'nullable|string|max:255',
+            'seo_description' => 'nullable|string|max:320',
+            'noindex'         => 'nullable|boolean',
+        ]);
+
+        $data['content'] = $request->input('content', '');
+        $data['noindex'] = $request->boolean('noindex');
+
+        $page->update($data);
 
         return back()->with('success', "\"{$page->title}\" saved.");
     }

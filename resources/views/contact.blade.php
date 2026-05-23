@@ -36,7 +36,18 @@
                 <div style="display:flex; gap:2rem; align-items:flex-start;">
 
                     {{-- ── Form card ── --}}
-                    <div style="flex:2; min-width:0; background:#0d0d1a; border:1px solid rgba(255,255,255,0.09); border-radius:1rem; padding:2rem;">
+                    <div id="contact-card" style="flex:2; min-width:0; background:#0d0d1a; border:1px solid rgba(255,255,255,0.09); border-radius:1rem; padding:2rem;">
+
+                        {{-- Success state (hidden until sent) --}}
+                        <div id="contact-success" style="display:none; text-align:center; padding:2rem 1rem;">
+                            <div style="width:3.5rem;height:3.5rem;border-radius:50%;background:rgba(16,185,129,0.15);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;">
+                                <svg width="28" height="28" fill="none" stroke="#34d399" stroke-width="2.5" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </div>
+                            <h3 style="color:#fff;font-size:1.1rem;font-weight:700;margin-bottom:0.5rem;">Message sent!</h3>
+                            <p style="color:#94a3b8;font-size:0.875rem;line-height:1.6;">We'll get back to you within 24 hours.</p>
+                        </div>
 
                         <h2 class="text-white font-bold text-lg mb-6">Send us a message</h2>
 
@@ -200,13 +211,35 @@
         btn.disabled = true;
         btn.innerHTML = 'Sending…';
 
-        setTimeout(() => {
-            show("Message sent! We'll get back to you within 24 hours.", true);
-            form.reset();
-            counter.textContent = '0';
+        fetch('{{ route('contact.store') }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({ name, email, subject, message }),
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                // Hide everything except the success panel
+                document.querySelector('#contact-card h2').style.display = 'none';
+                form.style.display = 'none';
+                document.getElementById('contact-success').style.display = 'block';
+            } else {
+                const msg = data.message
+                    || (data.errors ? Object.values(data.errors).flat().join(' ') : 'Something went wrong, please try again.');
+                show(msg, false);
+                btn.disabled = false;
+                btn.innerHTML = '<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg> Send Message';
+            }
+        })
+        .catch(() => {
+            show('Something went wrong, please try again.', false);
             btn.disabled = false;
             btn.innerHTML = '<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg> Send Message';
-        }, 1200);
+        });
     });
 
     function show(msg, ok) {

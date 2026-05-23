@@ -320,6 +320,11 @@ return [
             'url'  => 'admin/faqs',
             'icon' => 'fas fa-fw fa-question-circle',
         ],
+        [
+            'text' => 'Messages',
+            'url'  => 'admin/contact',
+            'icon' => 'fas fa-fw fa-envelope',
+        ],
         ['header' => 'Settings'],
         [
             'text' => 'General Settings',

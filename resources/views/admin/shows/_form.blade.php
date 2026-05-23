@@ -186,6 +186,35 @@
             </div>
         </div>
 
+        {{-- SEO --}}
+        <div class="card card-outline card-secondary">
+            <div class="card-header"><h3 class="card-title"><i class="fas fa-search mr-1"></i> SEO</h3></div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label>SEO Title</label>
+                    <input type="text" name="seo_title" maxlength="255"
+                           value="{{ old('seo_title', $isEdit ? $show->seo_title : '') }}"
+                           class="form-control" placeholder="Leave blank to use default format">
+                    <small class="text-muted">Max 255 chars.</small>
+                </div>
+                <div class="form-group">
+                    <label>Meta Description</label>
+                    <textarea name="seo_description" rows="3" maxlength="320"
+                              class="form-control" placeholder="Leave blank to use default">{{ old('seo_description', $isEdit ? $show->seo_description : '') }}</textarea>
+                    <small class="text-muted">Max 320 chars.</small>
+                </div>
+                <div class="custom-control custom-switch">
+                    <input type="hidden" name="noindex" value="0">
+                    <input type="checkbox" class="custom-control-input" id="noindex"
+                           name="noindex" value="1"
+                           @checked(old('noindex', $isEdit ? $show->noindex : false))>
+                    <label class="custom-control-label" for="noindex">
+                        No-index this page <small class="text-muted">(hide from search engines)</small>
+                    </label>
+                </div>
+            </div>
+        </div>
+
         {{-- Actions --}}
         <div class="card">
             <div class="card-body">

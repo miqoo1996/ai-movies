@@ -3,17 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', setting('site_name', 'DiziBul') . ' — Turkish Drama Hub')</title>
-    <meta name="description" content="@yield('description', 'Discover the best Turkish TV series and dramas.')">
-    @if(setting('og_image'))
-    <meta property="og:image" content="{{ asset('storage/' . setting('og_image')) }}">
+    @php
+        $siteName    = setting('site_name', 'DiziBul');
+        $titleFormat = setting('seo_title_format', '{title} — ' . $siteName);
+
+        // Views yield 'seo_title' with just the raw name → format applied
+        // Views yield 'title' with a fully-formatted string → used directly
+        $rawSeoTitle = trim(View::yieldContent('seo_title'));
+        $finalTitle  = $rawSeoTitle
+            ? str_replace('{title}', $rawSeoTitle, $titleFormat)
+            : (trim(View::yieldContent('title')) ?: $siteName . ' — Turkish Drama Hub');
+
+        $defaultDesc = setting('seo_default_description', 'Discover the best Turkish TV series and dramas.');
+        $metaDesc    = trim(View::yieldContent('meta_description') ?: View::yieldContent('description') ?: $defaultDesc);
+
+        $canonical   = trim(View::yieldContent('canonical')) ?: url()->current();
+        $globalNoindex = setting('robots_noindex', 'index') === 'noindex';
+        $pageNoindex   = trim(View::yieldContent('noindex')) === '1';
+        $robotsValue   = ($globalNoindex || $pageNoindex) ? 'noindex, follow' : 'index, follow';
+    @endphp
+
+    <title>{{ $finalTitle }}</title>
+    <meta name="description" content="{{ $metaDesc }}">
+    <meta name="robots" content="{{ $robotsValue }}">
+    <link rel="canonical" href="{{ $canonical }}">
+
+    {{-- Open Graph --}}
+    <meta property="og:type"        content="website">
+    <meta property="og:title"       content="{{ $finalTitle }}">
+    <meta property="og:description" content="{{ $metaDesc }}">
+    <meta property="og:url"         content="{{ $canonical }}">
+    <meta property="og:site_name"   content="{{ $siteName }}">
+    @hasSection('og_image')
+        <meta property="og:image" content="@yield('og_image')">
+    @elseif(setting('og_image'))
+        <meta property="og:image" content="{{ asset('storage/' . setting('og_image')) }}">
     @endif
+
+    {{-- Twitter Card --}}
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta name="twitter:title"       content="{{ $finalTitle }}">
+    <meta name="twitter:description" content="{{ $metaDesc }}">
+
+    @if(setting('search_console_verify'))
+    <meta name="google-site-verification" content="{{ setting('search_console_verify') }}">
+    @endif
+
     @if(setting('favicon'))
     <link rel="icon" href="{{ asset('storage/' . setting('favicon')) }}">
     @endif
+
+    @if(setting('google_tag_manager_id'))
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','{{ setting('google_tag_manager_id') }}');</script>
+    @endif
+
+    @if(setting('google_analytics_id'))
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ setting('google_analytics_id') }}"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','{{ setting('google_analytics_id') }}');</script>
+    @endif
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-[#080810] text-white antialiased">
+
+@if(setting('google_tag_manager_id'))
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ setting('google_tag_manager_id') }}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+@endif
 
 {{-- ═══════════════════════════════════════════ NAVBAR ═══ --}}
 <nav id="navbar" class="fixed top-0 inset-x-0 z-50 bg-[#0d0d18] border-b border-white/5">
@@ -161,27 +216,18 @@
 {{--                        </ul>--}}
 
                         {{-- Social icons --}}
+                        @php $navSocialLinks = \App\Models\SocialLink::active()->ordered()->get(); @endphp
+                        @if($navSocialLinks->isNotEmpty())
                         <p class="text-[10px] font-bold tracking-[0.15em] text-violet-400 uppercase mb-3">Follow Us</p>
                         <div class="flex gap-2.5">
-                            @if(setting('facebook_url'))
-                            <a href="{{ setting('facebook_url') }}" target="_blank" rel="noopener" aria-label="Facebook"
-                               class="w-8 h-8 rounded-full flex items-center justify-center bg-[#1877F2]/20 hover:bg-[#1877F2] transition-all duration-200 text-[#1877F2] hover:text-white">
-                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
-                            </a>
-                            @endif
-                            @if(setting('instagram_url'))
-                            <a href="{{ setting('instagram_url') }}" target="_blank" rel="noopener" aria-label="Instagram"
-                               class="w-8 h-8 rounded-full flex items-center justify-center bg-[#E1306C]/20 hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#e6683c] hover:to-[#dc2743] transition-all duration-200 text-[#E1306C] hover:text-white">
-                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-                            </a>
-                            @endif
-                            @if(setting('twitter_url'))
-                            <a href="{{ setting('twitter_url') }}" target="_blank" rel="noopener" aria-label="X / Twitter"
+                            @foreach($navSocialLinks as $sl)
+                            <a href="{{ $sl->url }}" target="_blank" rel="noopener" aria-label="{{ $sl->label }}"
                                class="w-8 h-8 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 transition-all duration-200 text-slate-300 hover:text-white">
-                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">{!! $sl->svgIcon() !!}</svg>
                             </a>
-                            @endif
+                            @endforeach
                         </div>
+                        @endif
                     </div>
 
                 </div>
@@ -242,26 +288,17 @@
                 </p>
 
                 {{-- Social icons --}}
+                @php $footerSocialLinks = \App\Models\SocialLink::active()->ordered()->get(); @endphp
+                @if($footerSocialLinks->isNotEmpty())
                 <div class="flex items-center gap-3 mb-8">
-                    @if(setting('facebook_url'))
-                    <a href="{{ setting('facebook_url') }}" target="_blank" rel="noopener" aria-label="Facebook"
+                    @foreach($footerSocialLinks as $sl)
+                    <a href="{{ $sl->url }}" target="_blank" rel="noopener" aria-label="{{ $sl->label }}"
                        class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:border-white/30 transition-all duration-200">
-                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">{!! $sl->svgIcon() !!}</svg>
                     </a>
-                    @endif
-                    @if(setting('instagram_url'))
-                    <a href="{{ setting('instagram_url') }}" target="_blank" rel="noopener" aria-label="Instagram"
-                       class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:border-white/30 transition-all duration-200">
-                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-                    </a>
-                    @endif
-                    @if(setting('twitter_url'))
-                    <a href="{{ setting('twitter_url') }}" target="_blank" rel="noopener" aria-label="X / Twitter"
-                       class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:border-white/30 transition-all duration-200">
-                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                    </a>
-                    @endif
+                    @endforeach
                 </div>
+                @endif
 
                 {{-- App store buttons (only shown when URL is set) --}}
                 @if(setting('appstore_url') || setting('playstore_url'))
@@ -369,10 +406,10 @@
     <div class="border-t border-white/5">
         <div class="max-w-[1400px] mx-auto px-4 sm:px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
             <p class="text-slate-600 text-sm">
-                © {{ date('Y') }} <span class="font-semibold text-slate-500">DiziBul</span>. All Rights Reserved.
+                © {{ date('Y') }} <span class="font-semibold text-slate-500">{{ setting('site_name', 'DiziBul') }}</span>. {{ setting('footer_copyright', 'All Rights Reserved.') }}
             </p>
             <p class="text-slate-600 text-sm flex items-center gap-1.5">
-                Made with <span class="text-red-500">♥</span> for Turkish drama fans
+                {!! setting('footer_tagline', 'Made with <span class="text-red-500">♥</span> for Turkish drama fans') !!}
             </p>
         </div>
     </div>

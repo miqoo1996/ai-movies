@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'Terms & Conditions — DiziBul')
-@section('description', 'Terms and conditions for using DiziBul — please read before using our service.')
+@section('seo_title', $page->seo_title ?: 'Terms & Conditions')
+@section('meta_description', $page->seo_description ?: 'Terms and conditions for using DiziBul — please read before using our service.')
+@if($page->noindex)@section('noindex', '1')@endif
 
 @section('content')
 

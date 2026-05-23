@@ -180,7 +180,12 @@ class ShowController extends Controller
             'poster'           => 'nullable|string|max:500',
             'poster_file'      => 'nullable|image|max:4096',
             'gallery_files.*'  => 'nullable|image|max:4096',
+            'seo_title'        => 'nullable|string|max:255',
+            'seo_description'  => 'nullable|string|max:320',
+            'noindex'          => 'nullable|boolean',
         ]);
+
+        $data['noindex'] = $request->boolean('noindex');
 
         if (empty($data['slug'])) {
             $base = Str::slug($data['title']);

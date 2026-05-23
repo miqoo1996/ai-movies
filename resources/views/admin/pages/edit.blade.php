@@ -45,6 +45,37 @@
                     <div id="codemirror-editor" style="border:1px solid #ced4da;border-radius:4px;font-size:13px;"></div>
                 @endif
             </div>
+
+            {{-- SEO fields --}}
+            <hr>
+            <h5 class="mb-3"><i class="fas fa-search mr-1"></i> SEO</h5>
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <label class="font-weight-bold">SEO Title</label>
+                    <input type="text" name="seo_title" maxlength="255"
+                           value="{{ old('seo_title', $page->seo_title) }}"
+                           class="form-control" placeholder="Leave blank to use default format">
+                    <small class="text-muted">Max 255 chars.</small>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label class="font-weight-bold">Meta Description</label>
+                    <textarea name="seo_description" rows="2" maxlength="320"
+                              class="form-control" placeholder="Leave blank to use default">{{ old('seo_description', $page->seo_description) }}</textarea>
+                    <small class="text-muted">Max 320 chars.</small>
+                </div>
+                <div class="col-12">
+                    <div class="custom-control custom-switch mb-3">
+                        <input type="hidden" name="noindex" value="0">
+                        <input type="checkbox" class="custom-control-input" id="noindex"
+                               name="noindex" value="1"
+                               @checked(old('noindex', $page->noindex))>
+                        <label class="custom-control-label" for="noindex">
+                            No-index this page <small class="text-muted">(hide from search engines)</small>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
             <button type="submit" class="btn btn-primary">
                 <i class="fas fa-save mr-1"></i> Save
             </button>

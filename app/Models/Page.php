@@ -6,5 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Page extends Model
 {
-    protected $fillable = ['slug', 'title', 'content'];
+    protected $fillable = ['slug', 'title', 'content', 'seo_title', 'seo_description', 'noindex'];
+    protected $casts    = ['noindex' => 'boolean'];
 }

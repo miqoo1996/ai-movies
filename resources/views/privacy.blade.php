@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'Privacy Policy — DiziBul')
-@section('description', 'Privacy policy for DiziBul — how we collect, use and protect your personal data.')
+@section('seo_title', $page->seo_title ?: 'Privacy Policy')
+@section('meta_description', $page->seo_description ?: 'Privacy policy for DiziBul — how we collect, use and protect your personal data.')
+@if($page->noindex)@section('noindex', '1')@endif
 
 @section('content')
 

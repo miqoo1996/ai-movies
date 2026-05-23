@@ -28,8 +28,20 @@
             </thead>
             <tbody>
             @foreach($pages as $page)
+                @php
+                    $icon = match($page->slug) {
+                        'faq'     => 'fa-question-circle text-info',
+                        'contact' => 'fa-envelope text-success',
+                        'terms'   => 'fa-file-contract text-warning',
+                        'privacy' => 'fa-shield-alt text-primary',
+                        default   => 'fa-file-alt text-secondary',
+                    };
+                @endphp
                 <tr>
-                    <td class="align-middle font-weight-bold">{{ $page->title }}</td>
+                    <td class="align-middle">
+                        <i class="fas {{ $icon }} mr-2" style="font-size:16px;width:20px;text-align:center;"></i>
+                        <strong>{{ $page->title }}</strong>
+                    </td>
                     <td class="align-middle">
                         <a href="{{ url($page->slug) }}" target="_blank" class="text-muted small">
                             /{{ $page->slug }}

@@ -29,6 +29,9 @@ class Show extends Model
         'poster_local',
         'rating',
         'subscribers',
+        'seo_title',
+        'seo_description',
+        'noindex',
     ];
 
     protected $casts = [
@@ -37,6 +40,7 @@ class Show extends Model
         'runtime'     => 'integer',
         'rating'      => 'float',
         'subscribers' => 'integer',
+        'noindex'     => 'boolean',
     ];
 
     // Accessors: prefer AI-generated fields when present, fall back to originals
