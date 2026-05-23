@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'Contact Us — DiziBul')
-@section('description', 'Get in touch with the DiziBul team — questions, feedback, or partnership enquiries.')
+@section('seo_title', $page->seo_title ?: 'Contact Us')
+@section('meta_description', $page->seo_description ?: 'Have a question about DiziBul, a subtitle issue, or a series request? Contact our team — we read every message and aim to reply within 24 hours.')
+@if($page->noindex)@section('noindex', '1')@endif
 
 @section('content')
 

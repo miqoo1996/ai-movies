@@ -7,17 +7,20 @@
         $siteName    = setting('site_name', 'DiziBul');
         $titleFormat = setting('seo_title_format', '{title} — ' . $siteName);
 
+        // @section() HTML-encodes values; decode before use to avoid double-escaping via {{ }}
+        $dec = fn($s) => html_entity_decode(trim((string) $s), ENT_QUOTES, 'UTF-8');
+
         // Views yield 'seo_title' with just the raw name → format applied
         // Views yield 'title' with a fully-formatted string → used directly
-        $rawSeoTitle = trim(View::yieldContent('seo_title'));
+        $rawSeoTitle = $dec(View::yieldContent('seo_title'));
         $finalTitle  = $rawSeoTitle
             ? str_replace('{title}', $rawSeoTitle, $titleFormat)
-            : (trim(View::yieldContent('title')) ?: $siteName . ' — Turkish Drama Hub');
+            : ($dec(View::yieldContent('title')) ?: $siteName . ' — Turkish Drama Hub');
 
         $defaultDesc = setting('seo_default_description', 'Discover the best Turkish TV series and dramas.');
-        $metaDesc    = trim(View::yieldContent('meta_description') ?: View::yieldContent('description') ?: $defaultDesc);
+        $metaDesc    = $dec(View::yieldContent('meta_description') ?: View::yieldContent('description')) ?: $defaultDesc;
 
-        $canonical   = trim(View::yieldContent('canonical')) ?: url()->current();
+        $canonical   = $dec(View::yieldContent('canonical')) ?: url()->current();
         $globalNoindex = setting('robots_noindex', 'index') === 'noindex';
         $pageNoindex   = trim(View::yieldContent('noindex')) === '1';
         $robotsValue   = ($globalNoindex || $pageNoindex) ? 'noindex, follow' : 'index, follow';
@@ -62,6 +65,7 @@
     <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','{{ setting('google_analytics_id') }}');</script>
     @endif
 
+    @yield('json_ld')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-[#080810] text-white antialiased">

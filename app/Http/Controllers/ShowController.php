@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Episode;
 use App\Models\Genre;
+use App\Models\Page;
 use App\Models\Show;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -29,10 +30,13 @@ class ShowController extends Controller
         $oneWeekend     = Show::where('runtime', '<', 60)->where('status', 'Ended')->orderBy('subscribers', 'desc')->take(8)->get();
         $goneTooSoon    = Show::where('status', 'Cancelled')->orderBy('subscribers', 'desc')->take(8)->get();
 
+        $seoPage = Page::where('slug', 'home')->first();
+
         return view('home', compact(
             'sliderShows', 'top10Shows', 'recentlyAdded', 'classicDramas', 'diziNewcomers',
             'periodDramas', 'netflixShows', 'loveShows', 'turkishRemakes', 'impossibleLove',
-            'dailyDramas', 'enemiesToLovers', 'familyTree', 'bingeWorthy', 'oneWeekend', 'goneTooSoon'
+            'dailyDramas', 'enemiesToLovers', 'familyTree', 'bingeWorthy', 'oneWeekend', 'goneTooSoon',
+            'seoPage'
         ));
     }
 
@@ -66,8 +70,9 @@ class ShowController extends Controller
         $genres   = Genre::withCount('shows')->orderByDesc('shows_count')->get();
         $networks = Show::distinct()->orderBy('network')->pluck('network')->filter()->values();
         $statuses = ['Running' => 'Airing Now', 'Returning Series' => 'Returning', 'Ended' => 'Ended', 'Cancelled' => 'Cancelled', 'Hiatus' => 'Hiatus'];
+        $seoPage  = Page::where('slug', 'shows')->first();
 
-        return view('shows.index', compact('shows', 'genres', 'networks', 'statuses', 'q', 'status', 'genre', 'network', 'sort', 'year'));
+        return view('shows.index', compact('shows', 'genres', 'networks', 'statuses', 'q', 'status', 'genre', 'network', 'sort', 'year', 'seoPage'));
     }
 
     public function show(string $slug)
@@ -122,6 +127,8 @@ class ShowController extends Controller
         $nextWeek = $weekStart->copy()->addWeek()->toDateString();
         $days     = collect(range(0, 6))->map(fn($i) => $weekStart->copy()->addDays($i));
 
-        return view('calendar', compact('days', 'episodes', 'today', 'weekStart', 'prevWeek', 'nextWeek', 'dailyOnly'));
+        $seoPage = Page::where('slug', 'calendar')->first();
+
+        return view('calendar', compact('days', 'episodes', 'today', 'weekStart', 'prevWeek', 'nextWeek', 'dailyOnly', 'seoPage'));
     }
 }

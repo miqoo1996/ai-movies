@@ -9,8 +9,9 @@ class MainController extends Controller
 {
     public function faq()
     {
-        $faqs = Faq::ordered()->get();
-        return view('faq', compact('faqs'));
+        $faqs    = Faq::ordered()->get();
+        $seoPage = Page::where('slug', 'faq')->first();
+        return view('faq', compact('faqs', 'seoPage'));
     }
     public function contact()
     {

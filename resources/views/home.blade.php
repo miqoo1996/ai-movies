@@ -1,6 +1,27 @@
 @extends('layouts.app')
 
-@section('title', 'DiziBul — Discover Turkish Drama')
+@section('seo_title', $seoPage?->seo_title ?: 'Watch Turkish Dramas & Series Online')
+@section('meta_description', $seoPage?->seo_description ?: 'Discover 500+ Turkish TV series and dramas on DiziBul. Find episode guides, cast info, ratings, and where to watch your favourite dizi with English subtitles.')
+@if($seoPage?->noindex)@section('noindex', '1')@endif
+@section('json_ld')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "DiziBul",
+  "url": "{{ url('/') }}",
+  "description": "The ultimate guide to Turkish TV series and dramas — episode guides, cast info and streaming links.",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "{{ url('/shows') }}?q={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+@endsection
 
 @section('content')
 

@@ -1,7 +1,28 @@
 @extends('layouts.app')
 
-@section('title', 'Explore Turkish Series — DiziBul')
-@section('description', 'Browse all Turkish TV series and dramas. Filter by genre, network, status and more.')
+@php
+    // Default from DB; filtered pages get dynamic copy + noindex
+    $seoTitle = $seoPage?->seo_title ?: 'All Turkish TV Series & Dramas';
+    $seoDesc  = $seoPage?->seo_description ?: 'Browse 500+ Turkish TV series and dramas on DiziBul. Filter by genre, network, year and status to find your next favourite dizi to watch with English subtitles.';
+    $isFiltered = !empty($genre) || !empty($status) || !empty($year) || !empty($q) || !empty($network);
+
+    if ($isFiltered) {
+        $activeGenre = $genres->firstWhere('slug', $genre);
+        if ($activeGenre) {
+            $seoTitle = $activeGenre->name . ' Turkish Dramas';
+            $seoDesc  = 'Browse the best ' . $activeGenre->name . ' Turkish TV series and dramas. Episode guides, cast info and where to stream with English subtitles.';
+        } elseif (!empty($status)) {
+            $seoTitle = ($statuses[$status] ?? $status) . ' Turkish TV Series';
+            $seoDesc  = 'Discover ' . strtolower($statuses[$status] ?? $status) . ' Turkish TV series on DiziBul.';
+        } elseif (!empty($year)) {
+            $seoTitle = 'Turkish Series from ' . $year;
+            $seoDesc  = 'Browse Turkish TV series and dramas released in ' . $year . '.';
+        }
+    }
+@endphp
+@section('seo_title', $seoTitle)
+@section('meta_description', $seoDesc)
+@if($isFiltered || $seoPage?->noindex)@section('noindex', '1')@endif
 
 @section('content')
 

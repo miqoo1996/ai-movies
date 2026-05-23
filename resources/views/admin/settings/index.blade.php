@@ -412,28 +412,35 @@ document.querySelectorAll('.custom-file-input').forEach(function(input) {
 });
 
 // Social tab toggle — panel lives outside the main form to avoid nesting
+function hideSocialPanel() {
+    document.getElementById('social-panel').style.display = 'none';
+    document.querySelector('.tab-content').style.display  = '';
+    document.getElementById('social-tab-link').classList.remove('active');
+}
+
 function toggleSocialPanel(e) {
     e.preventDefault();
-    var panel      = document.getElementById('social-panel');
-    var tabContent = document.querySelector('.tab-content');
-    var link       = document.getElementById('social-tab-link');
-    var isSocial   = panel.style.display !== 'none';
+    var isSocial = document.getElementById('social-panel').style.display !== 'none';
 
     if (isSocial) {
-        // Switch back to General tab
-        panel.style.display = 'none';
-        tabContent.style.display = '';
-        link.classList.remove('active');
+        hideSocialPanel();
         document.querySelector('[href="#tab-general"]').click();
     } else {
-        // Show social panel, hide tab-content card
-        panel.style.display = 'block';
-        tabContent.style.display = 'none';
-        // Deactivate other tabs
+        document.getElementById('social-panel').style.display = 'block';
+        document.querySelector('.tab-content').style.display  = 'none';
         document.querySelectorAll('#settingsTabs .nav-link').forEach(function(l) { l.classList.remove('active'); });
-        link.classList.add('active');
+        document.getElementById('social-tab-link').classList.add('active');
     }
 }
+
+// When any regular tab is clicked while the social panel is open, restore tab-content first
+document.querySelectorAll('#settingsTabs [data-toggle="tab"]').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+        if (document.getElementById('social-panel').style.display !== 'none') {
+            hideSocialPanel();
+        }
+    });
+});
 
 // Live image preview — shows new file, dims the current one
 function previewImage(input, previewId, currentId) {

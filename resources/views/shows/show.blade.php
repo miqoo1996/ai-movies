@@ -1,10 +1,43 @@
 @extends('layouts.app')
 
+@php
+    $fallbackDesc = collect([
+        Str::limit(strip_tags($show->synopsis ?? ''), 120),
+        $show->year    ? 'First aired ' . $show->year . '.' : '',
+        $show->network ? 'On ' . $show->network . '.' : '',
+        $show->rating  ? 'Rated ' . number_format($show->rating, 1) . '/10.' : '',
+    ])->filter()->implode(' ');
+@endphp
 @section('seo_title', $show->seo_title ?: $show->title)
-@section('meta_description', $show->seo_description ?: Str::limit(strip_tags($show->synopsis ?? ''), 160))
+@section('meta_description', $show->seo_description ?: Str::limit($fallbackDesc, 160))
 @section('og_image', $show->poster_url)
 @section('canonical', route('shows.show', $show->slug))
 @if($show->noindex)@section('noindex', '1')@endif
+@section('json_ld')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TVSeries",
+  "name": "{{ addslashes($show->title) }}",
+  "url": "{{ route('shows.show', $show->slug) }}",
+  @if($show->synopsis)"description": "{{ addslashes(Str::limit(strip_tags($show->synopsis), 300)) }}",@endif
+  @if($show->poster_url)"image": "{{ $show->poster_url }}",@endif
+  @if($show->year)"startDate": "{{ $show->year }}",@endif
+  @if($show->rating)"aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "{{ $show->rating }}",
+    "bestRating": "10",
+    "worstRating": "1"
+  },@endif
+  @if($show->network)"productionCompany": {
+    "@type": "Organization",
+    "name": "{{ addslashes($show->network) }}"
+  },@endif
+  "inLanguage": "tr",
+  "countryOfOrigin": { "@type": "Country", "name": "Turkey" }
+}
+</script>
+@endsection
 
 @section('content')
 

@@ -21,8 +21,9 @@
             <thead class="thead-light">
                 <tr>
                     <th>Page</th>
-                    <th>URL</th>
-                    <th>Last updated</th>
+                    <th>SEO Title</th>
+                    <th>Meta Description</th>
+                    <th style="width:70px" class="text-center">Noindex</th>
                     <th style="width:80px"></th>
                 </tr>
             </thead>
@@ -30,25 +31,43 @@
             @foreach($pages as $page)
                 @php
                     $icon = match($page->slug) {
-                        'faq'     => 'fa-question-circle text-info',
-                        'contact' => 'fa-envelope text-success',
-                        'terms'   => 'fa-file-contract text-warning',
-                        'privacy' => 'fa-shield-alt text-primary',
-                        default   => 'fa-file-alt text-secondary',
+                        'home'     => 'fa-home text-violet',
+                        'shows'    => 'fa-film text-purple',
+                        'calendar' => 'fa-calendar-alt text-orange',
+                        'faq'      => 'fa-question-circle text-info',
+                        'contact'  => 'fa-envelope text-success',
+                        'terms'    => 'fa-file-contract text-warning',
+                        'privacy'  => 'fa-shield-alt text-primary',
+                        default    => 'fa-file-alt text-secondary',
                     };
                 @endphp
                 <tr>
                     <td class="align-middle">
                         <i class="fas {{ $icon }} mr-2" style="font-size:16px;width:20px;text-align:center;"></i>
                         <strong>{{ $page->title }}</strong>
+                        <br>
+                        <a href="{{ url($page->slug) }}" target="_blank" class="text-muted small">/{{ $page->slug }}</a>
                     </td>
-                    <td class="align-middle">
-                        <a href="{{ url($page->slug) }}" target="_blank" class="text-muted small">
-                            /{{ $page->slug }}
-                        </a>
+                    <td class="align-middle small">
+                        @if($page->seo_title)
+                            <span class="text-dark">{{ $page->seo_title }}</span>
+                        @else
+                            <span class="text-muted font-italic">Not set</span>
+                        @endif
                     </td>
-                    <td class="align-middle text-muted small">
-                        {{ $page->updated_at->diffForHumans() }}
+                    <td class="align-middle small">
+                        @if($page->seo_description)
+                            <span class="text-dark">{{ Str::limit($page->seo_description, 80) }}</span>
+                        @else
+                            <span class="text-muted font-italic">Not set</span>
+                        @endif
+                    </td>
+                    <td class="align-middle text-center">
+                        @if($page->noindex)
+                            <span class="badge badge-danger">noindex</span>
+                        @else
+                            <span class="badge badge-success">index</span>
+                        @endif
                     </td>
                     <td class="align-middle text-right">
                         <a href="{{ route('admin.pages.edit', $page) }}" class="btn btn-xs btn-warning">

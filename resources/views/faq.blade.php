@@ -1,7 +1,28 @@
 @extends('layouts.app')
 
-@section('title', 'FAQ — DiziBul')
-@section('description', 'Frequently asked questions about DiziBul — subscriptions, streaming, subtitles and more.')
+@section('seo_title', $seoPage?->seo_title ?: 'Frequently Asked Questions')
+@section('meta_description', $seoPage?->seo_description ?: 'Get answers about DiziBul — how to watch Turkish dramas, English subtitle availability, translation timing, subscription plans, and login help.')
+@if($seoPage?->noindex)@section('noindex', '1')@endif
+@section('json_ld')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    @foreach($faqs as $i => $faq)
+    {
+      "@type": "Question",
+      "name": "{{ addslashes($faq->question) }}",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "{{ addslashes(strip_tags($faq->answer ?? '')) }}"
+      }
+    }{{ !$loop->last ? ',' : '' }}
+    @endforeach
+  ]
+}
+</script>
+@endsection
 
 @section('content')
 
