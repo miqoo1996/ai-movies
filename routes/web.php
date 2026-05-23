@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\EpisodeController as AdminEpisodeController;
 use App\Http\Controllers\Admin\FaqController as AdminFaqController;
 use App\Http\Controllers\Admin\PageController as AdminPageController;
 use App\Http\Controllers\Admin\ShowController as AdminShowController;
+use App\Http\Controllers\Admin\SettingController as AdminSettingController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\MainController;
@@ -22,6 +23,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('shows', AdminShowController::class)->names('shows');
         Route::post('faqs/reorder', [AdminFaqController::class, 'reorder'])->name('faqs.reorder');
         Route::resource('faqs', AdminFaqController::class)->names('faqs')->except(['show']);
+        Route::get('settings',  [AdminSettingController::class, 'index'])->name('settings.index');
+        Route::post('settings', [AdminSettingController::class, 'update'])->name('settings.update');
+
         Route::get('admins',                        [AdminUserController::class, 'index'])->name('admins.index');
         Route::post('admins',                       [AdminUserController::class, 'store'])->name('admins.store');
         Route::delete('admins/{user}',              [AdminUserController::class, 'destroy'])->name('admins.destroy');

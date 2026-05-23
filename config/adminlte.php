@@ -322,6 +322,11 @@ return [
         ],
         ['header' => 'Settings'],
         [
+            'text' => 'General Settings',
+            'url'  => 'admin/settings',
+            'icon' => 'fas fa-fw fa-cog',
+        ],
+        [
             'text' => 'Admins',
             'url'  => 'admin/admins',
             'icon' => 'fas fa-fw fa-user-shield',

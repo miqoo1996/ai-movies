@@ -3,8 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'DiziBul — Turkish Drama Hub')</title>
+    <title>@yield('title', setting('site_name', 'DiziBul') . ' — Turkish Drama Hub')</title>
     <meta name="description" content="@yield('description', 'Discover the best Turkish TV series and dramas.')">
+    @if(setting('og_image'))
+    <meta property="og:image" content="{{ asset('storage/' . setting('og_image')) }}">
+    @endif
+    @if(setting('favicon'))
+    <link rel="icon" href="{{ asset('storage/' . setting('favicon')) }}">
+    @endif
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-[#080810] text-white antialiased">
@@ -18,12 +24,18 @@
 
             {{-- Logo --}}
             <a href="/" class="flex items-center gap-2.5 shrink-0 mr-2">
-                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-500/30">
-                    <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8 12.5v-9l6 4.5-6 4.5z"/>
-                    </svg>
-                </div>
-                <span class="text-[15px] font-bold tracking-tight gradient-text">DiziBul</span>
+                @if(setting('logo'))
+                    <img src="{{ asset('storage/' . setting('logo')) }}"
+                         alt="{{ setting('site_name', 'DiziBul') }}"
+                         class="h-8 w-auto object-contain">
+                @else
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-500/30">
+                        <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8 12.5v-9l6 4.5-6 4.5z"/>
+                        </svg>
+                    </div>
+                    <span class="text-[15px] font-bold tracking-tight gradient-text">{{ setting('site_name', 'DiziBul') }}</span>
+                @endif
             </a>
 
             {{-- Desktop nav links --}}
@@ -55,7 +67,7 @@
                 </a>
 
                 {{-- Sign In --}}
-                <a href="https://turk-flix.com/" target="_blank" class="hidden md:inline-flex items-center gap-2 px-4 py-1.5 rounded-md border border-violet-500/60 text-violet-300 text-sm font-semibold hover:bg-violet-500/10 hover:border-violet-400 transition-all duration-200">
+                <a href="{{ setting('signin_url', '#') }}" target="_blank" class="hidden md:inline-flex items-center gap-2 px-4 py-1.5 rounded-md border border-violet-500/60 text-violet-300 text-sm font-semibold hover:bg-violet-500/10 hover:border-violet-400 transition-all duration-200">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
                     </svg>
@@ -151,21 +163,24 @@
                         {{-- Social icons --}}
                         <p class="text-[10px] font-bold tracking-[0.15em] text-violet-400 uppercase mb-3">Follow Us</p>
                         <div class="flex gap-2.5">
-                            {{-- Facebook --}}
-                            <a href="https://www.facebook.com/TurkFlix/" target="_blank" rel="noopener" aria-label="Facebook"
+                            @if(setting('facebook_url'))
+                            <a href="{{ setting('facebook_url') }}" target="_blank" rel="noopener" aria-label="Facebook"
                                class="w-8 h-8 rounded-full flex items-center justify-center bg-[#1877F2]/20 hover:bg-[#1877F2] transition-all duration-200 text-[#1877F2] hover:text-white">
                                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
                             </a>
-                            {{-- Instagram --}}
-                            <a href="https://www.instagram.com/turk_flix/" target="_blank" rel="noopener" aria-label="Instagram"
+                            @endif
+                            @if(setting('instagram_url'))
+                            <a href="{{ setting('instagram_url') }}" target="_blank" rel="noopener" aria-label="Instagram"
                                class="w-8 h-8 rounded-full flex items-center justify-center bg-[#E1306C]/20 hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#e6683c] hover:to-[#dc2743] transition-all duration-200 text-[#E1306C] hover:text-white">
                                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
                             </a>
-                            {{-- X / Twitter --}}
-                            <a href="https://x.com/dizicentral" target="_blank" rel="noopener" aria-label="X / Twitter"
+                            @endif
+                            @if(setting('twitter_url'))
+                            <a href="{{ setting('twitter_url') }}" target="_blank" rel="noopener" aria-label="X / Twitter"
                                class="w-8 h-8 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 transition-all duration-200 text-slate-300 hover:text-white">
                                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                             </a>
+                            @endif
                         </div>
                     </div>
 
@@ -209,47 +224,51 @@
             <div class="sm:col-span-2 lg:col-span-1">
                 {{-- Logo --}}
                 <a href="/" class="inline-flex items-center gap-2.5 mb-3">
-                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-500/25">
-                        <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8 12.5v-9l6 4.5-6 4.5z"/>
-                        </svg>
-                    </div>
-                    <span class="text-lg font-bold tracking-tight gradient-text">DiziBul</span>
+                    @if(setting('logo'))
+                        <img src="{{ asset('storage/' . setting('logo')) }}"
+                             alt="{{ setting('site_name', 'DiziBul') }}"
+                             class="h-8 w-auto object-contain">
+                    @else
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-500/25">
+                            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8 12.5v-9l6 4.5-6 4.5z"/>
+                            </svg>
+                        </div>
+                        <span class="text-lg font-bold tracking-tight gradient-text">{{ setting('site_name', 'DiziBul') }}</span>
+                    @endif
                 </a>
                 <p class="text-slate-500 text-sm mb-6 leading-relaxed">
-                    Turkish Dramas? We've got the çay! ☕
+                    {{ setting('site_tagline', "Turkish Dramas? We've got the çay! ☕") }}
                 </p>
 
                 {{-- Social icons --}}
                 <div class="flex items-center gap-3 mb-8">
-                    {{-- Facebook --}}
-                    <a href="https://www.facebook.com/TurkFlix/" target="_blank" rel="noopener" aria-label="Facebook"
+                    @if(setting('facebook_url'))
+                    <a href="{{ setting('facebook_url') }}" target="_blank" rel="noopener" aria-label="Facebook"
                        class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:border-white/30 transition-all duration-200">
-                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
-                        </svg>
+                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
                     </a>
-                    {{-- Instagram --}}
-                    <a href="https://www.instagram.com/turk_flix/" target="_blank" rel="noopener" aria-label="Instagram"
+                    @endif
+                    @if(setting('instagram_url'))
+                    <a href="{{ setting('instagram_url') }}" target="_blank" rel="noopener" aria-label="Instagram"
                        class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:border-white/30 transition-all duration-200">
-                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
-                        </svg>
+                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
                     </a>
-                    {{-- X / Twitter --}}
-                    <a href="https://x.com/dizicentral" target="_blank" rel="noopener" aria-label="X / Twitter"
+                    @endif
+                    @if(setting('twitter_url'))
+                    <a href="{{ setting('twitter_url') }}" target="_blank" rel="noopener" aria-label="X / Twitter"
                        class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:border-white/30 transition-all duration-200">
-                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                        </svg>
+                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                     </a>
+                    @endif
                 </div>
 
-                {{-- App store buttons --}}
+                {{-- App store buttons (only shown when URL is set) --}}
+                @if(setting('appstore_url') || setting('playstore_url'))
                 <div class="flex flex-wrap gap-3">
-                    {{-- App Store --}}
-                    <a href="#"
-                       class="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all duration-200 group">
+                    @if(setting('appstore_url'))
+                    <a href="{{ setting('appstore_url') }}"
+                       class="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all duration-200">
                         <svg class="w-5 h-5 text-white shrink-0" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
                         </svg>
@@ -258,9 +277,10 @@
                             <div class="text-[13px] font-semibold text-white leading-tight">App Store</div>
                         </div>
                     </a>
-                    {{-- Google Play --}}
-                    <a href="#"
-                       class="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all duration-200 group">
+                    @endif
+                    @if(setting('playstore_url'))
+                    <a href="{{ setting('playstore_url') }}"
+                       class="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all duration-200">
                         <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none">
                             <path d="M3.18 23.76c.3.17.64.24.99.21L15.66 12 12 8.34 3.18 23.76z" fill="#EA4335"/>
                             <path d="M20.47 10.2L17.3 8.37 13.34 12l3.96 3.96 3.17-1.83a2.02 2.02 0 000-3.93z" fill="#FBBC04"/>
@@ -272,7 +292,9 @@
                             <div class="text-[13px] font-semibold text-white leading-tight">Google Play</div>
                         </div>
                     </a>
+                    @endif
                 </div>
+                @endif
             </div>
 
             {{-- Col 2 · About --}}
