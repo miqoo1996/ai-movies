@@ -112,7 +112,8 @@
                     </svg>
                 </button>
 
-{{--                <a href="/calendar" class="nav-link px-3 py-2 rounded-md">Calendar</a>--}}
+                <a href="/shows?sort=newest" class="nav-link px-3 py-2 rounded-md">New Episodes</a>
+                <a href="/shows?sort=rating" class="nav-link px-3 py-2 rounded-md">Top Rated</a>
 
             </div>
 
@@ -199,25 +200,23 @@
 
                     {{-- Column 3 · Quick Links + Social --}}
                     <div class="col-span-12 md:col-span-3">
-{{--                        <p class="text-[10px] font-bold tracking-[0.15em] text-violet-400 uppercase mb-4">Quick Links</p>--}}
-{{--                        <ul class="space-y-1 mb-8">--}}
-{{--                            @foreach([--}}
-{{--                                ['label' => 'Upcoming Birthdays', 'href' => '#'],--}}
-{{--                                ['label' => 'About DiziBul',      'href' => '#'],--}}
-{{--                                ['label' => 'FAQ',                'href' => '/faq'],--}}
-{{--                                ['label' => 'Contact Us',         'href' => '/contact'],--}}
-{{--                                ['label' => 'Terms of Use',       'href' => '/terms'],--}}
-{{--                                ['label' => 'Privacy Policy',     'href' => '/privacy'],--}}
-{{--                            ] as $link)--}}
-{{--                            <li>--}}
-{{--                                <a href="{{ $link['href'] }}"--}}
-{{--                                   class="flex items-center gap-2 py-1.5 text-sm text-slate-400 hover:text-white transition-colors group">--}}
-{{--                                    <span class="w-1 h-1 rounded-full bg-violet-500/0 group-hover:bg-violet-500 transition-all"></span>--}}
-{{--                                    {{ $link['label'] }}--}}
-{{--                                </a>--}}
-{{--                            </li>--}}
-{{--                            @endforeach--}}
-{{--                        </ul>--}}
+                        <p class="text-[10px] font-bold tracking-[0.15em] text-violet-400 uppercase mb-4">Quick Links</p>
+                        <ul class="space-y-1 mb-8">
+                            @foreach([
+                                ['label' => 'New Episodes',    'href' => '/shows?sort=newest'],
+                                ['label' => 'Top Rated',       'href' => '/shows?sort=rating'],
+                                ['label' => 'Airing Now',      'href' => '/shows?status=Running'],
+                                ['label' => 'Contact Us',      'href' => '/contact'],
+                            ] as $link)
+                            <li>
+                                <a href="{{ $link['href'] }}"
+                                   class="flex items-center gap-2 py-1.5 text-sm text-slate-400 hover:text-white transition-colors group">
+                                    <span class="w-1 h-1 rounded-full bg-violet-500/0 group-hover:bg-violet-500 transition-all"></span>
+                                    {{ $link['label'] }}
+                                </a>
+                            </li>
+                            @endforeach
+                        </ul>
 
                         {{-- Social icons --}}
                         @php $navSocialLinks = \App\Models\SocialLink::active()->ordered()->get(); @endphp
@@ -244,11 +243,13 @@
         <div class="px-4 py-4 space-y-1">
             <a href="/" class="block px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 text-sm transition-all">Home</a>
             <a href="/shows" class="block px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 text-sm transition-all">Browse Shows</a>
+            <a href="/shows?sort=newest" class="block px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 text-sm transition-all">New Episodes</a>
             <a href="/shows?sort=rating" class="block px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 text-sm transition-all">Top Rated</a>
-            <a href="/shows?sort=newest" class="block px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 text-sm transition-all">New</a>
-            <a href="/faq" class="block px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 text-sm transition-all">FAQ</a>
+            <a href="/shows?status=Running" class="block px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 text-sm transition-all">Airing Now</a>
+            <a href="/contact" class="block px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 text-sm transition-all">Contact Us</a>
             <div class="pt-2 border-t border-white/5 mt-2">
-                @foreach($navGenres->take(10) as $genre)
+                <p class="px-3 py-1 text-[10px] font-bold tracking-widest text-violet-400 uppercase">Genres</p>
+                @foreach($navGenres->take(12) as $genre)
                 <a href="/shows?genre={{ $genre->slug }}" class="block px-3 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 text-sm transition-all">{{ $genre->name }}</a>
                 @endforeach
             </div>
@@ -398,7 +399,7 @@
                 <h4 class="text-[11px] font-bold tracking-[0.14em] text-white uppercase mb-5">Work With Us</h4>
                 <ul class="space-y-3">
                     <li>
-                        <a href="#" class="text-sm text-slate-500 hover:text-white transition-colors duration-150">Advertise</a>
+                        <a href="{{ url('/contact') }}" class="text-sm text-slate-500 hover:text-white transition-colors duration-150">Advertise</a>
                     </li>
                 </ul>
             </div>
