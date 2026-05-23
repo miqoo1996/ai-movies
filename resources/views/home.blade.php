@@ -116,9 +116,15 @@
 </section>
 {{-- ═══════════════════════════════════════════════════════════════ --}}
 
+{{-- ══════════════════════ TWO-COLUMN WRAPPER STARTS ══════════════════════ --}}
+<div class="bg-[#080810]">
+<div class="max-w-[1400px] mx-auto px-4 sm:px-6 flex gap-6 items-start">
+
+{{-- ─────────────────────── MAIN CONTENT (left) ─────────────────────── --}}
+<div class="flex-1 min-w-0">
+
 {{-- ═══════════════════════════════════ TOP 10 TODAY ═══════════ --}}
-<section class="bg-[#080810] py-6">
-    <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+<section class="py-6">
 
         {{-- Section heading --}}
         <div class="mb-4">
@@ -154,309 +160,189 @@
             </div>
         </div>
 
-    </div>
 </section>
 {{-- ═══════════════════════════════════════════════════════════════ --}}
 
 {{-- ═══════════════════════════════════ RECENTLY ADDED ═══════════ --}}
-<section class="bg-[#080810] py-6">
-    <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
-
+<section class="py-6">
         <div class="mb-4">
             <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">
                 Recently Added
             </h2>
         </div>
-
         <div class="swiper recently-added-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($recentlyAdded as $show)
                 <div class="swiper-slide !w-[130px] sm:!w-[150px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
-
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster_url }}"
-                                 alt="{{ $show->title }}"
-                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
                         </div>
-
-                        <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">
-                            {{ $show->title }}
-                        </p>
-
+                        <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">{{ $show->title }}</p>
                     </a>
                 </div>
                 @endforeach
             </div>
         </div>
-
-    </div>
 </section>
-{{-- ═══════════════════════════════════════════════════════════════ --}}
 
 {{-- ══════════════════════════ CLASSIC TURKISH DRAMAS ════════════ --}}
-<section class="bg-[#080810] py-6">
-    <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
-
+<section class="py-6">
         <div class="mb-4">
-            <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">
-                Classic Turkish Dramas
-            </h2>
+            <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">Classic Turkish Dramas</h2>
         </div>
-
         <div class="swiper classic-dramas-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($classicDramas as $show)
                 <div class="swiper-slide !w-[130px] sm:!w-[150px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
-
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster_url }}"
-                                 alt="{{ $show->title }}"
-                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
                         </div>
-
-                        <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">
-                            {{ $show->title }}
-                        </p>
-
+                        <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">{{ $show->title }}</p>
                     </a>
                 </div>
                 @endforeach
             </div>
         </div>
-
-    </div>
 </section>
-{{-- ═══════════════════════════════════════════════════════════════ --}}
 
 {{-- ══════════════════════════ FOR DIZI NEWCOMERS ════════════════ --}}
-<section class="bg-[#080810] py-6">
-    <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
-
+<section class="py-6">
         <div class="mb-4">
-            <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">
-                For Dizi Newcomers
-            </h2>
+            <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">For Dizi Newcomers</h2>
         </div>
-
         <div class="swiper dizi-newcomers-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($diziNewcomers as $show)
                 <div class="swiper-slide !w-[130px] sm:!w-[150px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
-
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster_url }}"
-                                 alt="{{ $show->title }}"
-                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
                         </div>
-
-                        <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">
-                            {{ $show->title }}
-                        </p>
-
+                        <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">{{ $show->title }}</p>
                     </a>
                 </div>
                 @endforeach
             </div>
         </div>
-
-    </div>
 </section>
-{{-- ═══════════════════════════════════════════════════════════════ --}}
 
 {{-- ══════════════════════════ PERIOD DRAMAS ═════════════════════ --}}
-<section class="bg-[#080810] py-6">
-    <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
-
+<section class="py-6">
         <div class="mb-4">
-            <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">
-                Period Dramas
-            </h2>
+            <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">Period Dramas</h2>
         </div>
-
         <div class="swiper period-dramas-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($periodDramas as $show)
                 <div class="swiper-slide !w-[130px] sm:!w-[150px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
-
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster_url }}"
-                                 alt="{{ $show->title }}"
-                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
                         </div>
-
-                        <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">
-                            {{ $show->title }}
-                        </p>
-
+                        <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">{{ $show->title }}</p>
                     </a>
                 </div>
                 @endforeach
             </div>
         </div>
-
-    </div>
 </section>
-{{-- ═══════════════════════════════════════════════════════════════ --}}
 
 {{-- ══════════════════════════ STREAMING ON NETFLIX ══════════════ --}}
-<section class="bg-[#080810] py-6">
-    <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
-
+<section class="py-6">
         <div class="mb-4">
-            <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">
-                Streaming on Netflix
-            </h2>
+            <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">Streaming on Netflix</h2>
         </div>
-
         <div class="swiper netflix-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($netflixShows as $show)
                 <div class="swiper-slide !w-[130px] sm:!w-[150px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
-
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster_url }}"
-                                 alt="{{ $show->title }}"
-                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
                         </div>
-
-                        <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">
-                            {{ $show->title }}
-                        </p>
-
+                        <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">{{ $show->title }}</p>
                     </a>
                 </div>
                 @endforeach
             </div>
         </div>
-
-    </div>
 </section>
-{{-- ═══════════════════════════════════════════════════════════════ --}}
 
 {{-- ══════════════════════════ LOVE IS IN THE AIR ════════════════ --}}
-<section class="bg-[#080810] py-6">
-    <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
-
+<section class="py-6">
         <div class="mb-4">
-            <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">
-                Love Is In The Air
-            </h2>
+            <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">Love Is In The Air</h2>
         </div>
-
         <div class="swiper love-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($loveShows as $show)
                 <div class="swiper-slide !w-[130px] sm:!w-[150px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
-
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster_url }}"
-                                 alt="{{ $show->title }}"
-                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
                         </div>
-
-                        <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">
-                            {{ $show->title }}
-                        </p>
-
+                        <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">{{ $show->title }}</p>
                     </a>
                 </div>
                 @endforeach
             </div>
         </div>
-
-    </div>
 </section>
-{{-- ═══════════════════════════════════════════════════════════════ --}}
 
 {{-- ══════════════════════════ TURKISH REMAKES ═══════════════════ --}}
-<section class="bg-[#080810] py-6">
-    <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
-
+<section class="py-6">
         <div class="mb-4">
-            <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">
-                Turkish Remakes
-            </h2>
+            <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">Turkish Remakes</h2>
         </div>
-
         <div class="swiper turkish-remakes-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($turkishRemakes as $show)
                 <div class="swiper-slide !w-[130px] sm:!w-[150px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
-
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster_url }}"
-                                 alt="{{ $show->title }}"
-                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
                         </div>
-
-                        <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">
-                            {{ $show->title }}
-                        </p>
-
+                        <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">{{ $show->title }}</p>
                     </a>
                 </div>
                 @endforeach
             </div>
         </div>
-
-    </div>
 </section>
-{{-- ═══════════════════════════════════════════════════════════════ --}}
 
 {{-- ══════════════════════════ IMPOSSIBLE LOVE STORIES ═══════════ --}}
-<section class="bg-[#080810] py-6">
-    <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
-
+<section class="py-6">
         <div class="mb-4">
-            <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">
-                Impossible Love Stories
-            </h2>
+            <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">Impossible Love Stories</h2>
         </div>
-
         <div class="swiper impossible-love-swiper pb-8">
             <div class="swiper-wrapper">
                 @foreach($impossibleLove as $show)
                 <div class="swiper-slide !w-[130px] sm:!w-[150px]">
                     <a href="/shows/{{ $show->slug }}" class="relative block group">
-
                         <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18]">
-                            <img src="{{ $show->poster_url }}"
-                                 alt="{{ $show->title }}"
-                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
                         </div>
-
-                        <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">
-                            {{ $show->title }}
-                        </p>
-
+                        <p class="mt-2 text-white text-xs font-medium line-clamp-1 leading-snug px-0.5">{{ $show->title }}</p>
                     </a>
                 </div>
                 @endforeach
             </div>
         </div>
-
-    </div>
 </section>
-{{-- ═══════════════════════════════════════════════════════════════ --}}
 
 {{-- ══════════════════════════ TURKISH DAILY DRAMAS ══════════════ --}}
-<section class="bg-[#080810] py-6">
-    <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+<section class="py-6">
         <div class="mb-4">
             <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">Turkish Daily Dramas</h2>
         </div>
@@ -475,13 +361,10 @@
                 @endforeach
             </div>
         </div>
-    </div>
 </section>
-{{-- ═══════════════════════════════════════════════════════════════ --}}
 
 {{-- ══════════════════════════ ENEMIES TO LOVERS ═════════════════ --}}
-<section class="bg-[#080810] py-6">
-    <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+<section class="py-6">
         <div class="mb-4">
             <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">Enemies To Lovers</h2>
         </div>
@@ -500,13 +383,10 @@
                 @endforeach
             </div>
         </div>
-    </div>
 </section>
-{{-- ═══════════════════════════════════════════════════════════════ --}}
 
 {{-- ══════════════════════════ FAMILY TREE ═══════════════════════ --}}
-<section class="bg-[#080810] py-6">
-    <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+<section class="py-6">
         <div class="mb-4">
             <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">Family Tree</h2>
         </div>
@@ -525,13 +405,10 @@
                 @endforeach
             </div>
         </div>
-    </div>
 </section>
-{{-- ═══════════════════════════════════════════════════════════════ --}}
 
 {{-- ══════════════════════════ BINGE-WORTHY ══════════════════════ --}}
-<section class="bg-[#080810] py-6">
-    <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+<section class="py-6">
         <div class="mb-4">
             <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">Binge-Worthy</h2>
         </div>
@@ -550,13 +427,10 @@
                 @endforeach
             </div>
         </div>
-    </div>
 </section>
-{{-- ═══════════════════════════════════════════════════════════════ --}}
 
 {{-- ══════════════════════════ WATCH IN ONE WEEKEND ══════════════ --}}
-<section class="bg-[#080810] py-6">
-    <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+<section class="py-6">
         <div class="mb-4">
             <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">Watch In One Weekend</h2>
         </div>
@@ -575,13 +449,10 @@
                 @endforeach
             </div>
         </div>
-    </div>
 </section>
-{{-- ═══════════════════════════════════════════════════════════════ --}}
 
 {{-- ══════════════════════════ GONE TOO SOON ═════════════════════ --}}
-<section class="bg-[#080810] py-6">
-    <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+<section class="py-6 pb-10">
         <div class="mb-4">
             <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">Gone Too Soon</h2>
         </div>
@@ -600,9 +471,99 @@
                 @endforeach
             </div>
         </div>
-    </div>
 </section>
-{{-- ═══════════════════════════════════════════════════════════════ --}}
+
+</div>{{-- END main content --}}
+
+{{-- ─────────────────────── STICKY SIDEBAR (right) ─────────────────────── --}}
+<aside class="hidden xl:block w-[268px] shrink-0 py-6">
+    <div class="sticky top-[76px]">
+
+        {{-- Most Popular --}}
+        <div class="bg-[#0d0d18] rounded-xl overflow-hidden border border-white/5">
+            <div class="px-4 py-3 border-b border-white/5 flex items-center gap-2">
+                <span class="w-1 h-4 bg-[#e63946] rounded-full inline-block"></span>
+                <h3 class="text-white text-xs font-black uppercase tracking-widest">Most Popular</h3>
+            </div>
+            <div class="divide-y divide-white/5">
+                @foreach($sidebarShows as $i => $show)
+                <a href="/shows/{{ $show->slug }}"
+                   class="flex items-center gap-3 px-3 py-2.5 hover:bg-white/[0.04] transition-colors group">
+                    <span class="text-slate-600 text-xs font-bold w-5 shrink-0 text-center group-hover:text-slate-400 transition-colors">
+                        {{ $i + 1 }}
+                    </span>
+                    <div class="w-10 h-14 shrink-0 rounded overflow-hidden bg-[#13131f]">
+                        <img src="{{ $show->poster_url }}"
+                             alt="{{ $show->title }}"
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <p class="text-white text-xs font-semibold line-clamp-2 leading-snug group-hover:text-violet-300 transition-colors">
+                            {{ $show->title }}
+                        </p>
+                        @if($show->year || $show->status)
+                        <p class="text-slate-500 text-[10px] mt-0.5">
+                            {{ $show->year }}{{ $show->year && $show->status ? ' · ' : '' }}{{ $show->status === 'Running' ? 'Airing' : ($show->status === 'Ended' ? 'Ended' : $show->status) }}
+                        </p>
+                        @endif
+                    </div>
+                </a>
+                @endforeach
+            </div>
+            <div class="px-4 py-3 border-t border-white/5">
+                <a href="{{ url('/shows') }}"
+                   class="block text-center text-xs font-semibold text-violet-400 hover:text-violet-300 transition-colors">
+                    Browse All Shows →
+                </a>
+            </div>
+        </div>
+
+        {{-- Airing Now --}}
+        <div class="bg-[#0d0d18] rounded-xl overflow-hidden border border-white/5 mt-4">
+            <div class="px-4 py-3 border-b border-white/5 flex items-center gap-2">
+                <span class="w-1 h-4 bg-emerald-400 rounded-full inline-block"></span>
+                <h3 class="text-white text-xs font-black uppercase tracking-widest">Airing Now</h3>
+            </div>
+            <div class="divide-y divide-white/5">
+                @foreach($sidebarTopRated as $i => $show)
+                <a href="/shows/{{ $show->slug }}"
+                   class="flex items-center gap-3 px-3 py-2.5 hover:bg-white/[0.04] transition-colors group">
+                    <span class="text-slate-600 text-xs font-bold w-5 shrink-0 text-center group-hover:text-slate-400 transition-colors">
+                        {{ $i + 1 }}
+                    </span>
+                    <div class="w-10 h-14 shrink-0 rounded overflow-hidden bg-[#13131f]">
+                        <img src="{{ $show->poster_url }}"
+                             alt="{{ $show->title }}"
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <p class="text-white text-xs font-semibold line-clamp-2 leading-snug group-hover:text-emerald-300 transition-colors">
+                            {{ $show->title }}
+                        </p>
+                        <div class="flex items-center gap-1 mt-0.5">
+                            <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0"></span>
+                            <span class="text-emerald-400 text-[10px] font-semibold">Airing</span>
+                            @if($show->network)
+                            <span class="text-slate-600 text-[10px]">· {{ $show->network }}</span>
+                            @endif
+                        </div>
+                    </div>
+                </a>
+                @endforeach
+            </div>
+            <div class="px-4 py-3 border-t border-white/5">
+                <a href="{{ url('/shows?status=Running') }}"
+                   class="block text-center text-xs font-semibold text-emerald-400 hover:text-emerald-300 transition-colors">
+                    See All Airing Shows →
+                </a>
+            </div>
+        </div>
+
+    </div>
+</aside>
+
+</div>{{-- END flex row --}}
+</div>{{-- END bg wrapper --}}
 
 @endsection
 

@@ -14,6 +14,8 @@ class ShowController extends Controller
     public function home()
     {
         $sliderShows    = Show::orderBy('subscribers', 'desc')->take(9)->get();
+        $sidebarShows      = Show::orderBy('subscribers', 'desc')->take(5)->get();
+        $sidebarTopRated   = Show::where('status', 'Running')->orderBy('subscribers', 'desc')->take(5)->get();
         $top10Shows     = Show::orderBy('subscribers', 'desc')->take(10)->get();
         $recentlyAdded  = Show::orderBy('created_at', 'desc')->take(8)->get();
         $classicDramas  = Show::where('year', '<=', 2015)->orderBy('subscribers', 'desc')->take(8)->get();
@@ -36,7 +38,7 @@ class ShowController extends Controller
             'sliderShows', 'top10Shows', 'recentlyAdded', 'classicDramas', 'diziNewcomers',
             'periodDramas', 'netflixShows', 'loveShows', 'turkishRemakes', 'impossibleLove',
             'dailyDramas', 'enemiesToLovers', 'familyTree', 'bingeWorthy', 'oneWeekend', 'goneTooSoon',
-            'seoPage'
+            'seoPage', 'sidebarShows', 'sidebarTopRated'
         ));
     }
 
