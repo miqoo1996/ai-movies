@@ -320,6 +320,12 @@ return [
             'url'  => 'admin/faqs',
             'icon' => 'fas fa-fw fa-question-circle',
         ],
+        ['header' => 'Settings'],
+        [
+            'text' => 'Admins',
+            'url'  => 'admin/admins',
+            'icon' => 'fas fa-fw fa-user-shield',
+        ],
     ],
 
     /*
