@@ -9,7 +9,7 @@
             <a href="{{ route('admin.shows.episodes.index', $show) }}" class="btn btn-success btn-sm">
                 <i class="fas fa-list-ol mr-1"></i> Episodes
             </a>
-            <a href="/shows/{{ $show->slug }}" target="_blank" class="btn btn-info btn-sm">
+            <a href="{{ route('shows.show', $show->slug) }}" target="_blank" class="btn btn-info btn-sm">
                 <i class="fas fa-eye mr-1"></i> View
             </a>
             <a href="{{ route('admin.shows.index') }}" class="btn btn-secondary btn-sm">

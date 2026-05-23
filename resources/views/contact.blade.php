@@ -148,7 +148,7 @@
                         <div style="padding:0 0.25rem;">
                             <p class="text-[13px] text-slate-600 leading-relaxed">
                                 For cancellations, contact us at least <span class="text-slate-400 font-semibold">48 hours</span> before your next billing date.
-                                <a href="/terms#subscriptions" class="text-slate-400 hover:text-white underline underline-offset-2 transition-colors">Terms →</a>
+                                <a href="{{ route('terms') }}#subscriptions" class="text-slate-400 hover:text-white underline underline-offset-2 transition-colors">Terms →</a>
                             </p>
                         </div>
 

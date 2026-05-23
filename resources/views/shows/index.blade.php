@@ -35,7 +35,7 @@
         <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem;">
             <h2 style="color:#fff; font-size:0.75rem; font-weight:900; text-transform:uppercase; letter-spacing:0.15em;">Filters</h2>
             @if($q || $status || $genre || $network || $year)
-            <a href="/shows" style="font-size:0.7rem; color:#94a3b8; text-decoration:none;" onmouseover="this.style.color='#e63946'" onmouseout="this.style.color='#94a3b8'">Clear all</a>
+            <a href="{{ route('shows.index') }}" style="font-size:0.7rem; color:#94a3b8; text-decoration:none;" onmouseover="this.style.color='#e63946'" onmouseout="this.style.color='#94a3b8'">Clear all</a>
             @endif
         </div>
 
@@ -191,7 +191,7 @@
         @if($shows->count())
         <div style="display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:1rem;">
             @foreach($shows as $show)
-            <a href="/shows/{{ $show->slug }}" class="show-card" style="position:relative; display:block; border-radius:0.75rem; overflow:hidden; background:#111122; aspect-ratio:2/3; text-decoration:none;">
+            <a href="{{ route('shows.show', $show->slug) }}" class="show-card" style="position:relative; display:block; border-radius:0.75rem; overflow:hidden; background:#111122; aspect-ratio:2/3; text-decoration:none;">
 
                 {{-- Poster --}}
                 @if($show->poster_url)
@@ -268,7 +268,7 @@
             </div>
             <h3 style="color:#fff; font-size:1.125rem; font-weight:700; margin:0 0 0.5rem;">No series found</h3>
             <p style="color:#64748b; font-size:0.875rem; margin:0 0 1.5rem;">Try adjusting your filters or search terms.</p>
-            <a href="/shows" style="padding:0.625rem 1.25rem; background:#e63946; color:#fff; border-radius:0.5rem; font-size:0.875rem; font-weight:700; text-decoration:none;">Clear Filters</a>
+            <a href="{{ route('shows.index') }}" style="padding:0.625rem 1.25rem; background:#e63946; color:#fff; border-radius:0.5rem; font-size:0.875rem; font-weight:700; text-decoration:none;">Clear Filters</a>
         </div>
         @endif
 

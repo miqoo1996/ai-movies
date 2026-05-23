@@ -215,7 +215,7 @@
                         <a href="{{ route('admin.shows.edit', $show) }}" class="btn btn-xs btn-warning" title="Edit">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a href="/shows/{{ $show->slug }}" target="_blank" class="btn btn-xs btn-info" title="View">
+                        <a href="{{ route('shows.show', $show->slug) }}" target="_blank" class="btn btn-xs btn-info" title="View">
                             <i class="fas fa-eye"></i>
                         </a>
                         <form method="POST" action="{{ route('admin.shows.destroy', $show) }}" class="d-inline"

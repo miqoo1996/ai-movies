@@ -40,7 +40,7 @@
                      data-slug="{{ $show->slug }}">
 
                     {{-- Clickable link covers the entire slide (below nav buttons) --}}
-                    <a href="/shows/{{ $show->slug }}" class="absolute inset-0 z-10 block overflow-hidden">
+                    <a href="{{ route('shows.show', $show->slug) }}" class="absolute inset-0 z-10 block overflow-hidden">
                         {{-- Blurred background fills the frame --}}
                         <img src="{{ $show->poster_url }}"
                              alt=""
@@ -138,7 +138,7 @@
             <div class="swiper-wrapper">
                 @foreach($top10Shows as $rank => $show)
                 <div class="swiper-slide !w-[155px] sm:!w-[185px]">
-                    <a href="/shows/{{ $show->slug }}" class="relative block group">
+                    <a href="{{ route('shows.show', $show->slug) }}" class="relative block group">
 
                         {{-- Poster --}}
                         <div class="poster-wrap aspect-[2/3]">
@@ -174,7 +174,7 @@
             <div class="swiper-wrapper">
                 @foreach($recentlyAdded as $show)
                 <div class="swiper-slide !w-[155px] sm:!w-[185px]">
-                    <a href="/shows/{{ $show->slug }}" class="relative block group">
+                    <a href="{{ route('shows.show', $show->slug) }}" class="relative block group">
                         <div class="poster-wrap aspect-[2/3]">
                             <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
@@ -196,7 +196,7 @@
             <div class="swiper-wrapper">
                 @foreach($classicDramas as $show)
                 <div class="swiper-slide !w-[155px] sm:!w-[185px]">
-                    <a href="/shows/{{ $show->slug }}" class="relative block group">
+                    <a href="{{ route('shows.show', $show->slug) }}" class="relative block group">
                         <div class="poster-wrap aspect-[2/3]">
                             <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
@@ -218,7 +218,7 @@
             <div class="swiper-wrapper">
                 @foreach($diziNewcomers as $show)
                 <div class="swiper-slide !w-[155px] sm:!w-[185px]">
-                    <a href="/shows/{{ $show->slug }}" class="relative block group">
+                    <a href="{{ route('shows.show', $show->slug) }}" class="relative block group">
                         <div class="poster-wrap aspect-[2/3]">
                             <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
@@ -240,7 +240,7 @@
             <div class="swiper-wrapper">
                 @foreach($periodDramas as $show)
                 <div class="swiper-slide !w-[155px] sm:!w-[185px]">
-                    <a href="/shows/{{ $show->slug }}" class="relative block group">
+                    <a href="{{ route('shows.show', $show->slug) }}" class="relative block group">
                         <div class="poster-wrap aspect-[2/3]">
                             <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
@@ -262,7 +262,7 @@
             <div class="swiper-wrapper">
                 @foreach($netflixShows as $show)
                 <div class="swiper-slide !w-[155px] sm:!w-[185px]">
-                    <a href="/shows/{{ $show->slug }}" class="relative block group">
+                    <a href="{{ route('shows.show', $show->slug) }}" class="relative block group">
                         <div class="poster-wrap aspect-[2/3]">
                             <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
@@ -284,7 +284,7 @@
             <div class="swiper-wrapper">
                 @foreach($loveShows as $show)
                 <div class="swiper-slide !w-[155px] sm:!w-[185px]">
-                    <a href="/shows/{{ $show->slug }}" class="relative block group">
+                    <a href="{{ route('shows.show', $show->slug) }}" class="relative block group">
                         <div class="poster-wrap aspect-[2/3]">
                             <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
@@ -306,7 +306,7 @@
             <div class="swiper-wrapper">
                 @foreach($turkishRemakes as $show)
                 <div class="swiper-slide !w-[155px] sm:!w-[185px]">
-                    <a href="/shows/{{ $show->slug }}" class="relative block group">
+                    <a href="{{ route('shows.show', $show->slug) }}" class="relative block group">
                         <div class="poster-wrap aspect-[2/3]">
                             <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
@@ -328,7 +328,7 @@
             <div class="swiper-wrapper">
                 @foreach($impossibleLove as $show)
                 <div class="swiper-slide !w-[155px] sm:!w-[185px]">
-                    <a href="/shows/{{ $show->slug }}" class="relative block group">
+                    <a href="{{ route('shows.show', $show->slug) }}" class="relative block group">
                         <div class="poster-wrap aspect-[2/3]">
                             <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
@@ -350,7 +350,7 @@
             <div class="swiper-wrapper">
                 @foreach($dailyDramas as $show)
                 <div class="swiper-slide !w-[155px] sm:!w-[185px]">
-                    <a href="/shows/{{ $show->slug }}" class="relative block group">
+                    <a href="{{ route('shows.show', $show->slug) }}" class="relative block group">
                         <div class="poster-wrap aspect-[2/3]">
                             <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
@@ -372,7 +372,7 @@
             <div class="swiper-wrapper">
                 @foreach($enemiesToLovers as $show)
                 <div class="swiper-slide !w-[155px] sm:!w-[185px]">
-                    <a href="/shows/{{ $show->slug }}" class="relative block group">
+                    <a href="{{ route('shows.show', $show->slug) }}" class="relative block group">
                         <div class="poster-wrap aspect-[2/3]">
                             <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
@@ -394,7 +394,7 @@
             <div class="swiper-wrapper">
                 @foreach($familyTree as $show)
                 <div class="swiper-slide !w-[155px] sm:!w-[185px]">
-                    <a href="/shows/{{ $show->slug }}" class="relative block group">
+                    <a href="{{ route('shows.show', $show->slug) }}" class="relative block group">
                         <div class="poster-wrap aspect-[2/3]">
                             <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
@@ -416,7 +416,7 @@
             <div class="swiper-wrapper">
                 @foreach($bingeWorthy as $show)
                 <div class="swiper-slide !w-[155px] sm:!w-[185px]">
-                    <a href="/shows/{{ $show->slug }}" class="relative block group">
+                    <a href="{{ route('shows.show', $show->slug) }}" class="relative block group">
                         <div class="poster-wrap aspect-[2/3]">
                             <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
@@ -438,7 +438,7 @@
             <div class="swiper-wrapper">
                 @foreach($oneWeekend as $show)
                 <div class="swiper-slide !w-[155px] sm:!w-[185px]">
-                    <a href="/shows/{{ $show->slug }}" class="relative block group">
+                    <a href="{{ route('shows.show', $show->slug) }}" class="relative block group">
                         <div class="poster-wrap aspect-[2/3]">
                             <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
@@ -460,7 +460,7 @@
             <div class="swiper-wrapper">
                 @foreach($goneTooSoon as $show)
                 <div class="swiper-slide !w-[155px] sm:!w-[185px]">
-                    <a href="/shows/{{ $show->slug }}" class="relative block group">
+                    <a href="{{ route('shows.show', $show->slug) }}" class="relative block group">
                         <div class="poster-wrap aspect-[2/3]">
                             <img src="{{ $show->poster_url }}" alt="{{ $show->title }}" class="w-full h-full object-cover">
                             <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"></div>
@@ -486,7 +486,7 @@
             </div>
             <div class="divide-y divide-white/5">
                 @foreach($sidebarShows as $i => $show)
-                <a href="/shows/{{ $show->slug }}"
+                <a href="{{ route('shows.show', $show->slug) }}"
                    class="flex items-center gap-3 px-3 py-2.5 hover:bg-white/[0.04] transition-colors group">
                     <span class="text-slate-600 text-xs font-bold w-5 shrink-0 text-center group-hover:text-slate-400 transition-colors">
                         {{ $i + 1 }}
@@ -510,7 +510,7 @@
                 @endforeach
             </div>
             <div class="px-4 py-3 border-t border-white/5">
-                <a href="{{ url('/shows') }}"
+                <a href="{{ route('shows.index') }}"
                    class="block text-center text-xs font-semibold text-violet-400 hover:text-violet-300 transition-colors">
                     Browse All Shows →
                 </a>
@@ -525,7 +525,7 @@
             </div>
             <div class="divide-y divide-white/5">
                 @foreach($sidebarTopRated as $i => $show)
-                <a href="/shows/{{ $show->slug }}"
+                <a href="{{ route('shows.show', $show->slug) }}"
                    class="flex items-center gap-3 px-3 py-2.5 hover:bg-white/[0.04] transition-colors group">
                     <span class="text-slate-600 text-xs font-bold w-5 shrink-0 text-center group-hover:text-slate-400 transition-colors">
                         {{ $i + 1 }}
@@ -551,7 +551,7 @@
                 @endforeach
             </div>
             <div class="px-4 py-3 border-t border-white/5">
-                <a href="{{ url('/shows?status=Running') }}"
+                <a href="{{ route('shows.index', ['status' => 'Running']) }}"
                    class="block text-center text-xs font-semibold text-emerald-400 hover:text-emerald-300 transition-colors">
                     See All Airing Shows →
                 </a>

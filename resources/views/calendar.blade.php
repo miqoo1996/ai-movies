@@ -62,7 +62,7 @@
                     <div style="flex:1; background:#fff; min-height:160px;">
                         @forelse($dayEps as $ep)
                         @php $show = $ep->show; @endphp
-                        <a href="/shows/{{ $show->slug }}"
+                        <a href="{{ route('shows.show', $show->slug) }}"
                            style="display:flex; align-items:flex-start; gap:0.5rem; padding:0.625rem 0.5rem; border-bottom:1px solid #f0f0f0; text-decoration:none; transition:background 0.15s;"
                            onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='transparent'">
 

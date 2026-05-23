@@ -375,7 +375,7 @@
             </div>
             <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3">
                 @foreach($relatedShows as $rel)
-                <a href="/shows/{{ $rel->slug }}" class="block group">
+                <a href="{{ route('shows.show', $rel->slug) }}" class="block group">
                     <div class="relative rounded-xl overflow-hidden aspect-[2/3] bg-[#0d0d18] mb-1.5">
                         <img src="{{ $rel->poster_url }}" alt="{{ $rel->title }}"
                              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">

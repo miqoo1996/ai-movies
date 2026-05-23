@@ -100,7 +100,7 @@
             {{-- Desktop nav links --}}
             <div class="hidden md:flex items-center gap-1 flex-1">
 
-                <a href="/" class="nav-link px-3 py-2 rounded-md">Home</a>
+                <a href="{{ url('/') }}" class="nav-link px-3 py-2 rounded-md">Home</a>
 
                 {{-- Browse trigger --}}
                 <button id="browse-trigger"
@@ -112,15 +112,15 @@
                     </svg>
                 </button>
 
-                <a href="/shows?sort=newest" class="nav-link px-3 py-2 rounded-md">New Episodes</a>
-                <a href="/shows?sort=rating" class="nav-link px-3 py-2 rounded-md">Top Rated</a>
+                <a href="{{ route('shows.index', ['sort' => 'newest']) }}" class="nav-link px-3 py-2 rounded-md">New Episodes</a>
+                <a href="{{ route('shows.index', ['sort' => 'rating']) }}" class="nav-link px-3 py-2 rounded-md">Top Rated</a>
 
             </div>
 
             {{-- Right side --}}
             <div class="flex items-center gap-2 ml-auto">
                 {{-- Search --}}
-                <a href="/shows" class="p-2 text-slate-400 hover:text-white transition-colors rounded-md hover:bg-white/5" aria-label="Search">
+                <a href="{{ route('shows.index') }}" class="p-2 text-slate-400 hover:text-white transition-colors rounded-md hover:bg-white/5" aria-label="Search">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                     </svg>
@@ -157,14 +157,14 @@
                         <p class="text-[10px] font-bold tracking-[0.15em] text-violet-400 uppercase mb-4">TV Shows</p>
                         <ul class="space-y-1">
                             @foreach([
-                                ['label' => 'Trending TV Shows',    'href' => '/shows?sort=subscribers'],
-                                ['label' => 'Most Popular',          'href' => '/shows?sort=rating'],
-                                ['label' => 'Top Airing Now',        'href' => '/shows?status=Continuing'],
-                                ['label' => 'Latest Dizi News',      'href' => '/shows?sort=newest'],
-                                ['label' => 'New Episodes',          'href' => '/shows?sort=newest'],
-                                ['label' => 'Upcoming Shows',        'href' => '/shows'],
-                                ['label' => 'Cancelled Shows',       'href' => '/shows?status=Ended'],
-                                ['label' => 'Activity Feed',         'href' => '/shows'],
+                                ['label' => 'Trending TV Shows',    'href' => route('shows.index', ['sort' => 'subscribers'])],
+                                ['label' => 'Most Popular',          'href' => route('shows.index', ['sort' => 'rating'])],
+                                ['label' => 'Top Airing Now',        'href' => route('shows.index', ['status' => 'Running'])],
+                                ['label' => 'Latest Dizi News',      'href' => route('shows.index', ['sort' => 'newest'])],
+                                ['label' => 'New Episodes',          'href' => route('shows.index', ['sort' => 'newest'])],
+                                ['label' => 'Upcoming Shows',        'href' => route('shows.index')],
+                                ['label' => 'Cancelled Shows',       'href' => route('shows.index', ['status' => 'Cancelled'])],
+                                ['label' => 'Activity Feed',         'href' => route('shows.index')],
                             ] as $item)
                             <li>
                                 <a href="{{ $item['href'] }}"
@@ -175,7 +175,7 @@
                             </li>
                             @endforeach
                         </ul>
-                        <a href="/shows"
+                        <a href="{{ route('shows.index') }}"
                            class="mt-6 inline-flex items-center gap-2 px-5 py-2 rounded-md bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold uppercase tracking-wider transition-all duration-200 hover:shadow-lg hover:shadow-violet-500/30">
                             Explore Shows
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -189,7 +189,7 @@
                         <p class="text-[10px] font-bold tracking-[0.15em] text-violet-400 uppercase mb-4">Genres</p>
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-1">
                             @foreach($navGenres as $genre)
-                            <a href="/shows?genre={{ $genre->slug }}"
+                            <a href="{{ route('shows.index', ['genre' => $genre->slug]) }}"
                                class="flex items-center gap-2 py-1.5 text-sm text-slate-400 hover:text-white transition-colors group truncate">
                                 <span class="w-1 h-1 rounded-full bg-violet-500/0 group-hover:bg-violet-500 transition-all shrink-0"></span>
                                 {{ $genre->name }}
@@ -203,10 +203,10 @@
                         <p class="text-[10px] font-bold tracking-[0.15em] text-violet-400 uppercase mb-4">Quick Links</p>
                         <ul class="space-y-1 mb-8">
                             @foreach([
-                                ['label' => 'New Episodes',    'href' => '/shows?sort=newest'],
-                                ['label' => 'Top Rated',       'href' => '/shows?sort=rating'],
-                                ['label' => 'Airing Now',      'href' => '/shows?status=Running'],
-                                ['label' => 'Contact Us',      'href' => '/contact'],
+                                ['label' => 'New Episodes',    'href' => route('shows.index', ['sort' => 'newest'])],
+                                ['label' => 'Top Rated',       'href' => route('shows.index', ['sort' => 'rating'])],
+                                ['label' => 'Airing Now',      'href' => route('shows.index', ['status' => 'Running'])],
+                                ['label' => 'Contact Us',      'href' => route('contact')],
                             ] as $link)
                             <li>
                                 <a href="{{ $link['href'] }}"
@@ -241,16 +241,16 @@
     {{-- Mobile menu --}}
     <div id="mobile-menu" class="hidden bg-[#0d0d18] border-t border-white/5 overflow-y-auto" style="max-height: calc(100dvh - 60px)">
         <div class="px-4 py-4 space-y-1">
-            <a href="/" class="block px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 text-sm transition-all">Home</a>
-            <a href="/shows" class="block px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 text-sm transition-all">Browse Shows</a>
-            <a href="/shows?sort=newest" class="block px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 text-sm transition-all">New Episodes</a>
-            <a href="/shows?sort=rating" class="block px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 text-sm transition-all">Top Rated</a>
-            <a href="/shows?status=Running" class="block px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 text-sm transition-all">Airing Now</a>
-            <a href="/contact" class="block px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 text-sm transition-all">Contact Us</a>
+            <a href="{{ url('/') }}" class="block px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 text-sm transition-all">Home</a>
+            <a href="{{ route('shows.index') }}" class="block px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 text-sm transition-all">Browse Shows</a>
+            <a href="{{ route('shows.index', ['sort' => 'newest']) }}" class="block px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 text-sm transition-all">New Episodes</a>
+            <a href="{{ route('shows.index', ['sort' => 'rating']) }}" class="block px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 text-sm transition-all">Top Rated</a>
+            <a href="{{ route('shows.index', ['status' => 'Running']) }}" class="block px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 text-sm transition-all">Airing Now</a>
+            <a href="{{ route('contact') }}" class="block px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 text-sm transition-all">Contact Us</a>
             <div class="pt-2 border-t border-white/5 mt-2">
                 <p class="px-3 py-1 text-[10px] font-bold tracking-widest text-violet-400 uppercase">Genres</p>
                 @foreach($navGenres->take(12) as $genre)
-                <a href="/shows?genre={{ $genre->slug }}" class="block px-3 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 text-sm transition-all">{{ $genre->name }}</a>
+                <a href="{{ route('shows.index', ['genre' => $genre->slug]) }}" class="block px-3 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 text-sm transition-all">{{ $genre->name }}</a>
                 @endforeach
             </div>
         </div>
@@ -274,7 +274,7 @@
             {{-- Col 1 · Brand --}}
             <div class="sm:col-span-2 lg:col-span-1">
                 {{-- Logo --}}
-                <a href="/" class="inline-flex items-center gap-2.5 mb-3">
+                <a href="{{ url('/') }}" class="inline-flex items-center gap-2.5 mb-3">
                     @if(setting('logo'))
                         <img src="{{ asset('storage/' . setting('logo')) }}"
                              alt="{{ setting('site_name', 'DiziBul') }}"
@@ -345,10 +345,10 @@
                 <ul class="space-y-3">
                     @foreach([
 //                        ['About Us',       '#'],
-                        ['FAQ',            '/faq'],
-                        ['Contact Us',     '/contact'],
-                        ['Terms of Use',   '/terms'],
-                        ['Privacy Policy', '/privacy'],
+                        ['FAQ',            route('faq')],
+                        ['Contact Us',     route('contact')],
+                        ['Terms of Use',   route('terms')],
+                        ['Privacy Policy', route('privacy')],
                     ] as [$label, $href])
                     <li>
                         <a href="{{ $href }}" class="text-sm text-slate-500 hover:text-white transition-colors duration-150">
@@ -364,10 +364,10 @@
                 <h4 class="text-[11px] font-bold tracking-[0.14em] text-white uppercase mb-5">What to Watch</h4>
                 <ul class="space-y-3">
                     @foreach([
-                        ['Trending TV Shows',     '/shows?sort=subscribers'],
-                        ['Most Popular TV Shows',  '/shows?sort=rating'],
-                        ['Newest TV Shows',        '/shows?sort=newest'],
-                        ['Upcoming TV Shows',      '/shows'],
+                        ['Trending TV Shows',     route('shows.index', ['sort' => 'subscribers'])],
+                        ['Most Popular TV Shows',  route('shows.index', ['sort' => 'rating'])],
+                        ['Newest TV Shows',        route('shows.index', ['sort' => 'newest'])],
+                        ['Upcoming TV Shows',      route('shows.index')],
                     ] as [$label, $href])
                     <li>
                         <a href="{{ $href }}" class="text-sm text-slate-500 hover:text-white transition-colors duration-150">
