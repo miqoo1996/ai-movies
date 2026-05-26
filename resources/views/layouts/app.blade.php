@@ -66,8 +66,10 @@
     @endif
 
     @yield('json_ld')
+
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2439709890454648"
          crossorigin="anonymous"></script>
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-[#080810] text-white antialiased">
