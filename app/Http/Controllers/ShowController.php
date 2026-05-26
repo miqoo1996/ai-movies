@@ -54,7 +54,8 @@ class ShowController extends Controller
         $query = Show::with('genres')->withCount('episodes');
 
         if ($q)       $query->where(fn($b) => $b->where('title', 'like', "%$q%")->orWhere('original_title', 'like', "%$q%"));
-        if ($status)  $query->where('status', $status);
+        if ($status === 'airing') $query->whereIn('status', ['Running', 'Returning Series']);
+        elseif ($status)          $query->where('status', $status);
         if ($network) $query->where('network', $network);
         if ($genre)   $query->whereHas('genres', fn($b) => $b->where('slug', $genre));
         if ($year)    $query->where('year', $year);
@@ -71,7 +72,7 @@ class ShowController extends Controller
         $shows    = $query->paginate(40)->withQueryString();
         $genres   = Genre::withCount('shows')->orderByDesc('shows_count')->get();
         $networks = Show::distinct()->orderBy('network')->pluck('network')->filter()->values();
-        $statuses = ['Running' => 'Airing Now', 'Returning Series' => 'Returning', 'Ended' => 'Ended', 'Cancelled' => 'Cancelled', 'Hiatus' => 'Hiatus'];
+        $statuses = ['airing' => 'Airing Now', 'Running' => 'Running', 'Returning Series' => 'Returning', 'Ended' => 'Ended', 'Cancelled' => 'Cancelled', 'Hiatus' => 'Hiatus'];
         $seoPage  = Page::where('slug', 'shows')->first();
 
         return view('shows.index', compact('shows', 'genres', 'networks', 'statuses', 'q', 'status', 'genre', 'network', 'sort', 'year', 'seoPage'));

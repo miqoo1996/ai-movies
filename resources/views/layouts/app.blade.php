@@ -116,7 +116,7 @@
                     </svg>
                 </button>
 
-                <a href="{{ route('shows.index', ['status' => 'Continuing']) }}" class="nav-link px-3 py-2 rounded-md">Airing Now</a>
+                <a href="{{ route('shows.index', ['status' => 'airing']) }}" class="nav-link px-3 py-2 rounded-md">Airing Now</a>
                 <a href="{{ route('shows.index', ['sort' => 'newest']) }}" class="nav-link px-3 py-2 rounded-md">New Episodes</a>
                 <a href="{{ route('shows.index', ['sort' => 'rating']) }}" class="nav-link px-3 py-2 rounded-md">Top Rated</a>
 
