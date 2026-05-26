@@ -25,96 +25,301 @@
 
 @section('content')
 
-{{-- ═══════════════════════════════════ FEATURED SLIDER ═══ --}}
-<section class="pt-[60px] bg-[#080810]">
-    <div class="max-w-[1600px] mx-auto px-4 sm:px-6 py-4">
-        <div class="flex gap-3" style="height:420px">
+{{-- ═══════════════════════════════════ 3D HERO SLIDER ═══════════════════════════ --}}
+<style>
+/* ── 3D Hero Slider ──────────────────────────────────────────────────────── */
+#hero3d { background: #080810; }
 
-            {{-- ── Left: auto-sliding carousel ───────────────────── --}}
-            <div class="relative flex-1 overflow-hidden rounded-xl group">
+.hero3d-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background-size: cover; background-position: center;
+    filter: blur(70px) brightness(0.2) saturate(1.6);
+    transform: scale(1.18);
+    transition: background-image 1.1s ease;
+}
 
-                {{-- Slides --}}
-                @foreach($sliderShows->take(5) as $idx => $show)
-                <div class="slider-slide absolute inset-0 transition-opacity duration-700 {{ $idx === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0' }}"
-                     data-index="{{ $idx }}"
-                     data-slug="{{ $show->slug }}">
+.hero3d-vignette {
+    position: absolute; inset: 0; z-index: 1;
+    background:
+        linear-gradient(to bottom, #080810 0px, transparent 100px, transparent 58%, #080810 100%),
+        radial-gradient(ellipse 90% 80% at 50% 55%, transparent 25%, #080810 85%);
+}
 
-                    {{-- Clickable link covers the entire slide (below nav buttons) --}}
-                    <a href="{{ route('shows.show', $show->slug) }}" class="absolute inset-0 z-10 block overflow-hidden">
-                        {{-- Blurred background fills the frame --}}
-                        <img src="{{ $show->poster_url }}"
-                             alt=""
-                             aria-hidden="true"
-                             class="absolute inset-0 w-full h-full object-cover scale-110 blur-2xl brightness-[0.35]">
-                        {{-- Full portrait poster, fully visible, centered --}}
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <img src="{{ $show->poster_url }}"
-                                 alt="{{ $show->title }}"
-                                 class="h-full w-auto max-w-none object-contain drop-shadow-2xl">
+.hero3d-inner {
+    position: relative; z-index: 2;
+    display: flex; flex-direction: column; align-items: center;
+}
+
+/* Viewport */
+.hero3d-viewport {
+    position: relative; width: 100%; height: 390px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: grab; overflow: visible; touch-action: pan-y;
+}
+.hero3d-viewport.grabbing { cursor: grabbing; }
+
+/* Track holds all absolutely-positioned cards */
+.hero3d-track {
+    position: relative; width: 100%; height: 100%;
+    overflow: visible;
+}
+
+/* Cards: anchored to center of track, JS moves via transform */
+.hero3d-card {
+    position: absolute;
+    width: 210px; height: 315px;
+    top: 50%; left: 50%;
+    margin-top: -157px; margin-left: -105px;
+    border-radius: 14px; overflow: hidden;
+    cursor: pointer;
+    will-change: transform, opacity;
+    transition:
+        transform  0.68s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        opacity    0.68s ease,
+        box-shadow 0.68s ease;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.hero3d-card img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    pointer-events: none; user-select: none; -webkit-user-select: none;
+}
+
+/* Glare sheen on center */
+.hero3d-card::before {
+    content: '';
+    position: absolute; inset: 0; z-index: 2;
+    background: linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.01) 55%);
+    opacity: 0; transition: opacity 0.5s; pointer-events: none;
+    border-radius: inherit;
+}
+.hero3d-card.is-center::before { opacity: 1; }
+
+/* Hover watch-overlay on center card */
+.hero3d-card::after {
+    content: '';
+    position: absolute; inset: 0; z-index: 3;
+    background: rgba(0,0,0,0.42);
+    opacity: 0; transition: opacity 0.28s; pointer-events: none;
+    border-radius: inherit;
+}
+.hero3d-card.is-center:hover::after { opacity: 1; }
+
+/* Violet glow ring on center card */
+.hero3d-card.is-center {
+    box-shadow:
+        0 0 0 2.5px rgba(139,92,246,0.7),
+        0 28px 80px rgba(0,0,0,0.8),
+        0 0 120px rgba(139,92,246,0.18);
+}
+
+/* Play button (inside card, above ::after overlay) */
+.hero3d-play {
+    position: absolute; inset: 0; z-index: 4;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.28s; pointer-events: none;
+}
+.hero3d-card.is-center:hover .hero3d-play { opacity: 1; }
+
+.hero3d-play-btn {
+    width: 60px; height: 60px; border-radius: 50%;
+    background: rgba(124,58,237,0.88); backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 0 10px rgba(124,58,237,0.22), 0 8px 32px rgba(0,0,0,0.5);
+    transition: transform 0.2s;
+}
+.hero3d-card.is-center:hover .hero3d-play-btn { transform: scale(1.1); }
+.hero3d-play-btn svg { width: 26px; height: 26px; margin-left: 3px; }
+
+/* Nav arrows */
+.hero3d-arrow {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 46px; height: 46px; border-radius: 50%;
+    background: rgba(10,10,22,0.72); backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.85);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 30; cursor: pointer;
+    transition: background 0.22s, border-color 0.22s, transform 0.22s;
+    outline: none;
+}
+.hero3d-arrow svg { width: 20px; height: 20px; }
+.hero3d-arrow:hover {
+    background: rgba(124,58,237,0.55);
+    border-color: rgba(139,92,246,0.55);
+    transform: translateY(-50%) scale(1.1);
+}
+.hero3d-arrow--prev { left: 22px; }
+.hero3d-arrow--next { right: 22px; }
+
+/* Info panel */
+.hero3d-info {
+    width: 100%; max-width: 680px;
+    padding: 16px 28px 8px; text-align: center;
+}
+
+.hero3d-meta {
+    display: flex; align-items: center; justify-content: center;
+    gap: 8px; margin-bottom: 10px; min-height: 24px;
+    font-size: 12px; color: #64748b;
+}
+.hero3d-badge {
+    display: inline-flex; padding: 2px 10px; border-radius: 999px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.03em;
+    background: rgba(139,92,246,0.14); color: #a78bfa;
+    border: 1px solid rgba(139,92,246,0.28);
+}
+.hero3d-badge.green {
+    background: rgba(52,211,153,0.12); color: #34d399;
+    border-color: rgba(52,211,153,0.25);
+}
+.hero3d-sep { color: #1e293b; }
+
+.hero3d-title {
+    font-size: 24px; font-weight: 900; color: #fff;
+    line-height: 1.2; margin: 0 0 8px;
+    transition: opacity 0.22s ease;
+}
+.hero3d-synopsis {
+    font-size: 13px; color: #94a3b8; line-height: 1.65;
+    margin: 0 0 18px;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    transition: opacity 0.22s ease;
+}
+
+.hero3d-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 28px; border-radius: 999px;
+    background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+    color: #fff; font-size: 14px; font-weight: 700;
+    text-decoration: none; letter-spacing: 0.01em;
+    box-shadow: 0 6px 28px rgba(124,58,237,0.45);
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+}
+.hero3d-cta:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 10px 40px rgba(124,58,237,0.62);
+    background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+    color: #fff; text-decoration: none;
+}
+.hero3d-cta svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+/* Dot navigation */
+.hero3d-dots {
+    display: flex; align-items: center; gap: 6px;
+    justify-content: center; padding: 6px 0 16px;
+}
+.hero3d-dot {
+    width: 7px; height: 7px; border-radius: 999px; border: none;
+    background: rgba(255,255,255,0.2); cursor: pointer;
+    transition: width 0.32s ease, background 0.32s ease;
+    padding: 0;
+}
+.hero3d-dot.active { width: 26px; background: #8b5cf6; }
+
+/* Progress rail */
+.hero3d-rail {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 3px; background: rgba(255,255,255,0.06); z-index: 5;
+}
+.hero3d-prog {
+    height: 100%;
+    background: linear-gradient(to right, #7c3aed, #a78bfa);
+    width: 0%;
+}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 640px) {
+    .hero3d-card { width: 150px; height: 225px; margin-top: -112px; margin-left: -75px; }
+    .hero3d-viewport { height: 285px; }
+    .hero3d-arrow { width: 38px; height: 38px; }
+    .hero3d-arrow svg { width: 17px; height: 17px; }
+    .hero3d-arrow--prev { left: 8px; }
+    .hero3d-arrow--next { right: 8px; }
+    .hero3d-title { font-size: 18px; }
+    .hero3d-synopsis { font-size: 12px; -webkit-line-clamp: 2; }
+    .hero3d-cta { padding: 9px 20px; font-size: 13px; }
+    .hero3d-info { padding: 12px 16px 6px; }
+}
+@media (min-width: 641px) and (max-width: 1024px) {
+    .hero3d-card { width: 180px; height: 270px; margin-top: -135px; margin-left: -90px; }
+    .hero3d-viewport { height: 340px; }
+}
+</style>
+
+<section id="hero3d" class="hero3d relative overflow-hidden pt-[60px]">
+
+    {{-- Cinematic ambient background --}}
+    <div id="hero3d-bg" class="hero3d-bg"></div>
+    <div class="hero3d-vignette"></div>
+
+    <div class="hero3d-inner">
+
+        {{-- ── 3D Viewport ──────────────────────────────────────────── --}}
+        <div id="hero3d-viewport" class="hero3d-viewport">
+
+            <div class="hero3d-track">
+                @foreach($sliderShows as $i => $show)
+                <article class="hero3d-card"
+                         data-index="{{ $i }}"
+                         data-href="{{ route('shows.show', $show->slug) }}"
+                         data-title="{{ $show->title }}"
+                         data-year="{{ $show->year }}"
+                         data-status="{{ $show->status }}"
+                         data-network="{{ $show->network ?? '' }}"
+                         data-synopsis="{{ Str::limit(strip_tags($show->synopsis ?? ''), 200) }}"
+                         data-poster="{{ $show->poster_url }}">
+                    <img src="{{ $show->poster_url }}" alt="{{ $show->title }}">
+                    <div class="hero3d-play">
+                        <div class="hero3d-play-btn">
+                            <svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
                         </div>
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
-                        <div class="absolute bottom-0 left-0 right-0 p-6 pb-8">
-                            <h2 class="text-white text-xl sm:text-2xl font-bold leading-snug line-clamp-2 mb-2 drop-shadow">
-                                {{ $show->title }}
-                            </h2>
-                            <p class="text-slate-300 text-sm line-clamp-2 leading-relaxed drop-shadow max-w-2xl">
-                                {{ Str::limit(strip_tags($show->synopsis ?? ''), 160) }}
-                            </p>
-                        </div>
-                    </a>
-                </div>
+                    </div>
+                </article>
                 @endforeach
-
-                {{-- Prev / Next — z-20 so they sit above the link overlay --}}
-                <button id="slider-prev"
-                        class="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/50 hover:bg-black/80 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
-                    </svg>
-                </button>
-                <button id="slider-next"
-                        class="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/50 hover:bg-black/80 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
-                    </svg>
-                </button>
-
-                {{-- Dots — z-20 --}}
-                <div class="absolute bottom-3 right-5 z-20 flex gap-1.5">
-                    @foreach($sliderShows->take(5) as $idx => $show)
-                    <button class="slider-dot rounded-full transition-all duration-300 {{ $idx === 0 ? 'w-5 h-2 bg-white' : 'w-2 h-2 bg-white/40 hover:bg-white/70' }}"
-                            data-index="{{ $idx }}"></button>
-                    @endforeach
-                </div>
             </div>
 
-            {{-- ── Right: sidebar cards (same pool as slider, indices 1–4) --}}
-            <div class="hidden lg:flex w-[290px] flex-col gap-2">
-                @foreach($sliderShows->take(5)->skip(1) as $show)
-                <div class="sidebar-card flex gap-3 bg-[#0d0d18] rounded-lg overflow-hidden hover:bg-[#13131f] transition-all cursor-pointer flex-1 min-h-0 ring-0 ring-violet-500/0"
-                     data-slide-index="{{ $loop->index + 1 }}">
-                    <div class="w-[88px] shrink-0 overflow-hidden">
-                        <img src="{{ $show->poster_url }}"
-                             alt="{{ $show->title }}"
-                             class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
-                    </div>
-                    <div class="flex flex-col justify-center py-3 pr-3 min-w-0">
-                        <span class="text-[10px] font-bold text-violet-400 uppercase tracking-wider mb-1">Trending</span>
-                        <h3 class="text-white text-sm font-semibold line-clamp-2 leading-snug hover:text-violet-300 transition-colors">
-                            {{ $show->title }}
-                        </h3>
-                        <p class="text-slate-500 text-xs mt-1.5 line-clamp-2 leading-relaxed">
-                            {{ Str::limit(strip_tags($show->synopsis ?? ''), 80) }}
-                        </p>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-
+            {{-- Arrows --}}
+            <button id="hero3d-prev" class="hero3d-arrow hero3d-arrow--prev" aria-label="Previous">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+            </button>
+            <button id="hero3d-next" class="hero3d-arrow hero3d-arrow--next" aria-label="Next">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 6 15 12 9 18"/>
+                </svg>
+            </button>
         </div>
+
+        {{-- ── Info Panel ───────────────────────────────────────────── --}}
+        <div class="hero3d-info">
+            <div id="hero3d-meta" class="hero3d-meta"></div>
+            <h2 id="hero3d-title" class="hero3d-title"></h2>
+            <p id="hero3d-synopsis" class="hero3d-synopsis"></p>
+            <a id="hero3d-cta" class="hero3d-cta" href="#">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                Watch Now
+            </a>
+        </div>
+
+        {{-- ── Dots ─────────────────────────────────────────────────── --}}
+        <div id="hero3d-dots" class="hero3d-dots">
+            @foreach($sliderShows as $i => $show)
+            <button class="hero3d-dot{{ $i === 0 ? ' active' : '' }}"
+                    data-goto="{{ $i }}" aria-label="Go to slide {{ $i + 1 }}"></button>
+            @endforeach
+        </div>
+
+    </div>
+
+    {{-- Progress rail --}}
+    <div class="hero3d-rail">
+        <div id="hero3d-prog" class="hero3d-prog"></div>
     </div>
 </section>
-{{-- ═══════════════════════════════════════════════════════════════ --}}
+{{-- ═══════════════════════════════════════════════════════════════════════════ --}}
 
 {{-- ══════════════════════ TWO-COLUMN WRAPPER STARTS ══════════════════════ --}}
 <div class="bg-[#080810]">
@@ -567,53 +772,200 @@
 
 @push('scripts')
 <script>
+/* ── DiziBul 3D Hero Slider ─────────────────────────────────────────────── */
 (function () {
-    const slides       = document.querySelectorAll('.slider-slide');
-    const dots         = document.querySelectorAll('.slider-dot');
-    const sidebarCards = document.querySelectorAll('.sidebar-card');
-    let current = 0;
-    let timer;
+    'use strict';
 
-    function goTo(n) {
-        // Deactivate current slide
-        slides[current].classList.replace('opacity-100', 'opacity-0');
-        slides[current].classList.replace('z-10', 'z-0');
-        dots[current].classList.remove('w-5', 'h-2', 'bg-white');
-        dots[current].classList.add('w-2', 'h-2', 'bg-white/40');
+    const cards    = [...document.querySelectorAll('.hero3d-card')];
+    const dots     = [...document.querySelectorAll('.hero3d-dot')];
+    const bgEl     = document.getElementById('hero3d-bg');
+    const titleEl  = document.getElementById('hero3d-title');
+    const synEl    = document.getElementById('hero3d-synopsis');
+    const metaEl   = document.getElementById('hero3d-meta');
+    const ctaEl    = document.getElementById('hero3d-cta');
+    const viewport = document.getElementById('hero3d-viewport');
+    const progEl   = document.getElementById('hero3d-prog');
 
-        current = ((n % slides.length) + slides.length) % slides.length;
+    const N        = cards.length;
+    const AUTOPLAY = 5200;
+    const VISIBLE  = 2;
+    let   current  = 0;
+    let   autoTimer;
 
-        // Activate new slide
-        slides[current].classList.replace('opacity-0', 'opacity-100');
-        slides[current].classList.replace('z-0', 'z-10');
-        dots[current].classList.remove('w-2', 'bg-white/40');
-        dots[current].classList.add('w-5', 'h-2', 'bg-white');
+    /* ── helpers ─────────────────────────────────────────── */
+    function mod(n, m) { return ((n % m) + m) % m; }
 
-        // Highlight the matching sidebar card
-        sidebarCards.forEach(card => {
-            const isActive = +card.dataset.slideIndex === current;
-            card.classList.toggle('ring-2',           isActive);
-            card.classList.toggle('ring-violet-500',  isActive);
-            card.classList.toggle('bg-[#1a1a2e]',     isActive);
+    function offset(i) {
+        let d = i - current;
+        const half = Math.floor(N / 2);
+        if (d >  half) d -= N;
+        if (d < -half) d += N;
+        return d;
+    }
+
+    function cfg() {
+        const w = window.innerWidth;
+        if (w < 641)  return { gap: 188, rot: 36, scales: [1, 0.76, 0.55] };
+        if (w < 1025) return { gap: 232, rot: 38, scales: [1, 0.78, 0.57] };
+        return               { gap: 272, rot: 40, scales: [1, 0.78, 0.57] };
+    }
+
+    /* ── render card positions ───────────────────────────── */
+    function render() {
+        const { gap, rot, scales } = cfg();
+        cards.forEach((card, i) => {
+            const p   = offset(i);
+            const abs = Math.abs(p);
+
+            if (abs > VISIBLE) {
+                card.style.opacity       = '0';
+                card.style.pointerEvents = 'none';
+                card.style.zIndex        = '0';
+                card.classList.remove('is-center');
+                return;
+            }
+
+            const tx = p * gap;
+            const ry = -p * rot;
+            const sc = scales[abs] ?? 0.38;
+            const op = abs === 0 ? 1 : abs === 1 ? 0.70 : 0.40;
+            const zi = 10 - abs * 3;
+
+            card.style.transform      = `perspective(1600px) translateX(${tx}px) rotateY(${ry}deg) scale(${sc})`;
+            card.style.opacity        = String(op);
+            card.style.zIndex         = String(zi);
+            card.style.pointerEvents  = p === 0 ? 'auto' : 'none';
+            card.classList.toggle('is-center', p === 0);
         });
     }
 
-    function start() { timer = setInterval(() => goTo(current + 1), 5000); }
-    function reset() { clearInterval(timer); start(); }
+    /* ── update info panel ───────────────────────────────── */
+    function updateInfo(instant) {
+        const d = cards[current].dataset;
 
-    // Prev / Next buttons
-    document.getElementById('slider-prev')?.addEventListener('click', e => { e.preventDefault(); goTo(current - 1); reset(); });
-    document.getElementById('slider-next')?.addEventListener('click', e => { e.preventDefault(); goTo(current + 1); reset(); });
+        if (!instant) {
+            titleEl.style.opacity = '0';
+            synEl.style.opacity   = '0';
+        }
 
-    // Dots
-    dots.forEach(d => d.addEventListener('click', e => { e.preventDefault(); goTo(+d.dataset.index); reset(); }));
+        bgEl.style.backgroundImage = `url('${d.poster}')`;
 
-    // Sidebar cards → change slide (no page navigation)
-    sidebarCards.forEach(card => {
-        card.addEventListener('click', () => { goTo(+card.dataset.slideIndex); reset(); });
+        const delay = instant ? 0 : 230;
+        setTimeout(() => {
+            titleEl.textContent = d.title;
+            synEl.textContent   = d.synopsis;
+            ctaEl.href          = d.href;
+
+            const parts = [];
+            if (d.year)    parts.push(`<span>${d.year}</span>`);
+            if (d.status) {
+                const label = d.status === 'Running' ? 'Airing' : d.status;
+                const cls   = d.status === 'Running' ? 'green' : '';
+                parts.push(`<span class="hero3d-badge ${cls}">${label}</span>`);
+            }
+            if (d.network) parts.push(`<span>${d.network}</span>`);
+            metaEl.innerHTML = parts.join('<span class="hero3d-sep"> · </span>');
+
+            if (!instant) {
+                titleEl.style.opacity = '1';
+                synEl.style.opacity   = '1';
+            }
+        }, delay);
+
+        dots.forEach((dot, i) => dot.classList.toggle('active', i === current));
+    }
+
+    /* ── navigation ──────────────────────────────────────── */
+    function goTo(n) {
+        current = mod(n, N);
+        render();
+        updateInfo(false);
+        resetAutoplay();
+    }
+
+    /* ── autoplay + progress bar ─────────────────────────── */
+    function resetAutoplay() {
+        clearInterval(autoTimer);
+
+        if (progEl) {
+            progEl.style.transition = 'none';
+            progEl.style.width      = '0%';
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+                progEl.style.transition = `width ${AUTOPLAY}ms linear`;
+                progEl.style.width      = '100%';
+            }));
+        }
+
+        autoTimer = setInterval(() => goTo(current + 1), AUTOPLAY);
+    }
+
+    function pauseAutoplay() {
+        clearInterval(autoTimer);
+        if (progEl) {
+            progEl.style.transition = 'none';
+        }
+    }
+
+    /* ── pointer drag / touch swipe ─────────────────────── */
+    const drag = { on: false, x0: 0, dx: 0 };
+
+    viewport.addEventListener('pointerdown', e => {
+        if (e.target.closest('.hero3d-arrow')) return;
+        drag.on = true; drag.x0 = e.clientX; drag.dx = 0;
+        viewport.setPointerCapture(e.pointerId);
+        viewport.classList.add('grabbing');
+        pauseAutoplay();
+    });
+    viewport.addEventListener('pointermove', e => {
+        if (drag.on) drag.dx = e.clientX - drag.x0;
+    });
+    function endDrag() {
+        if (!drag.on) return;
+        drag.on = false;
+        viewport.classList.remove('grabbing');
+        if (Math.abs(drag.dx) > 50) {
+            goTo(drag.dx < 0 ? current + 1 : current - 1);
+        } else {
+            resetAutoplay();
+        }
+    }
+    viewport.addEventListener('pointerup',     endDrag);
+    viewport.addEventListener('pointercancel', endDrag);
+
+    /* ── click on side card → navigate ──────────────────── */
+    cards.forEach((card, i) => {
+        card.addEventListener('click', e => {
+            if (offset(i) === 0) return;   // center: let href navigate
+            e.preventDefault();
+            goTo(i);
+        });
     });
 
-    start();
+    /* ── dot / arrow / keyboard ──────────────────────────── */
+    dots.forEach(dot => dot.addEventListener('click', () => goTo(+dot.dataset.goto)));
+
+    document.getElementById('hero3d-prev')
+        ?.addEventListener('click', () => goTo(current - 1));
+    document.getElementById('hero3d-next')
+        ?.addEventListener('click', () => goTo(current + 1));
+
+    document.addEventListener('keydown', e => {
+        if (['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)) return;
+        if (e.key === 'ArrowLeft')  goTo(current - 1);
+        if (e.key === 'ArrowRight') goTo(current + 1);
+    });
+
+    /* ── pause on hover ──────────────────────────────────── */
+    viewport.addEventListener('mouseenter', pauseAutoplay);
+    viewport.addEventListener('mouseleave', resetAutoplay);
+
+    /* ── resize ──────────────────────────────────────────── */
+    window.addEventListener('resize', render, { passive: true });
+
+    /* ── init ────────────────────────────────────────────── */
+    render();
+    updateInfo(true);
+    resetAutoplay();
 })();
 </script>
 @endpush
