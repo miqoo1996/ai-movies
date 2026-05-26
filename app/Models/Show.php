@@ -11,6 +11,7 @@ class Show extends Model
 {
     protected $fillable = [
         'external_id',
+        'turkflix_id',
         'hashid',
         'title',
         'original_title',

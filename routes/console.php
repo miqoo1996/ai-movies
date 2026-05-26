@@ -32,3 +32,8 @@ Schedule::command('episodes:download-thumbs')
     ->daily()
     ->withoutOverlapping()
     ->appendOutputTo(storage_path('logs/episodes-download-thumbs.log'));
+
+Schedule::command('turkflix:sync')
+    ->dailyAt('04:00')
+    ->withoutOverlapping()
+    ->appendOutputTo(storage_path('logs/turkflix-sync.log'));

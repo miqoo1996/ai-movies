@@ -200,27 +200,41 @@
                 </h2>
                 <div class="flex gap-4 overflow-x-auto scrollbar-hide pb-2">
                     @foreach($latestEpisodes as $ep)
-                    <div class="shrink-0 w-[230px] bg-[#0d0d18] border border-white/5 hover:border-white/15 rounded-2xl overflow-hidden transition-all duration-200 group cursor-pointer">
+                    @php $hasStream = ! is_null($ep->turkflix_item_id); @endphp
+                    @if($hasStream)
+                    <a href="https://turk-flix.com/" target="_blank" rel="noopener"
+                       class="shrink-0 w-[230px] bg-[#0d0d18] border border-white/5 hover:border-white/15 rounded-2xl overflow-hidden transition-all duration-200 group cursor-pointer block no-underline">
+                    @else
+                    <div class="shrink-0 w-[230px] bg-[#0d0d18] border border-white/5 rounded-2xl overflow-hidden opacity-60 cursor-default">
+                    @endif
                         {{-- Thumbnail --}}
                         <div class="relative aspect-video overflow-hidden">
                             @if($ep->thumb_url)
                                 <img src="{{ $ep->thumb_url }}" alt="{{ $ep->shortcode }}"
-                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                     class="w-full h-full object-cover {{ $hasStream ? 'group-hover:scale-105' : '' }} transition-transform duration-300">
                             @else
                                 <img src="{{ $show->poster_url }}" alt=""
                                      class="absolute inset-0 w-full h-full object-cover scale-110 blur-md brightness-50 saturate-150">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
                                 <div class="absolute inset-0 flex flex-col items-center justify-center gap-1">
                                     <span class="text-white/90 text-sm font-black tracking-widest drop-shadow">{{ $ep->shortcode }}</span>
-                                    <span class="text-white/40 text-[10px] font-medium uppercase tracking-wider">No Preview</span>
                                 </div>
                             @endif
-                            {{-- Overlay + play --}}
-                            <div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
+                            {{-- Overlay --}}
+                            <div class="absolute inset-0 {{ $hasStream ? 'bg-black/20 group-hover:bg-black/10' : 'bg-black/50' }} transition-colors"></div>
+                            {{-- Play / Lock icon --}}
                             <div class="absolute inset-0 flex items-center justify-center">
+                                @if($hasStream)
                                 <div class="w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
                                     <svg class="w-4 h-4 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                                 </div>
+                                @else
+                                <div class="w-10 h-10 rounded-full bg-black/60 backdrop-blur-sm border border-white/10 flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                    </svg>
+                                </div>
+                                @endif
                             </div>
                             {{-- Episode badge --}}
                             <div class="absolute top-2 left-2 bg-black/70 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
@@ -234,8 +248,15 @@
                             @if($ep->season_finale)
                                 <span class="inline-block mt-1 text-[10px] font-bold uppercase tracking-wider text-amber-400">Season Finale</span>
                             @endif
+                            @if(! $hasStream)
+                                <p class="text-[10px] text-slate-500 mt-1">Not available yet</p>
+                            @endif
                         </div>
+                    @if($hasStream)
+                    </a>
+                    @else
                     </div>
+                    @endif
                     @endforeach
                 </div>
             </div>
@@ -310,32 +331,54 @@
 
                 <div class="flex flex-wrap gap-4">
                     @foreach($episodes->sortBy('episode_number') as $ep)
-                    <div class="shrink-0 w-[230px] bg-[#0d0d18] border border-white/5 hover:border-white/15 rounded-2xl overflow-hidden transition-all duration-200 group cursor-pointer">
+                    @php $hasStream = ! is_null($ep->turkflix_item_id); @endphp
+                    @if($hasStream)
+                    <a href="https://turk-flix.com/" target="_blank" rel="noopener"
+                       class="shrink-0 w-[230px] bg-[#0d0d18] border border-white/5 hover:border-violet-500/40 rounded-2xl overflow-hidden transition-all duration-200 group cursor-pointer block no-underline">
+                    @else
+                    <div class="shrink-0 w-[230px] bg-[#0d0d18] border border-white/5 rounded-2xl overflow-hidden opacity-55 cursor-default">
+                    @endif
                         {{-- Thumbnail --}}
                         <div class="relative aspect-video overflow-hidden">
                             @if($ep->thumb_url)
                                 <img src="{{ $ep->thumb_url }}" alt="{{ $ep->shortcode }}"
-                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                     class="w-full h-full object-cover {{ $hasStream ? 'group-hover:scale-105' : '' }} transition-transform duration-300">
                             @else
                                 <img src="{{ $show->poster_url }}" alt=""
                                      class="absolute inset-0 w-full h-full object-cover scale-110 blur-md brightness-50 saturate-150">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
                                 <div class="absolute inset-0 flex flex-col items-center justify-center gap-1">
                                     <span class="text-white/90 text-sm font-black tracking-widest drop-shadow">{{ $ep->shortcode }}</span>
-                                    <span class="text-white/40 text-[10px] font-medium uppercase tracking-wider">No Preview</span>
                                 </div>
                             @endif
-                            {{-- Overlay + play --}}
-                            <div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
+                            {{-- Overlay --}}
+                            <div class="absolute inset-0 {{ $hasStream ? 'bg-black/20 group-hover:bg-black/10' : 'bg-black/50' }} transition-colors"></div>
+                            {{-- Play / Lock icon --}}
                             <div class="absolute inset-0 flex items-center justify-center">
-                                <div class="w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                                @if($hasStream)
+                                <div class="w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/20 flex items-center justify-center group-hover:scale-110 group-hover:border-violet-400/60 group-hover:bg-violet-600/40 transition-all duration-200">
                                     <svg class="w-4 h-4 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                                 </div>
+                                @else
+                                <div class="w-10 h-10 rounded-full bg-black/60 backdrop-blur-sm border border-white/10 flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                    </svg>
+                                </div>
+                                @endif
                             </div>
                             {{-- Episode badge --}}
                             <div class="absolute top-2 left-2 bg-black/70 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
                                 {{ $ep->shortcode }}
                             </div>
+                            {{-- Watch on TurkFlix badge --}}
+                            @if($hasStream)
+                            <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                <span class="text-[9px] font-bold uppercase tracking-wider bg-violet-600/90 backdrop-blur-sm text-white px-1.5 py-0.5 rounded">
+                                    Watch
+                                </span>
+                            </div>
+                            @endif
                         </div>
                         <div class="px-4 py-3">
                             @if($ep->airs_on)
@@ -344,11 +387,21 @@
                             @if($ep->season_finale)
                                 <span class="inline-block mt-1 text-[10px] font-bold uppercase tracking-wider text-amber-400">Season Finale</span>
                             @endif
-                            @if(! $ep->has_aired)
+                            @if(! $ep->has_aired && ! $hasStream)
                                 <span class="inline-block mt-1 text-[10px] font-bold uppercase tracking-wider text-slate-500">Upcoming</span>
                             @endif
+                            @if(! $hasStream)
+                                <p class="text-[10px] text-slate-500 mt-1 flex items-center gap-1">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                                    Not available yet
+                                </p>
+                            @endif
                         </div>
+                    @if($hasStream)
+                    </a>
+                    @else
                     </div>
+                    @endif
                     @endforeach
                 </div>
             </div>

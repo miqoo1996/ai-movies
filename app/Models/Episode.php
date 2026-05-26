@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Episode extends Model
 {
-    protected $fillable = ['show_id', 'external_id', 'hashid', 'season_number', 'episode_number', 'title', 'overview', 'shortcode', 'airs_on', 'has_aired', 'season_finale', 'thumb', 'thumb_local'];
+    protected $fillable = ['show_id', 'external_id', 'turkflix_item_id', 'hashid', 'season_number', 'episode_number', 'title', 'overview', 'shortcode', 'airs_on', 'has_aired', 'season_finale', 'thumb', 'thumb_local'];
 
     protected $casts = ['airs_on' => 'date', 'has_aired' => 'boolean', 'season_finale' => 'boolean'];
 
