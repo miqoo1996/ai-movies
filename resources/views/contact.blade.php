@@ -119,7 +119,7 @@
                                 </svg>
                             </div>
                             <p class="text-[11px] font-bold uppercase tracking-[0.12em] text-slate-500 mb-1">General</p>
-                            <a href="mailto:wecare@turkflix.co.uk" class="text-sm text-slate-200 hover:text-white transition-colors">wecare@turkflix.co.uk</a>
+                            <a href="mailto:DiziCentral@gmail.co.uk" class="text-sm text-slate-200 hover:text-white transition-colors">DiziCentral@gmail.co.uk</a>
                         </div>
 
                         {{-- Members email --}}

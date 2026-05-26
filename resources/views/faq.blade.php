@@ -83,7 +83,7 @@
                     </div>
                     <p class="text-slate-500 text-sm">
                         Still have questions?
-                        <a href="mailto:wecare@turkflix.co.uk" class="text-slate-300 hover:text-white underline underline-offset-2 transition-colors ml-1">wecare@turkflix.co.uk</a>
+                        <a href="mailto:DiziCentral@gmail.co.uk" class="text-slate-300 hover:text-white underline underline-offset-2 transition-colors ml-1">DiziCentral@gmail.co.uk</a>
                     </p>
                 </div>
 
