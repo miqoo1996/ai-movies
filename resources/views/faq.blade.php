@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('seo_title', $seoPage?->seo_title ?: 'Frequently Asked Questions')
-@section('meta_description', $seoPage?->seo_description ?: 'Get answers about DiziBul — how to watch Turkish dramas, English subtitle availability, translation timing, subscription plans, and login help.')
+@section('meta_description', $seoPage?->seo_description ?: 'Get answers about DiziCentral — how to watch Turkish dramas, English subtitle availability, translation timing, subscription plans, and login help.')
 @if($seoPage?->noindex)@section('noindex', '1')@endif
 @section('json_ld')
 <script type="application/ld+json">

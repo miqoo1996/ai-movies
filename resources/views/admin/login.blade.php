@@ -1,6 +1,6 @@
 @extends('adminlte::auth.auth-page', ['auth_type' => 'login'])
 
-@section('auth_header', 'DiziBul Admin')
+@section('auth_header', 'DiziCentral Admin')
 @section('auth_subheader', 'Sign in to continue')
 
 @section('auth_body')

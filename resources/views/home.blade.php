@@ -1,16 +1,17 @@
 @extends('layouts.app')
 
-@section('seo_title', $seoPage?->seo_title ?: 'Watch Turkish Dramas & Series Online')
-@section('meta_description', $seoPage?->seo_description ?: 'Discover 500+ Turkish TV series and dramas on DiziBul. Find episode guides, cast info, ratings, and where to watch your favourite dizi with English subtitles.')
+@section('seo_title', $seoPage?->seo_title ?: 'Watch Turkish Series & Movies with English Subtitles Online')
+@section('meta_description', $seoPage?->seo_description ?: 'Watch the latest Turkish series and movies with English subtitles in HD quality. Stream romantic dramas, action series, historical shows, and Turkish cinema online anytime.')
+@section('keywords', 'Turkish series with English subtitles, Turkish dramas online, watch Turkish series online free, Turkish movies with English subtitles, Turkish TV shows English subtitles, best Turkish dramas with English subtitles, Turkish drama series online, Turkish romantic series, Turkish historical dramas, Turkish action movies subtitles, latest Turkish dramas online, Turkish streaming platform, watch Turkish episodes online, Turkish series 2026, Turkish entertainment')
 @if($seoPage?->noindex)@section('noindex', '1')@endif
 @section('json_ld')
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "name": "DiziBul",
+  "name": "{{ setting('site_name', 'DiziCentral') }}",
   "url": "{{ url('/') }}",
-  "description": "The ultimate guide to Turkish TV series and dramas — episode guides, cast info and streaming links.",
+  "description": "Watch the latest Turkish series and movies with English subtitles in HD. Stream romantic dramas, action series, historical shows and Turkish cinema online.",
   "potentialAction": {
     "@type": "SearchAction",
     "target": {
@@ -772,7 +773,7 @@
 
 @push('scripts')
 <script>
-/* ── DiziBul 3D Hero Slider ─────────────────────────────────────────────── */
+/* ── DiziCentral 3D Hero Slider ─────────────────────────────────────────────── */
 (function () {
     'use strict';
 

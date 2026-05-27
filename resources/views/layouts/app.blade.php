@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @php
-        $siteName    = setting('site_name', 'DiziBul');
+        $siteName    = setting('site_name', 'DiziCentral');
         $titleFormat = setting('seo_title_format', '{title} — ' . $siteName);
 
         // @section() HTML-encodes values; decode before use to avoid double-escaping via {{ }}
@@ -28,6 +28,14 @@
 
     <title>{{ $finalTitle }}</title>
     <meta name="description" content="{{ $metaDesc }}">
+    @php
+        $pageKeywords = trim(View::yieldContent('keywords'));
+        $globalKeywords = setting('meta_keywords', '');
+        $metaKeywords = $pageKeywords ?: $globalKeywords;
+    @endphp
+    @if($metaKeywords)
+    <meta name="keywords" content="{{ $metaKeywords }}">
+    @endif
     <meta name="robots" content="{{ $robotsValue }}">
     <link rel="canonical" href="{{ $canonical }}">
 
@@ -89,7 +97,7 @@
             <a href="/" class="flex items-center gap-2.5 shrink-0 mr-2">
                 @if(setting('logo'))
                     <img src="{{ asset('storage/' . setting('logo')) }}"
-                         alt="{{ setting('site_name', 'DiziBul') }}"
+                         alt="{{ setting('site_name', 'DiziCentral') }}"
                          class="h-8 w-auto object-contain">
                 @else
                     <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-500/30">
@@ -97,7 +105,7 @@
                             <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8 12.5v-9l6 4.5-6 4.5z"/>
                         </svg>
                     </div>
-                    <span class="text-[15px] font-bold tracking-tight gradient-text">{{ setting('site_name', 'DiziBul') }}</span>
+                    <span class="text-[15px] font-bold tracking-tight gradient-text">{{ setting('site_name', 'DiziCentral') }}</span>
                 @endif
             </a>
 
@@ -282,7 +290,7 @@
                 <a href="{{ url('/') }}" class="inline-flex items-center gap-2.5 mb-3">
                     @if(setting('logo'))
                         <img src="{{ asset('storage/' . setting('logo')) }}"
-                             alt="{{ setting('site_name', 'DiziBul') }}"
+                             alt="{{ setting('site_name', 'DiziCentral') }}"
                              class="h-8 w-auto object-contain">
                     @else
                         <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-500/25">
@@ -290,7 +298,7 @@
                                 <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8 12.5v-9l6 4.5-6 4.5z"/>
                             </svg>
                         </div>
-                        <span class="text-lg font-bold tracking-tight gradient-text">{{ setting('site_name', 'DiziBul') }}</span>
+                        <span class="text-lg font-bold tracking-tight gradient-text">{{ setting('site_name', 'DiziCentral') }}</span>
                     @endif
                 </a>
                 <p class="text-slate-500 text-sm mb-6 leading-relaxed">
@@ -416,7 +424,7 @@
     <div class="border-t border-white/5">
         <div class="max-w-[1600px] mx-auto px-4 sm:px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
             <p class="text-slate-600 text-sm">
-                © {{ date('Y') }} <span class="font-semibold text-slate-500">{{ setting('site_name', 'DiziBul') }}</span>. {{ setting('footer_copyright', 'All Rights Reserved.') }}
+                © {{ date('Y') }} <span class="font-semibold text-slate-500">{{ setting('site_name', 'DiziCentral') }}</span>. {{ setting('footer_copyright', 'All Rights Reserved.') }}
             </p>
             <p class="text-slate-600 text-sm flex items-center gap-1.5">
                 {!! setting('footer_tagline', 'Made with <span class="text-red-500">♥</span> for Turkish drama fans') !!}

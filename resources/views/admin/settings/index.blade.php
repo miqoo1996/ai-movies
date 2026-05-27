@@ -67,7 +67,7 @@
                             <label class="font-weight-bold">Site Name</label>
                             <input type="text" name="site_name"
                                    value="{{ old('site_name', setting('site_name')) }}"
-                                   class="form-control" placeholder="DiziBul">
+                                   class="form-control" placeholder="DiziCentral">
                             <small class="text-muted">Shown in navbar and browser title.</small>
                         </div>
                     </div>
@@ -185,7 +185,7 @@
                                 @elseif($field['key'] === 'logo')
                                     <div>
                                         <p class="font-weight-bold mb-0" style="font-size:20px;letter-spacing:-0.5px;">
-                                            {{ setting('site_name', 'DiziBul') }}
+                                            {{ setting('site_name', 'DiziCentral') }}
                                         </p>
                                         <p class="text-muted small mb-0 mt-1">
                                             <i class="fas fa-info-circle mr-1"></i>Text logo (no image uploaded)
@@ -236,7 +236,7 @@
                             <label class="font-weight-bold">SEO Title Format</label>
                             <input type="text" name="seo_title_format"
                                    value="{{ old('seo_title_format', setting('seo_title_format')) }}"
-                                   class="form-control" placeholder="{title} — {{ setting('site_name', 'DiziBul') }}">
+                                   class="form-control" placeholder="{title} — {{ setting('site_name', 'DiziCentral') }}">
                             <small class="text-muted">Use <code>{title}</code> as a placeholder for the page/show title.</small>
                         </div>
                     </div>
@@ -274,6 +274,14 @@
                                    value="{{ old('search_console_verify', setting('search_console_verify')) }}"
                                    class="form-control" placeholder="Paste meta content value…">
                             <small class="text-muted">Value from Google's <code>&lt;meta name="google-site-verification"&gt;</code>.</small>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="font-weight-bold">Global Meta Keywords</label>
+                            <textarea name="meta_keywords" rows="4" class="form-control"
+                                      placeholder="Turkish series, Turkish dramas, Turkish TV shows…">{{ old('meta_keywords', setting('meta_keywords')) }}</textarea>
+                            <small class="text-muted">Comma-separated. Used as fallback on pages without custom keywords.</small>
                         </div>
                     </div>
                     <div class="col-md-6">

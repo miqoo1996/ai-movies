@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @php
-    $seoTitle = $seoPage?->seo_title ?: 'All Turkish TV Series & Dramas';
-    $seoDesc  = $seoPage?->seo_description ?: 'Browse 500+ Turkish TV series and dramas on DiziBul. Filter by genre, network, year and status to find your next favourite dizi to watch with English subtitles.';
+    $seoTitle = $seoPage?->seo_title ?: 'Best Turkish Dramas & Films in HD with English Subtitles';
+    $seoDesc  = $seoPage?->seo_description ?: 'Explore the best Turkish dramas and movies online with English subtitles. Enjoy HD streaming, full episodes, and trending Turkish entertainment — romance, action, historical, crime and more.';
     $isFiltered = !empty($genre) || !empty($status) || !empty($year) || !empty($q) || !empty($network);
 
     if ($isFiltered) {
@@ -12,7 +12,7 @@
             $seoDesc  = 'Browse the best ' . $activeGenre->name . ' Turkish TV series and dramas. Episode guides, cast info and where to stream with English subtitles.';
         } elseif (!empty($status)) {
             $seoTitle = ($statuses[$status] ?? $status) . ' Turkish TV Series';
-            $seoDesc  = 'Discover ' . strtolower($statuses[$status] ?? $status) . ' Turkish TV series on DiziBul.';
+            $seoDesc  = 'Discover ' . strtolower($statuses[$status] ?? $status) . ' Turkish TV series on DiziCentral.';
         } elseif (!empty($year)) {
             $seoTitle = 'Turkish Series from ' . $year;
             $seoDesc  = 'Browse Turkish TV series and dramas released in ' . $year . '.';
@@ -22,6 +22,7 @@
 @endphp
 @section('seo_title', $seoTitle)
 @section('meta_description', $seoDesc)
+@section('keywords', 'Turkish series, Turkish dramas, Turkish TV shows, watch Turkish series online, Turkish movies with English subtitles, Turkish drama episodes, Turkish romantic dramas, Turkish historical series, Turkish action series, Turkish crime dramas, English subbed Turkish dramas, Turkish series Eng sub, HD Turkish streaming')
 @if($isFiltered || $seoPage?->noindex)@section('noindex', '1')@endif
 
 @section('content')

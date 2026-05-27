@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('seo_title', $page->seo_title ?: 'Privacy Policy')
-@section('meta_description', $page->seo_description ?: 'Read the DiziBul privacy policy — how we collect, store and protect your personal data when you use our Turkish drama platform.')
+@section('meta_description', $page->seo_description ?: 'Read the DiziCentral privacy policy — how we collect, store and protect your personal data when you use our Turkish drama platform.')
 @if($page->noindex)@section('noindex', '1')@endif
 
 @section('content')

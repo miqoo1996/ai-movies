@@ -37,12 +37,14 @@ class SettingController extends Controller
             'google_tag_manager_id'  => 'nullable|string|max:50',
             'search_console_verify'  => 'nullable|string|max:100',
             'robots_noindex'         => 'nullable|string|in:index,noindex',
+            'meta_keywords'          => 'nullable|string|max:1000',
         ]);
 
         // Handle text fields
         $textKeys = ['site_name','site_tagline','signin_url','appstore_url','playstore_url',
                      'footer_copyright','footer_tagline','seo_title_format','seo_default_description',
-                     'google_analytics_id','google_tag_manager_id','search_console_verify','robots_noindex'];
+                     'google_analytics_id','google_tag_manager_id','search_console_verify','robots_noindex',
+                     'meta_keywords'];
 
         $pairs = [];
         foreach ($textKeys as $key) {

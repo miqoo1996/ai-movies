@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('seo_title', $seoPage?->seo_title ?: 'Turkish TV Airing Schedule')
-@section('meta_description', $seoPage?->seo_description ?: 'Track new Turkish drama episode releases with the DiziBul TV calendar. See what dizi are airing this week and never miss a new episode.')
+@section('meta_description', $seoPage?->seo_description ?: 'Track new Turkish drama episode releases with the DiziCentral TV calendar. See what dizi are airing this week and never miss a new episode.')
 @if($seoPage?->noindex)@section('noindex', '1')@endif
 
 @section('content')

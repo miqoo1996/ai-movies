@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $page->title . ' — DiziBul')
+@section('title', $page->title . ' — DiziCentral')
 
 @section('content')
 

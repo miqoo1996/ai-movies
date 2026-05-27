@@ -8,8 +8,22 @@
         $show->rating  ? 'Rated ' . number_format($show->rating, 1) . '/10.' : '',
     ])->filter()->implode(' ');
 @endphp
-@section('seo_title', $show->seo_title ?: $show->title)
+@section('seo_title', $show->seo_title ?: $show->title . ' — Watch Online with English Subtitles')
 @section('meta_description', $show->seo_description ?: Str::limit($fallbackDesc, 160))
+@php
+    $showGenreNames = $show->genres->pluck('name')->implode(', ');
+    $showKeywords = trim(implode(', ', array_filter([
+        $show->title . ' English subtitles',
+        $show->title . ' watch online',
+        $show->title . ' with subtitles',
+        $show->title . ' episodes',
+        $showGenreNames ? 'Turkish ' . strtolower($showGenreNames) . ' series' : '',
+        'Turkish drama with English subtitles',
+        'watch Turkish series online',
+        'Turkish TV series English sub',
+    ])));
+@endphp
+@section('keywords', $showKeywords)
 @section('og_image', $show->poster_url)
 @section('canonical', route('shows.show', $show->slug))
 @if($show->noindex)@section('noindex', '1')@endif
@@ -23,16 +37,24 @@
   @if($show->synopsis)"description": "{{ addslashes(Str::limit(strip_tags($show->synopsis), 300)) }}",@endif
   @if($show->poster_url)"image": "{{ $show->poster_url }}",@endif
   @if($show->year)"startDate": "{{ $show->year }}",@endif
+  @if($show->status === 'Running' || $show->status === 'Returning Series')
+  "numberOfEpisodes": {{ $show->episodes_count ?? 0 }},
+  @endif
+  @if($show->genres->count())
+  "genre": [{{ $show->genres->map(fn($g) => '"' . addslashes($g->name) . '"')->implode(', ') }}],
+  @endif
   @if($show->rating)"aggregateRating": {
     "@type": "AggregateRating",
     "ratingValue": "{{ $show->rating }}",
     "bestRating": "10",
-    "worstRating": "1"
+    "worstRating": "1",
+    "ratingCount": {{ $show->subscribers ?? 1 }}
   },@endif
   @if($show->network)"productionCompany": {
     "@type": "Organization",
     "name": "{{ addslashes($show->network) }}"
   },@endif
+  "subtitleLanguage": { "@type": "Language", "name": "English" },
   "inLanguage": "tr",
   "countryOfOrigin": { "@type": "Country", "name": "Turkey" }
 }
