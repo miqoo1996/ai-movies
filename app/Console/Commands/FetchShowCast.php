@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\Person;
 use App\Models\Show;
 use Illuminate\Console\Command;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Facades\Http;
 
 class FetchShowCast extends Command
@@ -54,7 +55,24 @@ class FetchShowCast extends Command
                     $this->maybeDelay($delay, $i, $total);
                     continue;
                 }
-                $show->update(['tvmaze_id' => $tvmazeId]);
+
+                // Skip if another show already claimed this TVMaze ID
+                if (Show::where('tvmaze_id', $tvmazeId)->where('id', '!=', $show->id)->exists()) {
+                    $this->warn("    TVMaze ID {$tvmazeId} already taken by another show, skipping.");
+                    $skipped++;
+                    $this->maybeDelay($delay, $i, $total);
+                    continue;
+                }
+
+                try {
+                    $show->update(['tvmaze_id' => $tvmazeId]);
+                } catch (UniqueConstraintViolationException) {
+                    $this->warn("    TVMaze ID {$tvmazeId} collision, skipping.");
+                    $skipped++;
+                    $this->maybeDelay($delay, $i, $total);
+                    continue;
+                }
+
                 $this->line("    TVMaze ID: {$tvmazeId}");
             }
 
