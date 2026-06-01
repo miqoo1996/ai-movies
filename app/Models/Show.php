@@ -6,12 +6,14 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Show extends Model
 {
     protected $fillable = [
         'external_id',
         'turkflix_id',
+        'tvmaze_id',
         'hashid',
         'title',
         'original_title',
@@ -95,5 +97,13 @@ class Show extends Model
     public function episodes(): HasMany
     {
         return $this->hasMany(Episode::class);
+    }
+
+    public function castMembers(): BelongsToMany
+    {
+        return $this->belongsToMany(Person::class, 'show_person')
+            ->withPivot('department', 'role', 'character_name', 'character_photo', 'sort_order')
+            ->withTimestamps()
+            ->orderBy('show_person.sort_order');
     }
 }

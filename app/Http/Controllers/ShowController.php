@@ -80,7 +80,12 @@ class ShowController extends Controller
 
     public function show(string $slug)
     {
-        $show = Show::with(['genres', 'images', 'episodes' => fn($q) => $q->orderBy('season_number')->orderBy('episode_number')])
+        $show = Show::with([
+                'genres',
+                'images',
+                'episodes' => fn($q) => $q->orderBy('season_number')->orderBy('episode_number'),
+                'castMembers' => fn($q) => $q->orderBy('show_person.sort_order'),
+            ])
             ->where('slug', $slug)
             ->firstOrFail();
 

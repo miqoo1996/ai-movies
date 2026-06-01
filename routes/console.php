@@ -37,3 +37,8 @@ Schedule::command('turkflix:sync')
     ->dailyAt('04:00')
     ->withoutOverlapping()
     ->appendOutputTo(storage_path('logs/turkflix-sync.log'));
+
+Schedule::command('shows:fetch-cast --missing')
+    ->dailyAt('05:00')
+    ->withoutOverlapping()
+    ->appendOutputTo(storage_path('logs/shows-fetch-cast.log'));

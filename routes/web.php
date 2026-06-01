@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\PersonController;
 use App\Http\Controllers\ShowController;
 use Illuminate\Support\Facades\Route;
 
@@ -65,6 +66,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 Route::get('/',           [ShowController::class, 'home']);
 Route::get('/shows',      [ShowController::class, 'index'])->name('shows.index');
 Route::get('/shows/{slug}', [ShowController::class, 'show'])->name('shows.show');
+Route::get('/people/{person}', [PersonController::class, 'show'])->name('people.show');
 Route::get('/calendar',   [ShowController::class, 'calendar'])->name('calendar');
 
 Route::get('/faq',     [MainController::class, 'faq'])->name('faq');

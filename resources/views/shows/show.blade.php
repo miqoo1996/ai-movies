@@ -166,8 +166,7 @@
     <div class="border-b border-white/8 bg-[#080810] sticky top-[60px] z-40">
         <div class="max-w-[1600px] mx-auto px-6">
             <nav class="flex items-center overflow-x-auto scrollbar-hide" id="show-tabs">
-{{--                ['Overview', 'Episodes', 'Cast & Crew', 'Reviews', 'Lists', 'News', 'Related']--}}
-                @foreach(['Overview', 'Episodes', 'Related'] as $tab)
+                @foreach(['Overview', 'Episodes', 'Cast & Crew', 'Related'] as $tab)
                 <button data-tab="{{ Str::slug($tab) }}"
                         class="show-tab shrink-0 px-5 py-[14px] text-[13px] font-bold uppercase tracking-wider transition-all duration-200 border-b-2
                                {{ $loop->first
@@ -477,8 +476,57 @@
             @endif
         </div>
 
+        {{-- ── CAST & CREW ─────────────────────────────────────────── --}}
+        <div id="panel-cast-crew" class="show-panel hidden">
+            @if($show->castMembers->isNotEmpty())
+            <div>
+                <div class="flex items-baseline gap-3 mb-6">
+                    <h2 class="text-[#e63946] text-sm font-black uppercase tracking-widest inline-block border-b-2 border-[#e63946] pb-0.5">
+                        Cast
+                    </h2>
+                    <span class="text-slate-500 text-xs">{{ $show->castMembers->count() }} members</span>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                    @foreach($show->castMembers as $person)
+                    @php
+                        $photo = $person->pivot->character_photo ?: $person->photo;
+                    @endphp
+                    <a href="{{ route('people.show', $person) }}"
+                       class="block bg-[#0d0d18] border border-white/5 rounded-2xl overflow-hidden group hover:border-white/15 hover:shadow-lg transition-all duration-200">
+                        <div class="aspect-[2/3] overflow-hidden bg-[#111122]">
+                            @if($photo)
+                                <img src="{{ $photo }}" alt="{{ $person->name }}"
+                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            @else
+                                <div class="w-full h-full flex items-center justify-center">
+                                    <svg class="w-12 h-12 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                    </svg>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="px-3 py-2.5">
+                            <p class="text-white text-xs font-bold leading-tight line-clamp-1 group-hover:text-[#e63946] transition-colors">{{ $person->name }}</p>
+                            @if($person->pivot->character_name)
+                                <p class="text-slate-400 text-[11px] mt-0.5 line-clamp-1">{{ $person->pivot->character_name }}</p>
+                            @endif
+                        </div>
+                    </a>
+                    @endforeach
+                </div>
+            </div>
+            @else
+            <div class="flex flex-col items-center justify-center py-20 text-center">
+                <svg class="w-12 h-12 text-slate-700 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+                <p class="text-slate-500 text-sm">No cast information available yet.</p>
+            </div>
+            @endif
+        </div>
+
         {{-- Other panels --}}
-        @foreach(['cast-crew', 'reviews', 'lists', 'news'] as $panel)
+        @foreach(['reviews', 'lists', 'news'] as $panel)
         <div id="panel-{{ $panel }}" class="show-panel hidden"></div>
         @endforeach
 
