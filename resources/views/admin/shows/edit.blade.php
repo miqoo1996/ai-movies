@@ -66,6 +66,7 @@
                 </div>
                 <small class="text-muted">JPG/PNG/WebP, max 4 MB each. Multiple files allowed.</small>
             </div>
+            <div id="gallery-preview" class="d-flex flex-wrap mt-2" style="gap:6px;"></div>
         </form>
 
         {{-- Existing images grid --}}
@@ -117,30 +118,54 @@
 @include('admin.partials.ckeditor')
 <script>
 function previewPoster(input) {
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            var preview = document.getElementById('poster-preview');
-            if (preview) { preview.src = e.target.result; }
-            else {
-                var img = document.createElement('img');
-                img.id = 'poster-preview';
-                img.src = e.target.result;
-                img.style = 'width:80px;height:110px;object-fit:cover;border-radius:4px;';
-                input.closest('.row').insertAdjacentElement('afterbegin',
-                    Object.assign(document.createElement('div'), {className:'col-auto', innerHTML:img.outerHTML}));
-            }
-        };
-        reader.readAsDataURL(input.files[0]);
-    }
-    input.nextElementSibling.textContent = input.files[0].name;
+    const label   = document.querySelector('label[for="' + input.id + '"]');
+    const preview = document.getElementById('poster-preview');
+
+    if (!input.files || !input.files[0]) return;
+
+    const file = input.files[0];
+    label.textContent = file.name;
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        if (preview) {
+            preview.src = e.target.result;
+        } else {
+            const img  = document.createElement('img');
+            img.id     = 'poster-preview';
+            img.src    = e.target.result;
+            img.style.cssText = 'width:80px;height:110px;object-fit:cover;border-radius:4px;';
+            const wrap = document.createElement('div');
+            wrap.className = 'col-auto';
+            wrap.appendChild(img);
+            input.closest('.row').insertAdjacentElement('afterbegin', wrap);
+        }
+    };
+    reader.readAsDataURL(file);
 }
 
 function updateGalleryLabel(input) {
-    const label = input.nextElementSibling;
+    const label   = document.querySelector('label[for="' + input.id + '"]');
+    const preview = document.getElementById('gallery-preview');
+
+    if (!input.files || !input.files.length) return;
+
     label.textContent = input.files.length > 1
-        ? input.files.length + ' files selected'
-        : (input.files[0]?.name ?? 'Choose images…');
+        ? input.files.length + ' images selected'
+        : input.files[0].name;
+
+    // Thumbnail strip
+    preview.innerHTML = '';
+    Array.from(input.files).forEach(function (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const img = document.createElement('img');
+            img.src   = e.target.result;
+            img.style.cssText = 'width:60px;height:60px;object-fit:cover;border-radius:4px;border:2px solid #28a745;';
+            preview.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+    });
 }
 </script>
 @stop
