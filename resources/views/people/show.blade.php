@@ -11,9 +11,9 @@
     <div class="relative overflow-hidden">
 
         {{-- Blurred backdrop from photo --}}
-        @if($person->photo)
+        @if($person->photo_url)
         <div class="absolute inset-0">
-            <img src="{{ $person->photo }}" alt="" aria-hidden="true"
+            <img src="{{ $person->photo_url }}" alt="" aria-hidden="true"
                  class="w-full h-full object-cover scale-110 blur-3xl brightness-[0.35] saturate-150">
             <div class="absolute inset-0 bg-gradient-to-r from-[#080810]/90 via-[#080810]/60 to-transparent"></div>
             <div class="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#080810] to-transparent"></div>
@@ -27,8 +27,8 @@
 
                 {{-- Photo --}}
                 <div class="shrink-0 w-[140px] sm:w-[180px] rounded-2xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.8)] ring-1 ring-white/10">
-                    @if($person->photo)
-                        <img src="{{ $person->photo }}" alt="{{ $person->name }}" class="w-full h-auto object-cover">
+                    @if($person->photo_url)
+                        <img src="{{ $person->photo_url }}" alt="{{ $person->name }}" class="w-full h-auto object-cover">
                     @else
                         <div class="aspect-[2/3] bg-[#1a1a2e] flex items-center justify-center">
                             <svg class="w-16 h-16 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

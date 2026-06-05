@@ -7,6 +7,7 @@ use App\Models\Person;
 use App\Models\Show;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ShowCastController extends Controller
 {
@@ -21,22 +22,26 @@ class ShowCastController extends Controller
         $people = Person::where('name', 'like', "%{$q}%")
             ->orderBy('name')
             ->limit(15)
-            ->get(['id', 'name', 'photo']);
+            ->get(['id', 'name', 'photo', 'photo_local']);
 
-        return response()->json($people);
+        return response()->json($people->map(fn($p) => [
+            'id'        => $p->id,
+            'name'      => $p->name,
+            'photo_url' => $p->photo_url,
+        ]));
     }
 
     public function store(Request $request, Show $show)
     {
         $data = $request->validate([
-            'person_id'      => 'nullable|integer|exists:people,id',
-            'person_name'    => 'required_without:person_id|nullable|string|max:255',
-            'person_photo'   => 'nullable|url|max:500',
-            'character_name' => 'nullable|string|max:255',
-            'sort_order'     => 'nullable|integer|min:0',
+            'person_id'       => 'nullable|integer|exists:people,id',
+            'person_name'     => 'required_without:person_id|nullable|string|max:255',
+            'person_photo'    => 'nullable|string|max:500',
+            'person_photo_file' => 'nullable|image|max:4096',
+            'character_name'  => 'nullable|string|max:255',
+            'sort_order'      => 'nullable|integer|min:0',
         ]);
 
-        // Create new person if no existing one was selected
         if (empty($data['person_id'])) {
             $person = Person::create([
                 'name'  => $data['person_name'],
@@ -44,6 +49,11 @@ class ShowCastController extends Controller
             ]);
         } else {
             $person = Person::findOrFail($data['person_id']);
+        }
+
+        if ($request->hasFile('person_photo_file')) {
+            $person->photo_local = $this->uploadPhoto($request->file('person_photo_file'), $person->id);
+            $person->save();
         }
 
         $maxOrder = DB::table('show_person')
@@ -67,23 +77,35 @@ class ShowCastController extends Controller
     public function update(Request $request, Show $show, int $entry)
     {
         $data = $request->validate([
-            'character_name' => 'nullable|string|max:255',
-            'sort_order'     => 'nullable|integer|min:0',
-            'person_name'    => 'required|string|max:255',
-            'person_photo'   => 'nullable|max:500',
+            'person_name'       => 'required|string|max:255',
+            'person_photo'      => 'nullable|string|max:500',
+            'person_photo_file' => 'nullable|image|max:4096',
+            'character_name'    => 'nullable|string|max:255',
+            'sort_order'        => 'nullable|integer|min:0',
         ]);
 
-        $pivot = DB::table('show_person')->where('id', $entry)->where('show_id', $show->id)->firstOrFail();
+        $pivot  = DB::table('show_person')->where('id', $entry)->where('show_id', $show->id)->firstOrFail();
+        $person = Person::findOrFail($pivot->person_id);
+
+        $personData = [
+            'name'  => $data['person_name'],
+            'photo' => $data['person_photo'] ?: $person->getRawOriginal('photo'),
+        ];
+
+        if ($request->hasFile('person_photo_file')) {
+            // Delete old local file if present
+            if ($person->photo_local) {
+                Storage::disk('public')->delete($person->photo_local);
+            }
+            $personData['photo_local'] = $this->uploadPhoto($request->file('person_photo_file'), $person->id);
+        }
+
+        $person->update($personData);
 
         DB::table('show_person')->where('id', $entry)->update([
             'character_name' => $data['character_name'] ?? null,
             'sort_order'     => $data['sort_order'] ?? $pivot->sort_order,
             'updated_at'     => now(),
-        ]);
-
-        Person::where('id', $pivot->person_id)->update([
-            'name'  => $data['person_name'],
-            'photo' => $data['person_photo'] ?: null,
         ]);
 
         return back()->with('cast_success', 'Cast entry updated.');
@@ -94,5 +116,10 @@ class ShowCastController extends Controller
         DB::table('show_person')->where('id', $entry)->where('show_id', $show->id)->delete();
 
         return back()->with('cast_success', 'Cast member removed.');
+    }
+
+    private function uploadPhoto($file, int $personId): string
+    {
+        return $file->store("people/{$personId}", 'public');
     }
 }

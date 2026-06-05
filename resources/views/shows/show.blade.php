@@ -489,7 +489,7 @@
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
                     @foreach($show->castMembers as $person)
                     @php
-                        $photo = $person->pivot->character_photo ?: $person->photo;
+                        $photo = $person->pivot->character_photo ?: $person->photo_url;
                     @endphp
                     <a href="{{ route('people.show', $person) }}"
                        class="block bg-[#0d0d18] border border-white/5 rounded-2xl overflow-hidden group hover:border-white/15 hover:shadow-lg transition-all duration-200">
