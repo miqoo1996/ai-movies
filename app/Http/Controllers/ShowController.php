@@ -8,15 +8,27 @@ use App\Models\Page;
 use App\Models\Show;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class ShowController extends Controller
 {
     public function home()
     {
         $sliderShows    = Show::orderBy('subscribers', 'desc')->take(9)->get();
-        $sidebarShows      = Show::orderBy('subscribers', 'desc')->take(5)->get();
-        $sidebarTopRated   = Show::where('status', 'Running')->orderBy('subscribers', 'desc')->take(5)->get();
-        $top10Shows     = Show::orderBy('subscribers', 'desc')->take(10)->get();
+        $sidebarTopRated = Show::where('status', 'Running')->orderBy('subscribers', 'desc')->take(5)->get();
+
+        // Shuffle once every 12 hours — cache only the ID order, fetch fresh data each request
+        $top10Ids = Cache::remember('home_top10_ids', now()->addHours(12), function () {
+            return Show::orderBy('subscribers', 'desc')->take(30)->pluck('id')->shuffle()->take(10)->toArray();
+        });
+        $top10Shows = Show::whereIn('id', $top10Ids)->get()
+            ->sortBy(fn($s) => array_search($s->id, $top10Ids))->values();
+
+        $sidebarIds = Cache::remember('home_sidebar_popular_ids', now()->addHours(12), function () {
+            return Show::orderBy('subscribers', 'desc')->take(20)->pluck('id')->shuffle()->take(5)->toArray();
+        });
+        $sidebarShows = Show::whereIn('id', $sidebarIds)->get()
+            ->sortBy(fn($s) => array_search($s->id, $sidebarIds))->values();
         $recentlyAdded  = Show::orderBy('created_at', 'desc')->take(8)->get();
         $classicDramas  = Show::where('year', '<=', 2015)->orderBy('subscribers', 'desc')->take(8)->get();
         $diziNewcomers  = Show::where('year', '>', 2015)->orderBy('subscribers', 'desc')->take(8)->get();
