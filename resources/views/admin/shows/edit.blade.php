@@ -33,6 +33,155 @@
     @include('admin.shows._form')
 </form>
 
+{{-- ── Cast & Crew ──────────────────────────────────────────────── --}}
+@php
+    $castEntries = DB::table('show_person')
+        ->join('people', 'people.id', '=', 'show_person.person_id')
+        ->where('show_person.show_id', $show->id)
+        ->where('show_person.department', 'cast')
+        ->orderBy('show_person.sort_order')
+        ->select('show_person.id as pivot_id', 'show_person.character_name', 'show_person.sort_order',
+                 'people.id as person_id', 'people.name', 'people.photo')
+        ->get();
+@endphp
+<div class="card card-outline card-warning mt-2">
+    <div class="card-header">
+        <h3 class="card-title"><i class="fas fa-users mr-2"></i>Cast & Crew</h3>
+        <div class="card-tools">
+            <span class="badge badge-warning">{{ $castEntries->count() }} members</span>
+        </div>
+    </div>
+    <div class="card-body p-0">
+
+        @if(session('cast_success'))
+        <div class="alert alert-success alert-dismissible m-3 mb-0">
+            {{ session('cast_success') }}
+            <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+        </div>
+        @endif
+
+        {{-- Existing cast table --}}
+        @if($castEntries->isNotEmpty())
+        <div class="table-responsive">
+            <table class="table table-sm table-hover mb-0">
+                <thead class="thead-light">
+                    <tr>
+                        <th style="width:50px">#</th>
+                        <th style="width:50px"></th>
+                        <th>Actor / Actress</th>
+                        <th>Character</th>
+                        <th style="width:80px">Order</th>
+                        <th style="width:100px"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach($castEntries as $entry)
+                <tr id="cast-row-{{ $entry->pivot_id }}">
+                    {{-- View mode --}}
+                    <td class="cast-view align-middle text-muted small">{{ $entry->sort_order }}</td>
+                    <td class="cast-view align-middle">
+                        @if($entry->photo)
+                            <img src="{{ $entry->photo }}" style="width:36px;height:36px;object-fit:cover;border-radius:50%;">
+                        @else
+                            <div style="width:36px;height:36px;border-radius:50%;background:#dee2e6;display:flex;align-items:center;justify-content:center;">
+                                <i class="fas fa-user text-muted" style="font-size:14px;"></i>
+                            </div>
+                        @endif
+                    </td>
+                    <td class="cast-view align-middle font-weight-bold">{{ $entry->name }}</td>
+                    <td class="cast-view align-middle text-muted">{{ $entry->character_name ?: '—' }}</td>
+                    <td class="cast-view"></td>
+                    <td class="cast-view align-middle text-right">
+                        <button type="button" class="btn btn-xs btn-outline-primary" onclick="castEditToggle({{ $entry->pivot_id }})">
+                            <i class="fas fa-pencil-alt"></i>
+                        </button>
+                        <form method="POST" action="{{ route('admin.shows.cast.destroy', [$show, $entry->pivot_id]) }}"
+                              class="d-inline" onsubmit="return confirm('Remove {{ addslashes($entry->name) }} from cast?')">
+                            @csrf @method('DELETE')
+                            <button class="btn btn-xs btn-outline-danger"><i class="fas fa-times"></i></button>
+                        </form>
+                    </td>
+
+                    {{-- Edit mode (hidden) --}}
+                    <td colspan="6" class="cast-edit p-2" style="display:none;background:#fffbea;">
+                        <form method="POST" action="{{ route('admin.shows.cast.update', [$show, $entry->pivot_id]) }}">
+                            @csrf @method('PUT')
+                            <div class="row align-items-end" style="gap:0;">
+                                <div class="col-sm-3 form-group mb-sm-0">
+                                    <label class="small mb-1">Actor name</label>
+                                    <input type="text" name="person_name" value="{{ $entry->name }}"
+                                           class="form-control form-control-sm" required>
+                                </div>
+                                <div class="col-sm-3 form-group mb-sm-0">
+                                    <label class="small mb-1">Character</label>
+                                    <input type="text" name="character_name" value="{{ $entry->character_name }}"
+                                           class="form-control form-control-sm" placeholder="Character name">
+                                </div>
+                                <div class="col-sm-4 form-group mb-sm-0">
+                                    <label class="small mb-1">Photo URL</label>
+                                    <input type="text" name="person_photo" value="{{ $entry->photo }}"
+                                           class="form-control form-control-sm" placeholder="https://…">
+                                </div>
+                                <div class="col-sm-1 form-group mb-sm-0">
+                                    <label class="small mb-1">Order</label>
+                                    <input type="number" name="sort_order" value="{{ $entry->sort_order }}"
+                                           class="form-control form-control-sm" min="0">
+                                </div>
+                                <div class="col-sm-1 form-group mb-sm-0 d-flex" style="gap:4px;">
+                                    <button type="submit" class="btn btn-sm btn-success"><i class="fas fa-check"></i></button>
+                                    <button type="button" class="btn btn-sm btn-secondary" onclick="castEditToggle({{ $entry->pivot_id }})"><i class="fas fa-times"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
+        @else
+            <p class="text-muted m-3">No cast members yet.</p>
+        @endif
+
+        {{-- Add new cast member --}}
+        <div class="border-top p-3">
+            <p class="font-weight-bold mb-2"><i class="fas fa-plus-circle mr-1 text-success"></i>Add Cast Member</p>
+            <form method="POST" action="{{ route('admin.shows.cast.store', $show) }}">
+                @csrf
+                <div class="row align-items-end" style="gap:0;">
+                    <div class="col-sm-3 form-group mb-sm-0">
+                        <label class="small mb-1">Search existing person</label>
+                        <input type="text" id="cast-search" autocomplete="off"
+                               class="form-control form-control-sm" placeholder="Type a name…">
+                        <input type="hidden" name="person_id" id="cast-person-id">
+                        <div id="cast-search-results" class="list-group position-absolute" style="z-index:999;max-width:280px;display:none;"></div>
+                    </div>
+                    <div class="col-sm-3 form-group mb-sm-0">
+                        <label class="small mb-1">— or — New person name</label>
+                        <input type="text" name="person_name" id="cast-new-name"
+                               class="form-control form-control-sm" placeholder="Full name">
+                    </div>
+                    <div class="col-sm-3 form-group mb-sm-0">
+                        <label class="small mb-1">Character name</label>
+                        <input type="text" name="character_name"
+                               class="form-control form-control-sm" placeholder="Character name">
+                    </div>
+                    <div class="col-sm-2 form-group mb-sm-0">
+                        <label class="small mb-1">Photo URL (optional)</label>
+                        <input type="text" name="person_photo"
+                               class="form-control form-control-sm" placeholder="https://…">
+                    </div>
+                    <div class="col-sm-1 form-group mb-sm-0">
+                        <button type="submit" class="btn btn-sm btn-success btn-block">
+                            <i class="fas fa-plus"></i> Add
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 {{-- ── Gallery Images ──────────────────────────────────────────── --}}
 <div class="card card-outline card-secondary mt-2">
     <div class="card-header">
@@ -74,9 +223,7 @@
         <div class="row mt-3" style="gap:0;">
             @foreach($images as $img)
             @php
-                $src = ($img->local_path && file_exists(storage_path('app/public/'.$img->local_path)))
-                    ? asset('storage/'.$img->local_path)
-                    : $img->url;
+                $src = $img->image_url;
             @endphp
             <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
                 <div class="card h-100 shadow-sm" style="overflow:hidden;">
@@ -143,6 +290,79 @@ function previewPoster(input) {
     };
     reader.readAsDataURL(file);
 }
+
+// ── Cast inline edit toggle ───────────────────────────────────────
+function castEditToggle(pivotId) {
+    const row = document.getElementById('cast-row-' + pivotId);
+    const views = row.querySelectorAll('.cast-view');
+    const edit  = row.querySelector('.cast-edit');
+    const isOpen = edit.style.display !== 'none';
+
+    views.forEach(el => el.style.display = isOpen ? '' : 'none');
+    edit.style.display = isOpen ? 'none' : '';
+}
+
+// ── Person search autocomplete ────────────────────────────────────
+(function () {
+    const searchInput  = document.getElementById('cast-search');
+    const personIdInput = document.getElementById('cast-person-id');
+    const newNameInput = document.getElementById('cast-new-name');
+    const results      = document.getElementById('cast-search-results');
+    let debounce;
+
+    if (!searchInput) return;
+
+    searchInput.addEventListener('input', function () {
+        clearTimeout(debounce);
+        const q = this.value.trim();
+        personIdInput.value = '';
+
+        if (q.length < 2) { results.style.display = 'none'; return; }
+
+        debounce = setTimeout(function () {
+            fetch('{{ route('admin.shows.cast.search', $show) }}?q=' + encodeURIComponent(q))
+                .then(r => r.json())
+                .then(people => {
+                    results.innerHTML = '';
+                    if (!people.length) { results.style.display = 'none'; return; }
+
+                    people.forEach(p => {
+                        const btn = document.createElement('button');
+                        btn.type = 'button';
+                        btn.className = 'list-group-item list-group-item-action d-flex align-items-center py-1 px-2';
+                        btn.style.fontSize = '13px';
+                        btn.innerHTML = (p.photo
+                            ? `<img src="${p.photo}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;margin-right:8px;">`
+                            : `<span style="width:28px;height:28px;border-radius:50%;background:#dee2e6;display:inline-flex;align-items:center;justify-content:center;margin-right:8px;font-size:11px;"><i class="fas fa-user"></i></span>`)
+                            + `<span>${p.name}</span>`;
+
+                        btn.addEventListener('click', function () {
+                            personIdInput.value = p.id;
+                            searchInput.value   = p.name;
+                            newNameInput.value  = '';
+                            results.style.display = 'none';
+                        });
+                        results.appendChild(btn);
+                    });
+                    results.style.display = 'block';
+                });
+        }, 250);
+    });
+
+    // Clear person_id when user types in new name field
+    newNameInput.addEventListener('input', function () {
+        if (this.value.trim()) {
+            personIdInput.value = '';
+            searchInput.value   = '';
+        }
+    });
+
+    document.addEventListener('click', function (e) {
+        if (!results.contains(e.target) && e.target !== searchInput) {
+            results.style.display = 'none';
+        }
+    });
+})();
 
 function updateGalleryLabel(input) {
     const label   = document.querySelector('label[for="' + input.id + '"]');

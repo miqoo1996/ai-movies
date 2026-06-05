@@ -138,7 +138,7 @@ class ShowController extends Controller
         $title = $show->title;
         // Clean up local files
         if ($show->poster_local) Storage::disk('public')->delete($show->poster_local);
-        $show->images->each(fn($img) => $img->local_path && Storage::disk('public')->delete($img->local_path));
+        $show->images->each(fn($img) => $img->local_path && Storage::disk('public')->delete($this->diskPath($img->local_path)));
         $show->delete();
 
         return redirect()->route('admin.shows.index')
@@ -148,7 +148,7 @@ class ShowController extends Controller
     // Delete a single gallery image
     public function destroyImage(Show $show, ShowImage $image)
     {
-        if ($image->local_path) Storage::disk('public')->delete($image->local_path);
+        if ($image->local_path) Storage::disk('public')->delete($this->diskPath($image->local_path));
         $image->delete();
 
         return back()->with('success', 'Image deleted.');
@@ -157,6 +157,14 @@ class ShowController extends Controller
     private function uploadPoster($file, string $slug): string
     {
         return $file->storeAs('posters', $slug . '.' . $file->getClientOriginalExtension(), 'public');
+    }
+
+    /** Normalise local_path to a Storage::disk('public')-relative path. */
+    private function diskPath(string $localPath): string
+    {
+        return str_starts_with($localPath, 'storage/')
+            ? substr($localPath, strlen('storage/'))
+            : $localPath;
     }
 
     private function validated(Request $request, ?Show $show = null): array

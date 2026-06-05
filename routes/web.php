@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\ContactSubmissionController as AdminContactContro
 use App\Http\Controllers\Admin\EpisodeController as AdminEpisodeController;
 use App\Http\Controllers\Admin\FaqController as AdminFaqController;
 use App\Http\Controllers\Admin\PageController as AdminPageController;
+use App\Http\Controllers\Admin\ShowCastController as AdminShowCastController;
 use App\Http\Controllers\Admin\ShowController as AdminShowController;
 use App\Http\Controllers\Admin\SettingController as AdminSettingController;
 use App\Http\Controllers\Admin\SocialLinkController as AdminSocialLinkController;
@@ -50,6 +51,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('pages/{page}',       [AdminPageController::class, 'update'])->name('pages.update');
         Route::post('pages/{page}/preview', [AdminPageController::class, 'preview'])->name('pages.preview');
         Route::delete('shows/{show}/images/{image}', [AdminShowController::class, 'destroyImage'])->name('shows.images.destroy');
+
+        Route::get('shows/{show}/cast/search',          [AdminShowCastController::class, 'search'])->name('shows.cast.search');
+        Route::post('shows/{show}/cast',                [AdminShowCastController::class, 'store'])->name('shows.cast.store');
+        Route::put('shows/{show}/cast/{entry}',         [AdminShowCastController::class, 'update'])->name('shows.cast.update');
+        Route::delete('shows/{show}/cast/{entry}',      [AdminShowCastController::class, 'destroy'])->name('shows.cast.destroy');
 
         Route::prefix('shows/{show}/episodes')->name('shows.episodes.')->group(function () {
             Route::get('/',              [AdminEpisodeController::class, 'index'])->name('index');
