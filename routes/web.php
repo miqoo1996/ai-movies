@@ -75,6 +75,8 @@ Route::get('/shows/{slug}', [ShowController::class, 'show'])->name('shows.show')
 Route::get('/people/{person}', [PersonController::class, 'show'])->name('people.show');
 Route::get('/calendar',   [ShowController::class, 'calendar'])->name('calendar');
 
+Route::get('/best-series', [ShowController::class, 'bestSeries'])->name('best-series');
+
 Route::get('/faq',     [MainController::class, 'faq'])->name('faq');
 Route::get('/terms',   [MainController::class, 'terms'])->name('terms');
 Route::get('/privacy', [MainController::class, 'privacy'])->name('privacy');

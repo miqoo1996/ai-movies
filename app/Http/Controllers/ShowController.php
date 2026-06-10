@@ -115,6 +115,23 @@ class ShowController extends Controller
         return view('shows.show', compact('show', 'seasons', 'latestEpisodes', 'relatedShows'));
     }
 
+    public function bestSeries()
+    {
+        $ids = [1, 2, 18, 22, 23, 30, 70, 125, 143, 310, 479, 129, 132, 43, 127, 57, 37, 47, 59, 40, 24, 54, 112];
+
+        $shows = Show::with([
+                'genres',
+                'castMembers' => fn($q) => $q->orderBy('show_person.sort_order'),
+            ])
+            ->whereIn('id', $ids)
+            ->orderBy('subscribers', 'desc')
+            ->get();
+
+        $editorial = \App\Data\BestSeriesEditorial::all();
+
+        return view('best-series', compact('shows', 'editorial'));
+    }
+
     public function calendar(Request $request)
     {
         $today     = Carbon::today();
