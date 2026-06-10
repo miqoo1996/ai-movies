@@ -79,6 +79,7 @@
          crossorigin="anonymous"></script>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="https://analytics.ahrefs.com/analytics.js" data-key="Hxs+3KySPjqB/kmCLja3eg" async></script>
 </head>
 <body class="bg-[#080810] text-white antialiased">
 
