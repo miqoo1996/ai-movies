@@ -14,7 +14,11 @@ class ShowController extends Controller
 {
     public function home()
     {
-        $sliderShows    = Show::orderBy('subscribers', 'desc')->take(9)->get();
+        $sliderIds = Cache::remember('home_slider_ids', now()->addHours(2), function () {
+            return Show::orderBy('subscribers', 'desc')->take(30)->pluck('id')->shuffle()->take(9)->toArray();
+        });
+        $sliderShows = Show::whereIn('id', $sliderIds)->get()
+            ->sortBy(fn($s) => array_search($s->id, $sliderIds))->values();
         $sidebarTopRated = Show::where('status', 'Running')->orderBy('subscribers', 'desc')->take(5)->get();
 
         // Shuffle once every 12 hours — cache only the ID order, fetch fresh data each request
