@@ -7,33 +7,36 @@
 @section('content')
 
 {{-- ═══════════════════════ HERO ══════════════════════════════════════ --}}
-<section class="relative overflow-hidden bg-[#080810] py-20 md:py-28">
-    {{-- Background glow --}}
-    <div class="absolute inset-0 pointer-events-none overflow-hidden">
-        <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-violet-600/10 rounded-full blur-3xl"></div>
-        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-violet-500/30 to-transparent"></div>
-    </div>
+<section class="relative overflow-hidden" style="padding-top: 60px;">
+    {{-- Full image at natural proportions — never cropped --}}
+    <img src="/bes-series-ever.jpeg" alt="" class="w-full h-auto block" style="filter: brightness(0.65);">
 
-    <div class="relative max-w-[1600px] mx-auto px-4 sm:px-6 text-center">
-        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-violet-500/30 bg-violet-500/10 text-violet-300 text-xs font-semibold tracking-widest uppercase mb-5">
-            Editorial Selection
-        </span>
-        <h1 class="text-4xl sm:text-5xl md:text-6xl font-black text-white mb-5 leading-tight">
-            Best Series <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-indigo-400">Ever</span>
-        </h1>
-        <p class="text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">
-            The greatest Turkish dramas that defined a generation — sweeping romances,
-            historical epics, and gripping thrillers that captivated audiences around the world.
-        </p>
-        <div class="mt-8 flex items-center justify-center gap-6 text-sm text-slate-500">
-            <span class="flex items-center gap-1.5">
-                <svg class="w-4 h-4 text-violet-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                {{ $shows->count() }} Essential Shows
+    {{-- Subtle dark overlay so text stays readable --}}
+    <div class="absolute inset-0" style="background: rgba(8,8,16,0.45);"></div>
+
+    {{-- Centred text, absolutely positioned over the image --}}
+    <div class="absolute inset-0 flex items-center justify-center">
+        <div class="w-full max-w-4xl mx-auto px-4 sm:px-6 text-center">
+            <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-violet-500/40 bg-violet-500/15 text-violet-300 text-xs font-bold tracking-[0.2em] uppercase mb-6 backdrop-blur-sm">
+                ★ Editorial Selection
             </span>
-            <span class="w-1 h-1 rounded-full bg-slate-700"></span>
-            <span>Hand-picked Editorials</span>
-            <span class="w-1 h-1 rounded-full bg-slate-700"></span>
-            <span>Full Cast &amp; Synopses</span>
+            <h1 class="text-5xl sm:text-6xl md:text-7xl font-black text-white mb-6 leading-[1.05] tracking-tight" style="text-shadow: 0 2px 30px rgba(0,0,0,0.9), 0 0 60px rgba(0,0,0,0.6);">
+                Best Series<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-purple-300 to-indigo-400">Ever</span>
+            </h1>
+            <p class="text-slate-200 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed font-light" style="text-shadow: 0 1px 12px rgba(0,0,0,0.9);">
+                The greatest Turkish dramas that defined a generation — sweeping romances,
+                historical epics, and gripping thrillers that captivated audiences around the world.
+            </p>
+            <div class="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm font-medium text-slate-400">
+                <span class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-violet-400 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    {{ $shows->count() }} Essential Shows
+                </span>
+                <span class="w-1 h-1 rounded-full bg-slate-600"></span>
+                <span>Hand-picked Editorials</span>
+                <span class="w-1 h-1 rounded-full bg-slate-600"></span>
+                <span>Full Cast &amp; Synopses</span>
+            </div>
         </div>
     </div>
 </section>
