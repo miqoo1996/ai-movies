@@ -28,7 +28,9 @@
 
 {{-- ═══════════════════════════════════ TOP BANNER ═══════════════════════════════ --}}
 <div style="padding-top: 60px;">
-    <img src="/main.jpeg" alt="TurkFlix — Celebrating 10 Years" class="w-full h-auto block">
+    <a href="https://turk-flix.com/" target="_blank" rel="noopener">
+        <img src="/main.jpeg" alt="TurkFlix — Celebrating 10 Years" class="w-full h-auto block">
+    </a>
 </div>
 
 {{-- ═══════════════════════════════════ 3D HERO SLIDER ═══════════════════════════ --}}
