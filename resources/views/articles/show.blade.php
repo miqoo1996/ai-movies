@@ -29,60 +29,78 @@
 @section('content')
 
 <div class="pt-[60px] bg-[#080810] min-h-screen">
-
-    @if($article->cover_url)
-        <div class="relative h-[38vh] min-h-[260px] w-full overflow-hidden">
-            <img src="{{ $article->cover_url }}" alt="{{ $article->title }}" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-[#080810] via-[#080810]/70 to-[#080810]/20"></div>
-        </div>
-    @endif
-
-    <div class="max-w-[820px] mx-auto px-6 {{ $article->cover_url ? '-mt-24 relative' : 'pt-12' }} pb-16">
+    <article class="article-shell">
 
         {{-- Breadcrumb --}}
-        <nav class="text-xs text-slate-500 mb-4">
-            <a href="{{ url('/') }}" class="hover:text-white transition-colors">Home</a>
-            <span class="mx-1.5 text-slate-700">/</span>
-            <a href="{{ route('articles.index') }}" class="hover:text-white transition-colors">Articles</a>
+        <nav class="article-crumbs">
+            <a href="{{ url('/') }}">Home</a>
+            <span>/</span>
+            <a href="{{ route('articles.index') }}">Articles</a>
         </nav>
 
-        <h1 class="text-white text-3xl sm:text-4xl font-black tracking-tight leading-tight">{{ $article->title }}</h1>
+        <header class="article-head">
+            @if($article->published_at)
+                <p class="article-eyebrow">{{ $article->published_at->format('F j, Y') }}</p>
+            @endif
 
-        @if($article->published_at)
-            <p class="mt-4 text-[11px] font-bold uppercase tracking-[0.15em] text-[#e63946]">
-                {{ $article->published_at->format('F j, Y') }}
-            </p>
+            <h1 class="article-title">{{ $article->title }}</h1>
+
+            @if($article->excerpt)
+                <p class="article-standfirst">{{ $article->excerpt }}</p>
+            @endif
+        </header>
+
+        @if($article->cover_url)
+            <figure class="article-cover">
+                <img src="{{ $article->cover_url }}" alt="{{ $article->title }}">
+            </figure>
         @endif
 
-        @if($article->excerpt)
-            <p class="mt-5 text-slate-400 text-lg leading-relaxed">{{ $article->excerpt }}</p>
-        @endif
-
-        <div class="article-content mt-8">
+        <div class="article-content">
             {!! $article->content !!}
         </div>
 
         @if($related->isNotEmpty())
-        <section class="mt-16 pt-10 border-t border-white/5">
-            <h2 class="text-white text-xl font-black tracking-tight mb-6">More articles</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                @foreach($related as $item)
-                    @include('articles._card', ['article' => $item])
-                @endforeach
-            </div>
-        </section>
+            <section class="article-related">
+                <h2>More articles</h2>
+                <div class="article-related-grid">
+                    @foreach($related as $item)
+                        @include('articles._card', ['article' => $item])
+                    @endforeach
+                </div>
+            </section>
         @endif
 
-    </div>
+    </article>
 </div>
 
 @endsection
 
 @push('scripts')
 <style>
-    .article-content { color: #cbd5e1; font-size: 1.0625rem; line-height: 1.85; }
+    /* Layout is defined here rather than with Tailwind utilities so the page keeps
+       its proportions even if the CSS bundle has not been rebuilt after a deploy. */
+    .article-shell { max-width: 820px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+
+    .article-crumbs { font-size: .75rem; color: #64748b; margin-bottom: 1.5rem; }
+    .article-crumbs a { color: #64748b; text-decoration: none; transition: color .15s; }
+    .article-crumbs a:hover { color: #fff; }
+    .article-crumbs span { margin: 0 .4rem; color: #334155; }
+
+    .article-eyebrow { font-size: .6875rem; font-weight: 800; text-transform: uppercase; letter-spacing: .15em; color: #e63946; margin-bottom: .75rem; }
+    .article-title { color: #fff; font-size: clamp(1.85rem, 4vw, 2.6rem); font-weight: 900; line-height: 1.15; letter-spacing: -.02em; }
+    .article-standfirst { margin-top: 1.15rem; color: #94a3b8; font-size: 1.125rem; line-height: 1.7; }
+
+    .article-cover { margin: 2.5rem 0 0; border-radius: .875rem; overflow: hidden; background: #111122; border: 1px solid rgba(255,255,255,.06); aspect-ratio: 16 / 9; }
+    .article-cover img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    @supports not (aspect-ratio: 16 / 9) {
+        .article-cover { height: 0; padding-bottom: 56.25%; position: relative; }
+        .article-cover img { position: absolute; inset: 0; }
+    }
+
+    .article-content { margin-top: 2.5rem; color: #cbd5e1; font-size: 1.0625rem; line-height: 1.85; }
     .article-content > * + * { margin-top: 1.25rem; }
-    .article-content h2 { color: #fff; font-size: 1.5rem; font-weight: 800; margin-top: 2.5rem; letter-spacing: -0.01em; }
+    .article-content h2 { color: #fff; font-size: 1.5rem; font-weight: 800; margin-top: 2.5rem; letter-spacing: -.01em; }
     .article-content h3 { color: #fff; font-size: 1.2rem; font-weight: 700; margin-top: 2rem; }
     .article-content a { color: #e63946; text-decoration: underline; text-underline-offset: 3px; }
     .article-content a:hover { color: #fff; }
@@ -95,5 +113,10 @@
     .article-content strong { color: #fff; }
     .article-content table { width: 100%; border-collapse: collapse; }
     .article-content th, .article-content td { border: 1px solid rgba(255,255,255,.1); padding: .6rem .75rem; text-align: left; }
+
+    .article-related { margin-top: 4rem; padding-top: 2.5rem; border-top: 1px solid rgba(255,255,255,.06); }
+    .article-related > h2 { color: #fff; font-size: 1.25rem; font-weight: 900; letter-spacing: -.01em; margin-bottom: 1.5rem; }
+    .article-related-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+    @media (min-width: 640px) { .article-related-grid { grid-template-columns: 1fr 1fr; } }
 </style>
 @endpush
