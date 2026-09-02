@@ -61,103 +61,22 @@ HTML,
     }
 
     /**
-     * The cover lives on the public disk, which is not in version control, so it
-     * is generated on first seed. Returns null when GD is unavailable — the
-     * article then renders with the card's "no image" placeholder.
+     * The public disk is not in version control, so the cover ships as a repo
+     * asset and is copied into place on seed. Returns null when the asset is
+     * missing — the article then renders with the card's "no image" state.
      */
     private function cover(): ?string
     {
-        $disk = Storage::disk('public');
+        $source = database_path('seeders/assets/getting-started-with-turkish-dramas.jpg');
 
-        if ($disk->exists(self::COVER_PATH)) {
-            return self::COVER_PATH;
-        }
-
-        $jpeg = $this->generateCover();
-
-        if ($jpeg === null) {
-            $this->command?->warn('ArticleSeeder: GD unavailable, seeding article without a cover image.');
+        if (! is_readable($source)) {
+            $this->command?->warn('ArticleSeeder: cover asset missing, seeding article without a cover image.');
 
             return null;
         }
 
-        $disk->put(self::COVER_PATH, $jpeg);
+        Storage::disk('public')->put(self::COVER_PATH, file_get_contents($source));
 
         return self::COVER_PATH;
-    }
-
-    private function generateCover(): ?string
-    {
-        if (! extension_loaded('gd')) {
-            return null;
-        }
-
-        [$w, $h] = [1200, 675];
-        $canvas  = imagecreatetruecolor($w, $h);
-
-        // Vertical gradient: #12122a → #080810
-        for ($y = 0; $y < $h; $y++) {
-            $t = $y / $h;
-            $line = imagecolorallocate(
-                $canvas,
-                (int) (0x12 + (0x08 - 0x12) * $t),
-                (int) (0x12 + (0x08 - 0x12) * $t),
-                (int) (0x2a + (0x10 - 0x2a) * $t)
-            );
-            imagefilledrectangle($canvas, 0, $y, $w, $y, $line);
-        }
-
-        // Soft accent glows
-        $rose = imagecolorallocatealpha($canvas, 0xe6, 0x39, 0x46, 105);
-        imagefilledellipse($canvas, (int) ($w * 0.82), (int) ($h * 0.22), 620, 620, $rose);
-
-        $violet = imagecolorallocatealpha($canvas, 0x8b, 0x5c, 0xf6, 112);
-        imagefilledellipse($canvas, (int) ($w * 0.12), (int) ($h * 0.92), 520, 520, $violet);
-
-        // Accent rule
-        $bar = imagecolorallocate($canvas, 0xe6, 0x39, 0x46);
-        imagefilledrectangle($canvas, 90, $h - 150, 90 + 96, $h - 144, $bar);
-
-        $font = $this->font();
-
-        if ($font) {
-            $white = imagecolorallocate($canvas, 0xff, 0xff, 0xff);
-            $muted = imagecolorallocatealpha($canvas, 0xff, 0xff, 0xff, 70);
-
-            imagettftext($canvas, 15, 0, 90, 150, $bar, $font, 'A R T I C L E');
-            imagettftext($canvas, 46, 0, 90, 300, $white, $font, 'Getting Started With');
-            imagettftext($canvas, 46, 0, 90, 370, $white, $font, 'Turkish Dramas');
-            imagettftext($canvas, 20, 0, 90, 440, $muted, $font, 'A beginner’s guide to the format');
-        }
-
-        ob_start();
-        imagejpeg($canvas, null, 88);
-        $jpeg = ob_get_clean();
-        imagedestroy($canvas);
-
-        return $jpeg ?: null;
-    }
-
-    /** First available bold sans TTF, or null when the server ships none. */
-    private function font(): ?string
-    {
-        if (! function_exists('imagettftext')) {
-            return null;
-        }
-
-        $candidates = [
-            '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf',
-            '/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf',
-            '/usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf',
-            '/System/Library/Fonts/Supplemental/Arial Bold.ttf',
-        ];
-
-        foreach ($candidates as $font) {
-            if (is_readable($font)) {
-                return $font;
-            }
-        }
-
-        return null;
     }
 }
