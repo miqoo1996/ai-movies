@@ -128,6 +128,7 @@
                 <a href="{{ route('shows.index', ['status' => 'airing']) }}" class="nav-link px-3 py-2 rounded-md">Airing Now</a>
                 <a href="{{ route('shows.index', ['sort' => 'newest']) }}" class="nav-link px-3 py-2 rounded-md">New Episodes</a>
                 <a href="{{ route('shows.index', ['sort' => 'rating']) }}" class="nav-link px-3 py-2 rounded-md">Top Rated</a>
+                <a href="{{ route('articles.index') }}" class="nav-link px-3 py-2 rounded-md">Articles</a>
                 <a href="{{ route('best-series') }}" class="nav-link px-3 py-2 rounded-md flex items-center gap-1.5 text-violet-300 hover:text-violet-200">
                     <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                     Best Series
@@ -224,6 +225,7 @@
                                 ['label' => 'New Episodes',    'href' => route('shows.index', ['sort' => 'newest'])],
                                 ['label' => 'Top Rated',       'href' => route('shows.index', ['sort' => 'rating'])],
                                 ['label' => 'Airing Now',      'href' => route('shows.index', ['status' => 'Running'])],
+                                ['label' => 'Articles',        'href' => route('articles.index')],
                                 ['label' => 'Contact Us',      'href' => route('contact')],
                             ] as $link)
                             <li>
@@ -264,6 +266,7 @@
             <a href="{{ route('shows.index', ['sort' => 'newest']) }}" class="block px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 text-sm transition-all">New Episodes</a>
             <a href="{{ route('shows.index', ['sort' => 'rating']) }}" class="block px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 text-sm transition-all">Top Rated</a>
             <a href="{{ route('shows.index', ['status' => 'Running']) }}" class="block px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 text-sm transition-all">Airing Now</a>
+            <a href="{{ route('articles.index') }}" class="block px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 text-sm transition-all">Articles</a>
             <a href="{{ route('best-series') }}" class="block px-3 py-2.5 rounded-lg text-violet-300 hover:text-white hover:bg-white/5 text-sm transition-all font-semibold">⭐ Best Series Ever</a>
             <a href="{{ route('contact') }}" class="block px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 text-sm transition-all">Contact Us</a>
             <div class="pt-2 border-t border-white/5 mt-2">
@@ -364,6 +367,7 @@
                 <ul class="space-y-3">
                     @foreach([
 //                        ['About Us',       '#'],
+                        ['Articles',       route('articles.index')],
                         ['FAQ',            route('faq')],
                         ['Contact Us',     route('contact')],
                         ['Terms of Use',   route('terms')],

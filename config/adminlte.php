@@ -311,6 +311,11 @@ return [
             'icon' => 'fas fa-fw fa-film',
         ],
         [
+            'text' => 'Articles',
+            'url'  => 'admin/articles',
+            'icon' => 'fas fa-fw fa-newspaper',
+        ],
+        [
             'text' => 'Pages',
             'url'  => 'admin/pages',
             'icon' => 'fas fa-fw fa-file-alt',

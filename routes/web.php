@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use App\Http\Controllers\Admin\ContactSubmissionController as AdminContactController;
 use App\Http\Controllers\Admin\EpisodeController as AdminEpisodeController;
 use App\Http\Controllers\Admin\FaqController as AdminFaqController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\Admin\SettingController as AdminSettingController;
 use App\Http\Controllers\Admin\SocialLinkController as AdminSocialLinkController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\PersonController;
@@ -26,6 +28,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('logout', [AdminController::class, 'logout'])->name('logout');
 
         Route::resource('shows', AdminShowController::class)->names('shows');
+        Route::resource('articles', AdminArticleController::class)->names('articles')->except(['show']);
         Route::post('faqs/reorder', [AdminFaqController::class, 'reorder'])->name('faqs.reorder');
         Route::resource('faqs', AdminFaqController::class)->names('faqs')->except(['show']);
         Route::get('settings',  [AdminSettingController::class, 'index'])->name('settings.index');
@@ -76,6 +79,9 @@ Route::get('/people/{person}', [PersonController::class, 'show'])->name('people.
 Route::get('/calendar',   [ShowController::class, 'calendar'])->name('calendar');
 
 Route::get('/best-series', [ShowController::class, 'bestSeries'])->name('best-series');
+
+Route::get('/articles',           [ArticleController::class, 'index'])->name('articles.index');
+Route::get('/articles/{article:slug}', [ArticleController::class, 'show'])->name('articles.show');
 
 Route::get('/faq',     [MainController::class, 'faq'])->name('faq');
 Route::get('/terms',   [MainController::class, 'terms'])->name('terms');
