@@ -101,7 +101,13 @@ class ArticleController extends Controller
     {
         $data = $request->validate([
             'title'           => 'required|string|max:255',
-            'slug'            => 'nullable|string|max:255|unique:articles,slug' . ($article ? ",{$article->id}" : ''),
+            'slug'            => [
+                'nullable',
+                'string',
+                'max:255',
+                'not_regex:/\//',
+                'unique:articles,slug' . ($article ? ",{$article->id}" : ''),
+            ],
             'excerpt'         => 'nullable|string|max:500',
             'content'         => 'required|string',
             'cover_image'     => 'nullable|string|max:500',
@@ -110,6 +116,8 @@ class ArticleController extends Controller
             'is_published'    => 'nullable|boolean',
             'seo_title'       => 'nullable|string|max:255',
             'seo_description' => 'nullable|string|max:320',
+            'focus_keyword'   => 'nullable|string|max:255',
+            'schema_markup'   => 'nullable|json',
             'noindex'         => 'nullable|boolean',
         ]);
 

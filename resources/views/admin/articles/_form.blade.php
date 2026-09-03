@@ -11,16 +11,17 @@
 
                 <div class="form-group">
                     <label>Title <span class="text-danger">*</span></label>
-                    <input type="text" name="title" value="{{ old('title', $isEdit ? $article->title : '') }}"
+                    <input type="text" name="title" id="article-title" value="{{ old('title', $isEdit ? $article->title : '') }}"
                            class="form-control @error('title') is-invalid @enderror" required>
                     @error('title')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
 
                 <div class="form-group">
                     <label>Slug</label>
-                    <input type="text" name="slug" value="{{ old('slug', $isEdit ? $article->slug : '') }}"
-                           class="form-control @error('slug') is-invalid @enderror"
-                           placeholder="Auto-generated from the title if left empty">
+                      <input type="text" name="slug" id="article-slug" value="{{ old('slug', $isEdit ? $article->slug : '') }}"
+                          data-auto-slug="{{ $isEdit ? 'false' : 'true' }}"
+                          class="form-control @error('slug') is-invalid @enderror"
+                          placeholder="Generated from the title; slashes are not allowed">
                     @error('slug')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
 
@@ -132,6 +133,30 @@
             </div>
         </div>
 
+        {{-- Focused keyword --}}
+        <div class="card card-outline card-secondary">
+            <div class="card-header"><h3 class="card-title">Focused Keyword</h3></div>
+            <div class="card-body">
+                <input type="text" name="focus_keyword" maxlength="255"
+                       value="{{ old('focus_keyword', $isEdit ? $article->focus_keyword : '') }}"
+                       class="form-control @error('focus_keyword') is-invalid @enderror"
+                       placeholder="Primary keyword for this article">
+                @error('focus_keyword')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+        </div>
+
+        {{-- Structured data --}}
+        <div class="card card-outline card-secondary">
+            <div class="card-header"><h3 class="card-title">Schema</h3></div>
+            <div class="card-body">
+                <textarea name="schema_markup" rows="7"
+                          class="form-control @error('schema_markup') is-invalid @enderror"
+                          placeholder='Optional JSON-LD, for example: {&quot;@type&quot;:&quot;NewsArticle&quot;}'>{{ old('schema_markup', $isEdit ? $article->schema_markup : '') }}</textarea>
+                <small class="text-muted">Valid JSON-LD added to this article page.</small>
+                @error('schema_markup')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+        </div>
+
         {{-- Actions --}}
         <div class="card">
             <div class="card-body">
@@ -144,3 +169,30 @@
 
     </div>
 </div>
+
+@once
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var title = document.getElementById('article-title');
+    var slug = document.getElementById('article-slug');
+    if (!title || !slug) return;
+
+    function slugify(value) {
+        return value
+            .toLowerCase()
+            .trim()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+    }
+
+    title.addEventListener('input', function () {
+        if (slug.dataset.autoSlug === 'true') slug.value = slugify(title.value);
+    });
+
+    slug.addEventListener('input', function () {
+        slug.value = slug.value.replace(/\//g, '-');
+        slug.dataset.autoSlug = 'false';
+    });
+});
+</script>
+@endonce

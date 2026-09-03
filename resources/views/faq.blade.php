@@ -4,24 +4,21 @@
 @section('meta_description', $seoPage?->seo_description ?: 'Get answers about DiziCentral — how to watch Turkish dramas, English subtitle availability, translation timing, subscription plans, and login help.')
 @if($seoPage?->noindex)@section('noindex', '1')@endif
 @section('json_ld')
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    @foreach($faqs as $i => $faq)
-    {
-      "@type": "Question",
-      "name": "{{ addslashes($faq->question) }}",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "{{ addslashes(strip_tags($faq->answer ?? '')) }}"
-      }
-    }{{ !$loop->last ? ',' : '' }}
-    @endforeach
-  ]
-}
-</script>
+@php
+        $faqJsonLd = [
+                '@context' => 'https://schema.org',
+                '@type' => 'FAQPage',
+                'mainEntity' => $faqs->map(fn ($faq) => [
+                        '@type' => 'Question',
+                        'name' => $faq->question,
+                        'acceptedAnswer' => [
+                                '@type' => 'Answer',
+                                'text' => strip_tags($faq->answer ?? ''),
+                        ],
+                ])->values()->all(),
+        ];
+@endphp
+<script type="application/ld+json">{!! json_encode($faqJsonLd, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
 @endsection
 
 @section('content')

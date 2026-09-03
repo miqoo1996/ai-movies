@@ -2,6 +2,9 @@
 
 @section('seo_title', $seoPage?->seo_title ?: 'Articles')
 @section('meta_description', $seoPage?->seo_description ?: 'Guides, news and stories about Turkish dramas — cast news, episode recaps, streaming tips and more.')
+@if($articles->currentPage() > 1)@section('noindex', '1')@endif
+@if($articles->previousPageUrl())@section('prev_url', $articles->previousPageUrl())@endif
+@if($articles->nextPageUrl())@section('next_url', $articles->nextPageUrl())@endif
 @if($seoPage?->noindex)@section('noindex', '1')@endif
 
 @section('content')

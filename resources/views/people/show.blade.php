@@ -3,6 +3,27 @@
 @section('seo_title', $person->name . ' — Actor Profile')
 @section('meta_description', $person->name . ' has appeared in ' . $person->shows->count() . ' Turkish series. View their full filmography.')
 @section('canonical', route('people.show', $person))
+@if($person->photo_url)@section('og_image', $person->photo_url)@endif
+@section('og_type', 'profile')
+@section('json_ld')
+@php
+    $personJsonLd = array_filter([
+        '@context' => 'https://schema.org',
+        '@type' => 'Person',
+        'name' => $person->name,
+        'url' => route('people.show', $person),
+        'image' => $person->photo_url,
+        'jobTitle' => 'Actor',
+        'nationality' => $person->country,
+        'workExample' => $person->shows->map(fn ($show) => [
+            '@type' => 'TVSeries',
+            'name' => $show->title,
+            'url' => route('shows.show', $show->slug),
+        ])->values()->all(),
+    ], fn ($value) => $value !== null && $value !== []);
+@endphp
+<script type="application/ld+json">{!! json_encode($personJsonLd, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
+@endsection
 
 @section('content')
 <div class="pt-[60px] bg-[#080810] min-h-screen">

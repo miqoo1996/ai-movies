@@ -23,6 +23,9 @@
 @section('seo_title', $seoTitle)
 @section('meta_description', $seoDesc)
 @section('keywords', 'Turkish series, Turkish dramas, Turkish TV shows, watch Turkish series online, Turkish movies with English subtitles, Turkish drama episodes, Turkish romantic dramas, Turkish historical series, Turkish action series, Turkish crime dramas, English subbed Turkish dramas, Turkish series Eng sub, HD Turkish streaming')
+@if($shows->currentPage() > 1)@section('noindex', '1')@endif
+@if($shows->previousPageUrl())@section('prev_url', $shows->previousPageUrl())@endif
+@if($shows->nextPageUrl())@section('next_url', $shows->nextPageUrl())@endif
 @if($isFiltered || $seoPage?->noindex)@section('noindex', '1')@endif
 
 @section('content')

@@ -13,6 +13,8 @@ class Article extends Model
         'slug',
         'seo_title',
         'seo_description',
+        'focus_keyword',
+        'schema_markup',
         'noindex',
         'excerpt',
         'content',

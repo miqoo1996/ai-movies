@@ -16,6 +16,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\ShowController;
+use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
 
 // ── Admin ────────────────────────────────────────────────────────
@@ -79,6 +80,7 @@ Route::get('/people/{person}', [PersonController::class, 'show'])->name('people.
 Route::get('/calendar',   [ShowController::class, 'calendar'])->name('calendar');
 
 Route::get('/best-series', [ShowController::class, 'bestSeries'])->name('best-series');
+Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
 
 Route::get('/articles',           [ArticleController::class, 'index'])->name('articles.index');
 Route::get('/articles/{article:slug}', [ArticleController::class, 'show'])->name('articles.show');

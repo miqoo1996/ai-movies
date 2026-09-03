@@ -5,23 +5,24 @@
 @section('keywords', 'Turkish series with English subtitles, Turkish dramas online, watch Turkish series online free, Turkish movies with English subtitles, Turkish TV shows English subtitles, best Turkish dramas with English subtitles, Turkish drama series online, Turkish romantic series, Turkish historical dramas, Turkish action movies subtitles, latest Turkish dramas online, Turkish streaming platform, watch Turkish episodes online, Turkish series 2026, Turkish entertainment')
 @if($seoPage?->noindex)@section('noindex', '1')@endif
 @section('json_ld')
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "{{ setting('site_name', 'DiziCentral') }}",
-  "url": "{{ url('/') }}",
-  "description": "Watch the latest Turkish series and movies with English subtitles in HD. Stream romantic dramas, action series, historical shows and Turkish cinema online.",
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": {
-      "@type": "EntryPoint",
-      "urlTemplate": "{{ url('/shows') }}?q={search_term_string}"
-    },
-    "query-input": "required name=search_term_string"
-  }
-}
-</script>
+@php
+        $websiteJsonLd = [
+                '@context' => 'https://schema.org',
+                '@type' => 'WebSite',
+                'name' => setting('site_name', 'DiziCentral'),
+                'url' => url('/'),
+                'description' => 'Watch the latest Turkish series and movies with English subtitles in HD. Stream romantic dramas, action series, historical shows and Turkish cinema online.',
+                'potentialAction' => [
+                        '@type' => 'SearchAction',
+                        'target' => [
+                                '@type' => 'EntryPoint',
+                                'urlTemplate' => url('/shows') . '?q={search_term_string}',
+                        ],
+                        'query-input' => 'required name=search_term_string',
+                ],
+        ];
+@endphp
+<script type="application/ld+json">{!! json_encode($websiteJsonLd, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
 @endsection
 
 @section('content')

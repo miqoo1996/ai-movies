@@ -25,40 +25,38 @@
 @endphp
 @section('keywords', $showKeywords)
 @section('og_image', $show->poster_url)
+@section('og_type', 'video.tv_show')
 @section('canonical', route('shows.show', $show->slug))
 @if($show->noindex)@section('noindex', '1')@endif
 @section('json_ld')
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "TVSeries",
-  "name": "{{ addslashes($show->title) }}",
-  "url": "{{ route('shows.show', $show->slug) }}",
-  @if($show->synopsis)"description": "{{ addslashes(Str::limit(strip_tags($show->synopsis), 300)) }}",@endif
-  @if($show->poster_url)"image": "{{ $show->poster_url }}",@endif
-  @if($show->year)"startDate": "{{ $show->year }}",@endif
-  @if($show->status === 'Running' || $show->status === 'Returning Series')
-  "numberOfEpisodes": {{ $show->episodes_count ?? 0 }},
-  @endif
-  @if($show->genres->count())
-  "genre": [{{ $show->genres->map(fn($g) => '"' . addslashes($g->name) . '"')->implode(', ') }}],
-  @endif
-  @if($show->rating)"aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "{{ $show->rating }}",
-    "bestRating": "10",
-    "worstRating": "1",
-    "ratingCount": {{ $show->subscribers ?? 1 }}
-  },@endif
-  @if($show->network)"productionCompany": {
-    "@type": "Organization",
-    "name": "{{ addslashes($show->network) }}"
-  },@endif
-  "subtitleLanguage": { "@type": "Language", "name": "English" },
-  "inLanguage": "tr",
-  "countryOfOrigin": { "@type": "Country", "name": "Turkey" }
-}
-</script>
+@php
+        $showJsonLd = array_filter([
+                '@context' => 'https://schema.org',
+                '@type' => 'TVSeries',
+                'name' => $show->title,
+                'url' => route('shows.show', $show->slug),
+                'description' => $show->synopsis ? Str::limit(strip_tags($show->synopsis), 300) : null,
+                'image' => $show->poster_url,
+                'startDate' => $show->year,
+                'numberOfEpisodes' => ($show->status === 'Running' || $show->status === 'Returning Series') ? ($show->episodes_count ?? 0) : null,
+                'genre' => $show->genres->pluck('name')->values()->all(),
+                'aggregateRating' => $show->rating ? [
+                        '@type' => 'AggregateRating',
+                        'ratingValue' => $show->rating,
+                        'bestRating' => 10,
+                        'worstRating' => 1,
+                        'ratingCount' => $show->subscribers ?: 1,
+                ] : null,
+                'productionCompany' => $show->network ? [
+                        '@type' => 'Organization',
+                        'name' => $show->network,
+                ] : null,
+                'subtitleLanguage' => ['@type' => 'Language', 'name' => 'English'],
+                'inLanguage' => 'tr',
+                'countryOfOrigin' => ['@type' => 'Country', 'name' => 'Turkey'],
+        ], fn ($value) => $value !== null && $value !== []);
+@endphp
+<script type="application/ld+json">{!! json_encode($showJsonLd, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
 @endsection
 
 @section('content')

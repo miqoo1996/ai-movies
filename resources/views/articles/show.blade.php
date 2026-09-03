@@ -3,6 +3,7 @@
 @section('seo_title', $article->seo_title ?: $article->title)
 @section('meta_description', $article->seo_description ?: ($article->excerpt ?: Str::limit(strip_tags($article->content), 155)))
 @section('canonical', route('articles.show', $article))
+@if($article->focus_keyword)@section('keywords', $article->focus_keyword)@endif
 @if($article->noindex)@section('noindex', '1')@endif
 @if($article->cover_url)@section('og_image', $article->cover_url)@endif
 
@@ -22,8 +23,9 @@
             'name'  => setting('site_name', 'DiziCentral'),
         ],
     ], fn ($value) => $value !== null && $value !== '');
+    $customSchema = $article->schema_markup ? json_decode($article->schema_markup, true) : null;
 @endphp
-<script type="application/ld+json">{!! json_encode($articleJsonLd, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
+<script type="application/ld+json">{!! json_encode($customSchema ?: $articleJsonLd, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
 @endsection
 
 @section('content')

@@ -21,6 +21,7 @@
         $metaDesc    = $dec(View::yieldContent('meta_description') ?: View::yieldContent('description')) ?: $defaultDesc;
 
         $canonical   = $dec(View::yieldContent('canonical')) ?: url()->current();
+        $ogType      = $dec(View::yieldContent('og_type')) ?: 'website';
         $globalNoindex = setting('robots_noindex', 'index') === 'noindex';
         $pageNoindex   = trim(View::yieldContent('noindex')) === '1';
         $robotsValue   = ($globalNoindex || $pageNoindex) ? 'noindex, follow' : 'index, follow';
@@ -38,9 +39,11 @@
     @endif
     <meta name="robots" content="{{ $robotsValue }}">
     <link rel="canonical" href="{{ $canonical }}">
+    @hasSection('prev_url')<link rel="prev" href="@yield('prev_url')">@endif
+    @hasSection('next_url')<link rel="next" href="@yield('next_url')">@endif
 
     {{-- Open Graph --}}
-    <meta property="og:type"        content="website">
+    <meta property="og:type"        content="{{ $ogType }}">
     <meta property="og:title"       content="{{ $finalTitle }}">
     <meta property="og:description" content="{{ $metaDesc }}">
     <meta property="og:url"         content="{{ $canonical }}">
@@ -55,6 +58,11 @@
     <meta name="twitter:card"        content="summary_large_image">
     <meta name="twitter:title"       content="{{ $finalTitle }}">
     <meta name="twitter:description" content="{{ $metaDesc }}">
+    @hasSection('og_image')
+        <meta name="twitter:image" content="@yield('og_image')">
+    @elseif(setting('og_image'))
+        <meta name="twitter:image" content="{{ asset('storage/' . setting('og_image')) }}">
+    @endif
 
     @if(setting('search_console_verify'))
     <meta name="google-site-verification" content="{{ setting('search_console_verify') }}">
